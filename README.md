@@ -6,7 +6,7 @@ _This README contains basic information about the project and its artifacts. If 
 ## Team Members
 - Chinmay Gaikwad
 - Chris Wells
-- MEMBER3
+- Caleb Jones
 - Owen Gahagan
 - Professor Bierre
 
