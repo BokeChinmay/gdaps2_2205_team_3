@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Team3Project
 {
-    internal class Entity
+    internal abstract class Entity
     {
+        //Fields
+        protected bool isActive;
+
+        /// <summary>
+        /// Abstract class to function movement.
+        /// </summary>
+        public abstract void Move();
     }
 }
