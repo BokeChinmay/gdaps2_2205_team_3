@@ -8,12 +8,35 @@ namespace Team3Project
 {
     internal abstract class Entity
     {
-        //Fields
-        protected bool isActive;
+        // Field declarations
+        protected int health;
+        protected int moveSpeed;
+        protected bool active;
+
+        // Read-and-write properties for health and move speed
+        public int Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
+
+        public int MoveSpeed
+        {
+            get { return moveSpeed; }
+            set { moveSpeed = value; }
+        }
+
+        // Parameterized constructor
+        public Entity(int health, int moveSpeed)
+        {
+            this.health = health;
+            this.moveSpeed = moveSpeed;
+            active = true;
+        }
 
         /// <summary>
-        /// Abstract class to function movement.
+        /// All entities should have the ability to move
         /// </summary>
-        public abstract void Move();
+        protected abstract void Move();
     }
 }
