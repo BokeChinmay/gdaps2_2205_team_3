@@ -8,6 +8,7 @@ namespace Team3Project
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Texture2D mainCharacter;
 
         public Game1()
         {
@@ -28,6 +29,7 @@ namespace Team3Project
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            mainCharacter = this.Content.Load<Texture2D>("Meo");
         }
 
         protected override void Update(GameTime gameTime)
