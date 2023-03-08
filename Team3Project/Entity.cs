@@ -38,5 +38,10 @@ namespace Team3Project
         /// All entities should have the ability to move
         /// </summary>
         protected abstract void Move();
+
+        /// <summary>
+        /// All entities should be drawn.
+        /// </summary>
+        protected abstract void Draw();
     }
 }

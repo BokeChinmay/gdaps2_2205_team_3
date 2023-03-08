@@ -20,6 +20,9 @@ namespace Team3Project
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _graphics.PreferredBackBufferWidth = 1500;  // Window Width
+            _graphics.PreferredBackBufferHeight = 900;   // Window Height
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -44,9 +47,10 @@ namespace Team3Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+
 
             base.Draw(gameTime);
         }
