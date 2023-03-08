@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Team3Project
         int projectileSpeed;
 
         // Parameterized constructor
-        public RangedEnemy(int health, int moveSpeed, int attackDelay, int projectileSpeed) : base(health, moveSpeed)
+        public RangedEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, int projectileSpeed) : base(health, moveSpeed, collision)
         {
             this.attackDelay = attackDelay;
             this.projectileSpeed = projectileSpeed;
