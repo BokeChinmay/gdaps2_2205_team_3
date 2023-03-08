@@ -9,9 +9,17 @@ namespace Team3Project
 {
     internal abstract class Enemy : Entity
     {
+        //Fields
+        int health;
+        int moveSpeed;
+        Rectangle collision;
+
         public Enemy(int health, int moveSpeed, Rectangle collision) : base(health, moveSpeed, collision)
         {
-
+            this.health = health;
+            this.moveSpeed = moveSpeed;
+            this.collision = collision;
         }
+        
     }
 }
