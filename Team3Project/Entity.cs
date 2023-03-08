@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Team3Project
         protected int health;
         protected int moveSpeed;
         protected bool active;
+        protected Rectangle collision;
 
         // Read-and-write properties for health and move speed
         public int Health
@@ -26,11 +28,18 @@ namespace Team3Project
             set { moveSpeed = value; }
         }
 
+        public Rectangle Collision
+        {
+            get { return collision; }
+            set { collision = value; }
+        }
+
         // Parameterized constructor
-        public Entity(int health, int moveSpeed)
+        public Entity(int health, int moveSpeed, Rectangle collision)
         {
             this.health = health;
             this.moveSpeed = moveSpeed;
+            this.Collision = collision;
             active = true;
         }
 

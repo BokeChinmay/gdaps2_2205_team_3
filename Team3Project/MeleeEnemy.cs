@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Team3Project
 {
     internal class MeleeEnemy : Enemy, IDamageable
     {
-        public MeleeEnemy(int health, int moveSpeed) : base (health, moveSpeed)
+        public MeleeEnemy(int health, int moveSpeed, Rectangle collision) : base (health, moveSpeed, collision)
         {
             
         }
