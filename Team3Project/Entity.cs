@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,12 @@ namespace Team3Project
             set { moveSpeed = value; }
         }
 
+        public bool Active 
+        { 
+            get { return active; } 
+            set { active = value; } 
+        }
+
         public Rectangle Collision
         {
             get { return collision; }
@@ -46,7 +53,19 @@ namespace Team3Project
         /// <summary>
         /// All entities should have the ability to move
         /// </summary>
-        protected abstract void Move();
+        public abstract void Move();
+
+        /// <summary>
+        /// All entities must be updated.
+        /// </summary>
+        public abstract void Update();
+
+        /// <summary>
+        /// All entitites must be drawn.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
+        public abstract void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects);
 
     }
 }

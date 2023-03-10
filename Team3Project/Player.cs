@@ -13,7 +13,6 @@ namespace Team3Project
     {
         //Fields
         private Texture2D playerTexture;
-        private Vector2 playerPos;
         private KeyboardState kbState = new KeyboardState();
 
         //Consts
@@ -32,41 +31,63 @@ namespace Team3Project
         /// <param name="playerTexture"></param>
         public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture) : base(health, moveSpeed, collision)
         {
-            this.playerPos = playerPos;
             this.playerTexture = playerTexture;
         }
 
         /// <summary>
         /// Makes the character move.
         /// </summary>
-        protected override void Move()
+        public override void Move()
         {
             kbState = Keyboard.GetState();
 
             if (kbState.IsKeyDown(Keys.W))
             {
-                playerPos.X--;
+                collision.X--;
             }
 
             if (kbState.IsKeyDown(Keys.S))
             {
-                playerPos.X++;
+                collision.X++;
             }
 
             if (kbState.IsKeyDown(Keys.D))
             {
-                playerPos.Y++;
+                collision.Y++;
             }
 
             if (kbState.IsKeyDown(Keys.W))
             {
-                playerPos.Y--;
+                collision.Y--;
             }
         }
 
-        public void TakeDamage(int amount)
+        /// <summary>
+        /// Method to check the collision between two objects.
+        /// </summary>
+        /// <param name="check"></param>
+        /// <returns></returns>
+        public void CheckCollision(Entity check)
         {
+            if(check.Collision.Intersects(collision))
+            {
+                TakeDamage(1);
+            } 
+        }
 
+        /// <summary>
+        /// Method that simulates taking damage and sets the entity to inactive if the health reaches zero
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <param name="entity"></param>
+        public void TakeDamage(int damage)
+        {
+            Health = Health - damage;
+
+            if(Health == 0)
+            {
+                Active = false;
+            }
         }
 
         /// <summary>
@@ -75,10 +96,10 @@ namespace Team3Project
         /// <param name="spriteBatch"></param>
         /// <param name="flipSprite"></param>
         /// <returns></returns>
-        public void Draw(SpriteBatch spriteBatch, SpriteEffects flipSprite)
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects flipSprite)
         {
             spriteBatch.Draw(playerTexture,
-                             playerPos,
+                             collision,
                              new Rectangle(
                                  PlayerOffsetX,
                                  PlayerOffsetY,
@@ -87,7 +108,6 @@ namespace Team3Project
                              Color.White,
                              0,
                              Vector2.Zero,
-                             1.0f,
                              flipSprite,
                              0
                              );
