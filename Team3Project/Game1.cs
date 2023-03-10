@@ -8,7 +8,10 @@ namespace Team3Project
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteEffects _spriteEffects;
         private Texture2D mainCharacter;
+        private Player playerEntity;
+        
 
         public Game1()
         {
@@ -24,6 +27,8 @@ namespace Team3Project
             _graphics.PreferredBackBufferHeight = 900;   // Window Height
             _graphics.ApplyChanges();
 
+            
+
             base.Initialize();
         }
 
@@ -33,6 +38,7 @@ namespace Team3Project
 
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
+            playerEntity = new Player(100, 5, new Rectangle(10, 10, 32, 32), mainCharacter);
         }
 
         protected override void Update(GameTime gameTime)
@@ -41,6 +47,7 @@ namespace Team3Project
                 Exit();
 
             // TODO: Add your update logic here
+            
 
             base.Update(gameTime);
         }
@@ -50,7 +57,10 @@ namespace Team3Project
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-
+            _spriteBatch.Begin();
+            playerEntity.Draw(_spriteBatch, SpriteEffects.None);
+            
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
