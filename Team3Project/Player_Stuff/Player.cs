@@ -35,7 +35,7 @@ namespace Team3Project.Player_Stuff
         /// <summary>
         /// Makes the character move.
         /// </summary>
-        public override void Move()
+        protected override void Move()
         {
             kbState = Keyboard.GetState();
 

@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 using Team3Project.Player_Stuff;
+using Team3Project.Stage_Stuff;
 
 namespace Team3Project
 {
@@ -12,7 +15,11 @@ namespace Team3Project
         private SpriteEffects _spriteEffects;
         private Texture2D mainCharacter;
         private Player playerEntity;
-        
+
+        // Fields relating to stage objects
+        private Texture2D bufferTexture;
+        private VisualBuffer leftBuffer;
+        private VisualBuffer rightBuffer;
 
         public Game1()
         {
@@ -40,6 +47,10 @@ namespace Team3Project
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerEntity = new Player(100, 5, new Rectangle(10, 10, 32, 32), mainCharacter);
+
+            bufferTexture = this.Content.Load<Texture2D>("Buffer");
+            leftBuffer = new VisualBuffer(0, bufferTexture);
+            rightBuffer = new VisualBuffer(_graphics.PreferredBackBufferWidth - bufferTexture.Width, bufferTexture);
         }
 
         protected override void Update(GameTime gameTime)
@@ -55,11 +66,13 @@ namespace Team3Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.DarkGray);
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             playerEntity.Draw(_spriteBatch, SpriteEffects.None);
+            leftBuffer.Draw(_spriteBatch, SpriteEffects.None);
+            rightBuffer.Draw(_spriteBatch, SpriteEffects.None);
             
             _spriteBatch.End();
 

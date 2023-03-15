@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,16 @@ namespace Team3Project.Enemy_Stuff
         protected override void Move()
         {
 
+        }
+
+        public override void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            throw new NotImplementedException();
         }
     }
 }
