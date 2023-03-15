@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Team3Project
+namespace Team3Project.Enemy_Stuff
 {
     internal abstract class Enemy : Entity
     {
@@ -20,6 +20,6 @@ namespace Team3Project
             this.moveSpeed = moveSpeed;
             this.collision = collision;
         }
-        
+
     }
 }

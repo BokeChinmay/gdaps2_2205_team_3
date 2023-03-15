@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Team3Project
+namespace Team3Project.Enemy_Stuff
 {
     internal class RangedEnemy : Enemy, IDamageable
     {
@@ -22,7 +22,7 @@ namespace Team3Project
 
         protected override void Move()
         {
-            
+
         }
 
         public void TakeDamage(int amount)

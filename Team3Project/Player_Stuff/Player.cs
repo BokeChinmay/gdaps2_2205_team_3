@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Team3Project
+namespace Team3Project.Player_Stuff
 {
     internal class Player : Entity, IDamageable
     {
         //Fields
         private Texture2D playerTexture;
         private KeyboardState kbState = new KeyboardState();
-
         //Consts
         const int PlayerOffsetX = 4;
         const int PlayerOffsetY = 9;
@@ -27,7 +26,6 @@ namespace Team3Project
         /// <param name="health"></param>
         /// <param name="moveSpeed"></param>
         /// <param name="collision"></param>
-        /// <param name="playerPos"></param>
         /// <param name="playerTexture"></param>
         public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture) : base(health, moveSpeed, collision)
         {
@@ -69,10 +67,10 @@ namespace Team3Project
         /// <returns></returns>
         public void CheckCollision(Entity check)
         {
-            if(check.Collision.Intersects(collision))
+            if (check.Collision.Intersects(collision))
             {
                 TakeDamage(1);
-            } 
+            }
         }
 
         /// <summary>
@@ -84,7 +82,7 @@ namespace Team3Project
         {
             Health = Health - damage;
 
-            if(Health == 0)
+            if (Health == 0)
             {
                 Active = false;
             }
@@ -111,6 +109,11 @@ namespace Team3Project
                              flipSprite,
                              0
                              );
+        }
+
+        public override void Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Team3Project
+namespace Team3Project.Enemy_Stuff
 {
     internal class Projectile : Entity
     {
@@ -16,10 +16,10 @@ namespace Team3Project
         private List<Entity> validTargets;
 
         // Parameterized constructor to establish a projectile's speed and velocity
-        public Projectile(int speed, int xDirection, Rectangle collision, int yDirection) : base (1, speed, collision)
+        public Projectile(int speed, int xDirection, Rectangle collision, int yDirection) : base(1, speed, collision)
         {
-            direction = new Vector2 (xDirection * speed, yDirection * speed);
-            validTargets = new List<Entity> ();
+            direction = new Vector2(xDirection * speed, yDirection * speed);
+            validTargets = new List<Entity>();
         }
 
         protected override void Move()
