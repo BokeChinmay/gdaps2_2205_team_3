@@ -35,21 +35,21 @@ namespace Team3Project.Player_Stuff
         /// <summary>
         /// Makes the character move.
         /// </summary>
-        protected override void Move()
+        public override void Move()
         {
             kbState = Keyboard.GetState();
 
-            if (kbState.IsKeyDown(Keys.W))
+            if (kbState.IsKeyDown(Keys.A))
             {
                 collision.X--;
             }
 
-            if (kbState.IsKeyDown(Keys.S))
+            if (kbState.IsKeyDown(Keys.D))
             {
                 collision.X++;
             }
 
-            if (kbState.IsKeyDown(Keys.D))
+            if (kbState.IsKeyDown(Keys.S))
             {
                 collision.Y++;
             }

@@ -53,7 +53,7 @@ namespace Team3Project
         /// <summary>
         /// All entities should have the ability to move
         /// </summary>
-        protected abstract void Move();
+        public abstract void Move();
 
         /// <summary>
         /// All entities must be updated.

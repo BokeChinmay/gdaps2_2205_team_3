@@ -46,7 +46,7 @@ namespace Team3Project
 
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
-            playerEntity = new Player(100, 5, new Rectangle(10, 10, 32, 32), mainCharacter);
+            playerEntity = new Player(100, 5, new Rectangle(200, 10, 32, 32), mainCharacter);
 
             bufferTexture = this.Content.Load<Texture2D>("Buffer");
             leftBuffer = new VisualBuffer(0, bufferTexture);
@@ -59,7 +59,7 @@ namespace Team3Project
                 Exit();
 
             // TODO: Add your update logic here
-            
+            playerEntity.Move();
 
             base.Update(gameTime);
         }
@@ -70,10 +70,10 @@ namespace Team3Project
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            playerEntity.Draw(_spriteBatch, SpriteEffects.None);
             leftBuffer.Draw(_spriteBatch, SpriteEffects.None);
             rightBuffer.Draw(_spriteBatch, SpriteEffects.None);
-            
+            playerEntity.Draw(_spriteBatch, SpriteEffects.None);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);

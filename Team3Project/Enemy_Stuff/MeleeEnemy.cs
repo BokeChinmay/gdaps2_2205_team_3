@@ -17,7 +17,7 @@ namespace Team3Project.Enemy_Stuff
             
         }
 
-        protected override void Move()
+        public override void Move()
         {
             
         }

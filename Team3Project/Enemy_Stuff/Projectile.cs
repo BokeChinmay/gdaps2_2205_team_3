@@ -24,7 +24,7 @@ namespace Team3Project.Enemy_Stuff
             validTargets = new List<Entity>();
         }
 
-        protected override void Move()
+        public override void Move()
         {
             //Update position by direction vector
             collision.X += (int)direction.X;

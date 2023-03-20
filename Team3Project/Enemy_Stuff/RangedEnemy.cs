@@ -21,7 +21,7 @@ namespace Team3Project.Enemy_Stuff
             this.projectileSpeed = projectileSpeed;
         }
 
-        protected override void Move()
+        public override void Move()
         {
 
         }
