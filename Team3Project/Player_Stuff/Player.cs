@@ -14,6 +14,8 @@ namespace Team3Project.Player_Stuff
         //Fields
         private Texture2D playerTexture;
         private KeyboardState kbState = new KeyboardState();
+        private Random rng = new Random();
+
         //Consts
         const int PlayerOffsetX = 4;
         const int PlayerOffsetY = 9;
@@ -67,9 +69,22 @@ namespace Team3Project.Player_Stuff
         /// <returns></returns>
         public void CheckCollision(Entity check)
         {
-            if (check.Collision.Intersects(collision))
+            if (check.Collision.Intersects(collision) )
             {
                 TakeDamage(1);
+            }
+            else if(check is Item && check.Collision.Intersects(collision))
+            {
+                if (rng.Next(1) == 0)
+                {
+                    moveSpeed++;
+                }
+
+                else if (rng.Next(1) == 1)
+                {
+                    health++;
+                }
+
             }
         }
 

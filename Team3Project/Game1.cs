@@ -15,6 +15,8 @@ namespace Team3Project
         private SpriteEffects _spriteEffects;
         private Texture2D mainCharacter;
         private Player playerEntity;
+        private Item items;
+        private Texture2D speedBoost;
 
         // Fields relating to stage objects
         private Texture2D bufferTexture;
@@ -51,6 +53,9 @@ namespace Team3Project
             bufferTexture = this.Content.Load<Texture2D>("Buffer");
             leftBuffer = new VisualBuffer(0, bufferTexture);
             rightBuffer = new VisualBuffer(_graphics.PreferredBackBufferWidth - bufferTexture.Width, bufferTexture);
+
+            speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
+            items = new Item(new Rectangle(300, 200, 32, 32), speedBoost, 0, 1);
         }
 
         protected override void Update(GameTime gameTime)
@@ -73,6 +78,7 @@ namespace Team3Project
             leftBuffer.Draw(_spriteBatch, SpriteEffects.None);
             rightBuffer.Draw(_spriteBatch, SpriteEffects.None);
             playerEntity.Draw(_spriteBatch, SpriteEffects.None);
+            //items.Draw(_spriteBatch, SpriteEffects.None);
 
             _spriteBatch.End();
 
