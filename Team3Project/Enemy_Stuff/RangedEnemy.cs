@@ -28,11 +28,19 @@ namespace Team3Project.Enemy_Stuff
 
         public void TakeDamage(int amount)
         {
-
+            health -= amount;
         }
 
         public override void Update()
         {
+            //Check if in range of player
+            
+            //If too close to the player, move away
+
+            //Check attack delay, attack
+
+            //Check for damage
+
             throw new NotImplementedException();
         }
 
