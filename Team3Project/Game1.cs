@@ -15,17 +15,14 @@ namespace Team3Project
         private SpriteEffects _spriteEffects;
         private Texture2D mainCharacter;
         private Player playerEntity;
-
-        // Fields relating to stage objects
-        private Texture2D bufferTexture;
-        private VisualBuffer leftBuffer;
-        private VisualBuffer rightBuffer;
+        private StageObjectManager stageObjectManager;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            stageObjectManager = new StageObjectManager();
         }
 
         protected override void Initialize()
@@ -35,7 +32,6 @@ namespace Team3Project
             _graphics.PreferredBackBufferHeight = 900;   // Window Height
             _graphics.ApplyChanges();
 
-            
 
             base.Initialize();
         }
@@ -47,10 +43,8 @@ namespace Team3Project
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerEntity = new Player(100, 5, new Rectangle(10, 10, 32, 32), mainCharacter);
+            stageObjectManager.LoadContent(this.Content, _graphics);
 
-            bufferTexture = this.Content.Load<Texture2D>("Buffer");
-            leftBuffer = new VisualBuffer(0, bufferTexture);
-            rightBuffer = new VisualBuffer(_graphics.PreferredBackBufferWidth - bufferTexture.Width, bufferTexture);
         }
 
         protected override void Update(GameTime gameTime)
@@ -71,8 +65,7 @@ namespace Team3Project
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             playerEntity.Draw(_spriteBatch, SpriteEffects.None);
-            leftBuffer.Draw(_spriteBatch, SpriteEffects.None);
-            rightBuffer.Draw(_spriteBatch, SpriteEffects.None);
+            stageObjectManager.Draw(_spriteBatch);
             
             _spriteBatch.End();
 

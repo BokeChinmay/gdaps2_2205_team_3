@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Stage_Stuff
 {
-    internal class VisualBuffer : StageObject, IObstruction
+    internal class VisualBuffer : StageObject
     {
         // Field declaration
         private Texture2D texture;
@@ -19,13 +19,8 @@ namespace Team3Project.Stage_Stuff
             : base(bufferTexture.Width, bufferTexture.Height, xPos, 0)
         { 
             texture = bufferTexture;
+            isObstruction = true;
         }
-
-        // Properties required by IObstruction
-        public int TopEdge { get { return dimensions.Top; } }
-        public int LeftEdge { get { return dimensions.Left; } }
-        public int RightEdge { get { return dimensions.Right; } }
-        public int BottomEdge { get { return dimensions.Bottom; } }
 
         /// <summary>
         /// Draw method

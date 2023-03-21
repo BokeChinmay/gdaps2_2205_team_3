@@ -15,8 +15,12 @@ namespace Team3Project
         protected int moveSpeed;
         protected bool active;
         protected Rectangle collision;
+        protected bool topBlocked;
+        protected bool bottomBlocked;
+        protected bool leftBlocked;
+        protected bool rightBlocked;
 
-        // Read-and-write properties for health and move speed
+        // Read-and-write properties
         public int Health
         {
             get { return health; }
@@ -41,6 +45,28 @@ namespace Team3Project
             set { collision = value; }
         }
 
+        // Properties related to stage objects
+        public bool TopBlocked 
+        { 
+            get { return topBlocked; }
+            set { topBlocked = value; }
+        }
+        public bool BottomBlocked
+        {
+            get { return bottomBlocked; }
+            set { bottomBlocked = value; }
+        }
+        public bool LeftBlocked
+        {
+            get { return leftBlocked; }
+            set { leftBlocked = value; }
+        }
+        public bool RightBlocked
+        {
+            get { return rightBlocked; }
+            set { rightBlocked = value; }
+        }
+
         // Parameterized constructor
         public Entity(int health, int moveSpeed, Rectangle collision)
         {
@@ -48,6 +74,10 @@ namespace Team3Project
             this.moveSpeed = moveSpeed;
             this.Collision = collision;
             active = true;
+            topBlocked = false;
+            bottomBlocked = false;
+            leftBlocked = false;
+            rightBlocked = false;
         }
 
         /// <summary>

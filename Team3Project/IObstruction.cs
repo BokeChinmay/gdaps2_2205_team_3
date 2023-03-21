@@ -12,6 +12,6 @@ namespace Team3Project
         public int LeftEdge { get; }
         public int RightEdge { get; }
         public int BottomEdge { get; }
-
+        public bool IsObstruction { get; }
     }
 }
