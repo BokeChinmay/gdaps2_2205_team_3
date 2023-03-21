@@ -2,5 +2,5 @@ _Put the data files that your game will need here and then use this README to do
 
 ## Folder contents
 _It would be helpful if you give a listing of the files available and what parts of the game they influence._
-- ...
+- LevelLayouts.txt contains all of the layouts that might be randomly chosen when a new level is generated
 - ...

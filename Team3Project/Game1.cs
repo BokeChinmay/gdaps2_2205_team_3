@@ -15,6 +15,8 @@ namespace Team3Project
         private SpriteEffects _spriteEffects;
         private Texture2D mainCharacter;
         private Player playerEntity;
+        private Item items;
+        private Texture2D speedBoost;
         private StageObjectManager stageObjectManager;
 
         public Game1()
@@ -38,13 +40,11 @@ namespace Team3Project
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerEntity = new Player(100, 5, new Rectangle(10, 10, 32, 32), mainCharacter);
-            stageObjectManager.LoadContent(this.Content, _graphics);
 
+            stageObjectManager.LoadContent(this.Content, _graphics);
         }
 
         protected override void Update(GameTime gameTime)
@@ -53,19 +53,16 @@ namespace Team3Project
                 Exit();
 
             // TODO: Add your update logic here
-            
+            playerEntity.Move();
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkGray);
-
-            // TODO: Add your drawing code here
-            _spriteBatch.Begin();
             playerEntity.Draw(_spriteBatch, SpriteEffects.None);
             stageObjectManager.Draw(_spriteBatch);
+            //items.Draw(_spriteBatch, SpriteEffects.None);
             
             _spriteBatch.End();
 
