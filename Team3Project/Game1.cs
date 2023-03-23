@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Team3Project.Player_Stuff;
 using Team3Project.Stage_Stuff;
 
@@ -47,6 +48,42 @@ namespace Team3Project
             stageObjectManager.LoadContent(this.Content, _graphics);
         }
 
+        /// <summary>
+        /// File IO Saving
+        /// </summary>
+        public void SaveData()
+        {
+            StreamWriter streamWriter = null;
+            try
+            {
+                streamWriter = new StreamWriter("../../../savedData.txt");
+                streamWriter.WriteLine(playerEntity.Health);
+                streamWriter.WriteLine(playerEntity.MoveSpeed);
+                streamWriter.WriteLine(playerEntity.Collision.X + ", " + playerEntity.Collision.Y);
+                streamWriter.Close();
+            }
+            catch(Exception ex) {}
+        }
+
+        /// <summary>
+        /// File IO Loading
+        /// </summary>
+        public void LoadData()
+        {
+            StreamReader streamReader = null;
+            try
+            {
+                streamReader = new StreamReader("../../../savedData.txt");
+                int playerHealth = int.Parse(streamReader.ReadLine());
+                int playerMoveSpeed = int.Parse(streamReader.ReadLine());
+                string[] playerPositions = streamReader.ReadLine().Split(',');
+                int playerPosX = int.Parse(playerPositions[0]);
+                int playerPosY = int.Parse(playerPositions[1]);
+                playerEntity = new Player(playerHealth, playerMoveSpeed, new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter);
+            }
+            catch (Exception ex) { }
+        }
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -60,10 +97,11 @@ namespace Team3Project
 
         protected override void Draw(GameTime gameTime)
         {
-            playerEntity.Draw(_spriteBatch, SpriteEffects.None);
-            stageObjectManager.Draw(_spriteBatch);
-            //items.Draw(_spriteBatch, SpriteEffects.None);
             
+            stageObjectManager.Draw(_spriteBatch);
+            playerEntity.Draw(_spriteBatch, SpriteEffects.None);
+            //items.Draw(_spriteBatch, SpriteEffects.None);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
