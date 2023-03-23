@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -10,18 +11,27 @@ namespace Team3Project
 {
     internal class Player : Entity, IDamageable
     {
+        //Fields
+        private Texture2D playerTexture;
+        private Vector2 playerLoc;
+        private KeyboardState kbState;
+
+        //Constants for Source Rectangle
+        const int PlayerRectOffsetY = 8;
+        const int PlayerRectHeight = 20;
         public Vector2 playerPos;
-        KeyboardState kbState = new KeyboardState();
+        
         
         public Player(int health, int moveSpeed, Rectangle collision, Vector2 playerPos) : base(health, moveSpeed, collision)
         {
+           
             this.playerPos = playerPos;
         }
 
         protected override void Move()
         {
+            KeyboardState kbState = new KeyboardState();
             kbState = Keyboard.GetState();
-
             if (kbState.IsKeyDown(Keys.W))
             {
                 playerPos.X--;
