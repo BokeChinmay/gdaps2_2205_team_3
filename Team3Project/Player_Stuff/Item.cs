@@ -43,7 +43,7 @@ namespace Team3Project.Player_Stuff
                 Active = false;
             }
         }
-    }
+    
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {

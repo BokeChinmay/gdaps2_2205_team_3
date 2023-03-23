@@ -20,6 +20,5 @@ namespace Team3Project.Enemy_Stuff
             this.moveSpeed = moveSpeed;
             this.collision = collision;
         }
-
     }
 }
