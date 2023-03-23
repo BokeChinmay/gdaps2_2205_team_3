@@ -9,21 +9,28 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Team3Project.Player_Stuff
 {
+    public enum ItemType
+    {
+        DamageBoost,
+        SpeedBoost
+    }
     internal class Item : Entity
     {
         //loads in the current texture of the item
         private Texture2D itemTexture;
+        
 
         //for now we will make the item's location be the center of the room hopefully we can introduce enemy drops at a later date
-        private Vector2 ItemLoc = new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
+        private Vector2 itemLoc = new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
 
+        private Random rng = new Random();
 
         /// <summary>
         /// Parameterized Constructor
         /// </summary>
         /// <param name="collision"></param>
         /// <param name="itemTexture"></param>
-        public Item(Rectangle collision, Texture2D itemTexture, int moveSpeed, int health) : base (health, moveSpeed, collision)
+        public Item(int health, int moveSpeed, Rectangle collision, Texture2D itemTexture , ItemType itemType) : base (health, moveSpeed, collision)
         {
             this.itemTexture = itemTexture;
         }
@@ -35,8 +42,8 @@ namespace Team3Project.Player_Stuff
             {
                 Active = false;
             }
-
         }
+    }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
@@ -57,11 +64,7 @@ namespace Team3Project.Player_Stuff
             throw new NotImplementedException();
         }
 
-        private enum ItemType
-        {
-            DamageBoost,
-            SpeedBoost
-        }
+
 
 
 

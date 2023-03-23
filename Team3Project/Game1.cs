@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Team3Project.Enemy_Stuff;
 using Team3Project.Player_Stuff;
 using Team3Project.Stage_Stuff;
 
@@ -14,10 +15,14 @@ namespace Team3Project
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteEffects _spriteEffects;
+        private Random rng;
         private Texture2D mainCharacter;
         private Player playerEntity;
-        private Item items;
+        private Texture2D damageBoost;
         private Texture2D speedBoost;
+        private Item items;
+        private Texture2D enemyAsset;
+        private List<Enemy> enemyEntities;
         private StageObjectManager stageObjectManager;
 
         public Game1()
@@ -35,6 +40,7 @@ namespace Team3Project
             _graphics.PreferredBackBufferHeight = 900;   // Window Height
             _graphics.ApplyChanges();
 
+            rng = new Random();
 
             base.Initialize();
         }
@@ -44,6 +50,22 @@ namespace Team3Project
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerEntity = new Player(100, 5, new Rectangle(10, 10, 32, 32), mainCharacter);
+
+            damageBoost = this.Content.Load<Texture2D>("DamageUp");
+            speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
+
+            if(rng.Next(0,1) == 0)
+            {
+                items = new Item(1, 0,
+                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20), 
+                                 damageBoost, ItemType.DamageBoost);
+            }
+            else
+            {
+                items = new Item(1, 0,
+                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
+                                 speedBoost, ItemType.SpeedBoost);
+            }
 
             stageObjectManager.LoadContent(this.Content, _graphics);
         }

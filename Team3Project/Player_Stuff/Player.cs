@@ -128,7 +128,10 @@ namespace Team3Project.Player_Stuff
 
         public override void Update()
         {
-            throw new NotImplementedException();
+            if(Health < 0)
+            {
+                Active = false;
+            }
         }
     }
 }
