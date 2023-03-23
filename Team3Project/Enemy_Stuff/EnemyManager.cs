@@ -50,7 +50,7 @@ namespace Team3Project.Enemy_Stuff
                 Rectangle collisionBox = new Rectangle(enemyData[i][1], enemyData[i][2], (int)enemySize[enemyType].X, (int)enemySize[enemyType].Y);
                 if (enemyType == 0)
                 {
-                    enemyList.Add(new MeleeEnemy(enemyHealth, enemyMoveSpeed[enemyType], collisionBox));
+                    enemyList.Add(new MeleeEnemy(enemyHealth, enemyMoveSpeed[enemyType], collisionBox, attackDelay));//update this to include another dictionary
                 }
                 else if (enemyType == 1)
                 {

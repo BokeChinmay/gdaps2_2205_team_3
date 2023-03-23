@@ -28,7 +28,7 @@ namespace Team3Project.Enemy_Stuff
         }
 
         // Parameterized constructor to establish a projectile's speed and velocity
-        public Projectile(int speed, int xDirection, int yDirection, Rectangle collision, int damage) : base(1, speed, collision)
+        public Projectile(int speed, float xDirection, float yDirection, Rectangle collision, int damage) : base(1, speed, collision)
         {
             direction = new Vector2(xDirection * speed, yDirection * speed);
             validTargets = new List<Entity>();

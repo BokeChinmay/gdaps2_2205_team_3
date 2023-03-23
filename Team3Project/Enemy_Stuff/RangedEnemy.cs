@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Enemy_Stuff
 {
+    enum RangedEnemyState
+    {
+        Idle,
+        Move,
+        Attack,
+        Recovery
+    }
+
     internal class RangedEnemy : Enemy, IDamageable
     {
         // Class-specific fields
@@ -26,22 +34,21 @@ namespace Team3Project.Enemy_Stuff
 
         }
 
-        public void TakeDamage(int amount)
-        {
-            health -= amount;
-        }
-
         public override void Update()
         {
+            throw new NotImplementedException();
+        }
+
+        public override void Update(Rectangle playerCollision, List<Projectile> projectileList)
+        {
             //Check if in range of player
-            
+
             //If too close to the player, move away
 
             //Check attack delay, attack
 
             //Check for damage
 
-            throw new NotImplementedException();
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)

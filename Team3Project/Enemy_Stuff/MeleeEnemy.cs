@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Enemy_Stuff
 {
-    enum EnemyState
+    enum MeleeEnemyState
     {
         Idle,
         Moving,
@@ -17,9 +17,12 @@ namespace Team3Project.Enemy_Stuff
         Recovering,
     }
 
+
+
     internal class MeleeEnemy : Enemy, IDamageable
     {
-        EnemyState currentState;
+        MeleeEnemyState currentState;
+        VulnerabilityState vulnerabilityState;
         //Range at which the enemy begins the attack process
         const int AGGRO_RANGE = 200;
         //Range at which attack begins
@@ -28,6 +31,8 @@ namespace Team3Project.Enemy_Stuff
         const int ATTACK_DURATION = 30;
         //Duration of recovery
         const int RECOVERY_DURATION = 30;
+        //Duration of invincibility
+        const int INVINCIBILITY_DURATION = 10;
 
         //# of frames between telegraphing and attacking
         int attackDelay;
@@ -36,55 +41,22 @@ namespace Team3Project.Enemy_Stuff
         //Direction of the attack
         Vector2 attackDirection;
 
+        //Invincibility timer, designates the number of invincibility frames left
+        int invincibilityTimer;
+
         public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay) : base(health, moveSpeed, collision)
         {
-            currentState = EnemyState.Idle;
+            currentState = MeleeEnemyState.Idle;
+            vulnerabilityState = VulnerabilityState.Vulnerable;
             this.attackDelay = attackDelay;
         }
 
+        //Name: Move
+        //Purpose: Does nothing
+        //Params: None
         public override void Move()
         {
             
-        }
-
-        //Name: MoveTowardPos
-        //Purpose: Moves entity one speed unit directly toward a Vector
-        //Params: Vector containing X and Y positions of the target position.
-        public void MoveTowardPos(Vector2 targetPos)
-        {
-            //Calculate unit vector
-            Vector2 displacement = targetPos - new Vector2(collision.X, collision.Y);
-            float distance = DistanceFromPlayer(targetPos);
-            Vector2 unitVector = displacement / distance;
-
-            //Multiply by speed and move
-            collision.X += (int)(unitVector.X * moveSpeed);
-            collision.Y += (int)(unitVector.Y * moveSpeed);
-        }
-
-        //Name: DistanceFromPlayer
-        //Purpose: Determines an enemy's distance from the player
-        //Params: Vector containing X and Y positions of the player
-        public float DistanceFromPlayer(Vector2 playerPos)
-        {
-            //Find displacement vector
-            Vector2 displacement = playerPos - new Vector2(collision.X, collision.Y);
-
-            //Determine distance using distance formula
-            float distance = (float)Math.Sqrt(Math.Pow(displacement.X, 2) + Math.Pow(displacement.Y, 2));
-            return distance;
-        }
-
-        //Name: Direction to player
-        //Purpose: Gives unit vector in the direction from the enemy to the player
-        //Params: Vector containing X and Y positions of the player
-        public Vector2 DirectionToPlayer(Vector2 playerPos)
-        {
-            //Calculate unit vector
-            Vector2 displacement = playerPos - new Vector2(collision.X, collision.Y);
-            float distance = DistanceFromPlayer(playerPos);
-            Vector2 unitVector = displacement / distance;
-            return unitVector;
         }
 
         //Name: Attack
@@ -96,79 +68,94 @@ namespace Team3Project.Enemy_Stuff
             collision.Y = (int)(direction.Y * moveSpeed * 2);
         }
 
-        public void TakeDamage(int amount)
-        {
-            health -= amount;
-        }
-
         public override void Update() 
         {
             
             throw new NotImplementedException();
         }
 
-        public void Update(Rectangle playerCollision, List<Projectile> projectileList)
+        public override void Update(Rectangle playerCollision, List<Projectile> projectileList)
         {
             //Vector 2 of player position
             Vector2 playerPos = new Vector2((int)playerCollision.X, (int)playerCollision.Y);
 
-            //STATE MACHINE
+            //STATE MACHINE - Movement/attacking state
             switch (currentState)
             {
                 //Idle - Check if player position is within aggro range
-                case EnemyState.Idle:
+                case MeleeEnemyState.Idle:
                     if (DistanceFromPlayer(playerPos) < AGGRO_RANGE)
                     {
-                        currentState = EnemyState.Moving;
+                        currentState = MeleeEnemyState.Moving;
                     }
                     break;
                 //Moving - Move directly toward player until in attacking range
-                case EnemyState.Moving:
+                case MeleeEnemyState.Moving:
                     MoveTowardPos(playerPos);
                     if (DistanceFromPlayer(playerPos) < ATTACK_RANGE)
                     {
                         attackTimer = attackDelay;
                         attackDirection = DirectionToPlayer(playerPos);
-                        currentState = EnemyState.Telegraphing;
+                        currentState = MeleeEnemyState.Telegraphing;
                     }
                     break;
                 //Telegraphing - wait attackSpeed # of frames before attacking
-                case EnemyState.Telegraphing:
+                case MeleeEnemyState.Telegraphing:
                     attackTimer--;
                     if (attackTimer <= 0)
                     {
                         attackTimer = ATTACK_DURATION;
-                        currentState = EnemyState.Attacking;
+                        currentState = MeleeEnemyState.Attacking;
                     }
                     break;
                 //Attacking - Move quickly in one direction for a few frames. After attack, change to idle
-                case EnemyState.Attacking:
+                case MeleeEnemyState.Attacking:
                     attackTimer--;
                     Attack(attackDirection);
                     if (attackTimer <= 0)
                     {
                         attackTimer = RECOVERY_DURATION;
-                        currentState = EnemyState.Recovering;
+                        currentState = MeleeEnemyState.Recovering;
                     }
                     break;
                 //Recovering - A few frames of cooldown after the attack but before returning to idle state
-                case EnemyState.Recovering:
+                case MeleeEnemyState.Recovering:
                     attackTimer--;
                     if (attackTimer <= 0)
                     {
-                        currentState = EnemyState.Idle;
+                        currentState = MeleeEnemyState.Idle;
                     }
                     break;
             }
 
-            //Take damage
-            foreach (Projectile projectile in projectileList)
+            //STATE MACHINE - Vulnerability state
+            switch (vulnerabilityState)
             {
-                if (this.collision.Intersects(projectile.Collision))
-                {
-
-                }
+                //Enemy is vulnerable - check if collision is intersecting a projectile.
+                //If so, take damage and become invincible
+                case VulnerabilityState.Vulnerable:
+                    foreach (Projectile projectile in projectileList)
+                    {
+                        if (collision.Intersects(projectile.Collision))
+                        {
+                            TakeDamage(projectile.Damage);
+                            invincibilityTimer = INVINCIBILITY_DURATION;
+                            vulnerabilityState = VulnerabilityState.Invincible;
+                        }
+                    }
+                    break;
+                //Enemy is invincible - cannot take damage for a few frames.
+                //When timer hits 0, return to vulnerable state
+                case VulnerabilityState.Invincible:
+                    invincibilityTimer--;
+                    if (invincibilityTimer <= 0)
+                    {
+                        vulnerabilityState = VulnerabilityState.Vulnerable;
+                    }
+                    break;
+                    
             }
+
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
