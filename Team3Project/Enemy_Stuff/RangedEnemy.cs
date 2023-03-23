@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Team3Project
+namespace Team3Project.Enemy_Stuff
 {
     internal class RangedEnemy : Enemy, IDamageable
     {
@@ -20,14 +21,32 @@ namespace Team3Project
             this.projectileSpeed = projectileSpeed;
         }
 
-        protected override void Move()
+        public override void Move()
         {
-            
+
         }
 
         public void TakeDamage(int amount)
         {
+            health -= amount;
+        }
 
+        public override void Update()
+        {
+            //Check if in range of player
+            
+            //If too close to the player, move away
+
+            //Check attack delay, attack
+
+            //Check for damage
+
+            throw new NotImplementedException();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            throw new NotImplementedException();
         }
     }
 }
