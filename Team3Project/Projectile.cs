@@ -7,19 +7,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Team3Project.Enemy_Stuff
+namespace Team3Project
 {
     internal class Projectile : Entity
-    { 
-        // A vector for the projectile's direction
-        private Vector2 direction;
-
-
+    {
         // The targets that a projectile is able to damage
-        private List<Entity> validTargets;
+        protected List<Entity> validTargets;
 
         //Damage that the projectile deals
-        int damage;
+        protected int damage;
 
         //Property for the damage field
         public int Damage
@@ -28,18 +24,15 @@ namespace Team3Project.Enemy_Stuff
         }
 
         // Parameterized constructor to establish a projectile's speed and velocity
-        public Projectile(int speed, float xDirection, float yDirection, Rectangle collision, int damage) : base(1, speed, collision)
+        public Projectile(int speed, int damage, Rectangle collision) : base(1, speed, collision)
         {
-            direction = new Vector2(xDirection * speed, yDirection * speed);
             validTargets = new List<Entity>();
             this.damage = damage;
         }
 
         public override void Move()
         {
-            //Update position by direction vector
-            collision.X += (int)direction.X;
-            collision.Y += (int)direction.Y;
+
         }
 
         //Name: IsColliding

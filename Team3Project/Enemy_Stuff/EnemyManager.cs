@@ -11,6 +11,12 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Enemy_Stuff
 {
+    enum EnemyTypes
+    {
+        Melee,
+        Ranged
+    }
+
     internal class EnemyManager
     {
         //Fields
