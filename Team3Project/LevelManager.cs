@@ -38,7 +38,7 @@ namespace Team3Project
         {
             UpdateProjectiles();
             enemyManager.Update();
-            stageObjectManager.Update();
+            //stageObjectManager.Update();
         }
 
         public static void UpdateProjectiles()

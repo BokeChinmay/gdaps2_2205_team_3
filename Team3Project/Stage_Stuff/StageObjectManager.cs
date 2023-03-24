@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Team3Project.Enemy_Stuff;
+using Team3Project.Player_Stuff;
 
 namespace Team3Project.Stage_Stuff
 {
@@ -21,18 +23,28 @@ namespace Team3Project.Stage_Stuff
         // Field declarations
         private StreamReader reader;
 
+        // Organizing fields
         private List<StageObject> obstructiveStageObjects;
         private Dictionary<string, TileTypes[,]> levelLayouts;
         
+        // Buffer fields
         private Texture2D bufferTexture;
-        private VisualBuffer leftBuffer;
-        private VisualBuffer rightBuffer;
+        private VisualBarrier leftBuffer;
+        private VisualBarrier rightBuffer;
+
+        // Fields for the other bounds of the play area
+        private Texture2D backWallTexture;
+        private VisualBarrier backWall;
+        private HiddenStageObject bottomBounds;
 
         // Default constructor
         public StageObjectManager()
         {
             obstructiveStageObjects = new List<StageObject>();
             levelLayouts = new Dictionary<string, TileTypes[,]>();
+
+            bottomBounds = new HiddenStageObject(1500, 200, 0, 901);
+            obstructiveStageObjects.Add(bottomBounds);
         }
 
         /// <summary>
@@ -46,13 +58,21 @@ namespace Team3Project.Stage_Stuff
             // Buffers are 180 pixels wide and 900 pixels tall
             bufferTexture = content.Load<Texture2D>("Buffer");
 
-            leftBuffer = new VisualBuffer
-                (0, bufferTexture);
+            leftBuffer = new VisualBarrier
+                (0, bufferTexture, false);
             obstructiveStageObjects.Add(leftBuffer);
 
-            rightBuffer = new VisualBuffer
-                (_graphics.PreferredBackBufferWidth - bufferTexture.Width, bufferTexture);
+            rightBuffer = new VisualBarrier
+                (_graphics.PreferredBackBufferWidth - bufferTexture.Width, bufferTexture, false);
             obstructiveStageObjects.Add(rightBuffer);
+
+            // Loading and initializing the back wall
+            // This wall is 1140 pixels wide and 100 pixels tall
+            backWallTexture = content.Load<Texture2D>("BackWall");
+
+            backWall = new VisualBarrier
+                (leftBuffer.RightEdge, backWallTexture, true);
+            obstructiveStageObjects.Add(backWall);
 
             // The tiles in the tile map will be 114 pixels wide by 100 pixels tall,
             // for a grid that is 10 tiles wide and 8 tiles tall
@@ -94,8 +114,10 @@ namespace Team3Project.Stage_Stuff
         /// <param name="_spriteBatch"></param>
         public void Draw(SpriteBatch _spriteBatch)
         {
-            leftBuffer.Draw(_spriteBatch, SpriteEffects.None);
-            rightBuffer.Draw(_spriteBatch, SpriteEffects.None);
+            foreach(StageObject s in obstructiveStageObjects)
+            {
+                s.Draw(_spriteBatch, SpriteEffects.None);
+            }
         }
 
         /// <summary>
@@ -104,16 +126,22 @@ namespace Team3Project.Stage_Stuff
         /// <param name="entity"> the entity whose surroundings are being checked </param>
         public void CheckBlockedSides(Entity entity)
         {
+            entity.RightBlocked = false;
+            entity.LeftBlocked = false;
+            entity.TopBlocked = false;
+            entity.BottomBlocked = false;
+            
             foreach (StageObject obj in obstructiveStageObjects)
             {
                 // Checking if the entity is blocked from above
-                if (obj.IsObstruction &&
+                if ((obj.IsObstruction &&
                     entity.Collision.Top <= obj.BottomEdge + 5 &&
                     entity.Collision.Bottom >= obj.BottomEdge + entity.Collision.Height &&
                     (entity.Collision.Right <= obj.RightEdge &&
                     entity.Collision.Right >= obj.LeftEdge ||
                     entity.Collision.Left <= obj.RightEdge &&
                     entity.Collision.Left >= obj.LeftEdge))
+                    || entity.TopBlocked)
                 {
                     entity.TopBlocked = true;
                 }
@@ -123,13 +151,14 @@ namespace Team3Project.Stage_Stuff
                 }
 
                 // Checking if the entity is blocked from below
-                if (obj.IsObstruction &&
+                if ((obj.IsObstruction &&
                     entity.Collision.Bottom >= obj.TopEdge - 5 &&
                     entity.Collision.Top <= obj.TopEdge - entity.Collision.Height &&
                     (entity.Collision.Right <= obj.RightEdge &&
                     entity.Collision.Right >= obj.LeftEdge ||
                     entity.Collision.Left <= obj.RightEdge &&
                     entity.Collision.Left >= obj.LeftEdge))
+                    || entity.BottomBlocked)
                 {
                     entity.BottomBlocked = true;
                 }
@@ -139,13 +168,14 @@ namespace Team3Project.Stage_Stuff
                 }
 
                 // Checking if the entity is blocked from the left
-                if (obj.IsObstruction &&
+                if ((obj.IsObstruction &&
                     entity.Collision.Left <= obj.RightEdge + 5 &&
                     entity.Collision.Right >= obj.RightEdge + entity.Collision.Width &&
                     (entity.Collision.Bottom <= obj.BottomEdge &&
                     entity.Collision.Bottom >= obj.TopEdge ||
                     entity.Collision.Top <= obj.BottomEdge &&
                     entity.Collision.Top >= obj.TopEdge))
+                    || entity.LeftBlocked)
                 {
                     entity.LeftBlocked = true;
                 }
@@ -155,13 +185,14 @@ namespace Team3Project.Stage_Stuff
                 }
 
                 // Checking if the entity is blocked from the right
-                if (obj.IsObstruction &&
-                    entity.Collision.Right >= obj.LeftEdge + 5 &&
+                if ((obj.IsObstruction &&
+                    entity.Collision.Right >= obj.LeftEdge - 5 &&
                     entity.Collision.Left <= obj.LeftEdge + entity.Collision.Width &&
                     (entity.Collision.Bottom <= obj.BottomEdge &&
                     entity.Collision.Bottom >= obj.TopEdge ||
                     entity.Collision.Top <= obj.BottomEdge &&
                     entity.Collision.Top >= obj.TopEdge))
+                    || entity.RightBlocked)
                 {
                     entity.RightBlocked = true;
                 }
@@ -175,9 +206,13 @@ namespace Team3Project.Stage_Stuff
         /// <summary>
         /// Updates per frame
         /// </summary>
-        public void Update()
+        public void Update(List<Enemy> enemies, Player player)
         {
-
+            foreach (Enemy e in enemies) 
+            { 
+                CheckBlockedSides(e);
+            }
+            CheckBlockedSides(player);
         }
     }
 }

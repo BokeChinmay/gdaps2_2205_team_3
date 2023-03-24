@@ -41,24 +41,24 @@ namespace Team3Project.Player_Stuff
         {
             kbState = Keyboard.GetState();
 
-            if (kbState.IsKeyDown(Keys.A))
+            if (kbState.IsKeyDown(Keys.A) && !leftBlocked)
             {
-                collision.X--;
+                collision.X-= moveSpeed;
             }
 
-            if (kbState.IsKeyDown(Keys.D))
+            if (kbState.IsKeyDown(Keys.D) && !rightBlocked)
             {
-                collision.X++;
+                collision.X+= moveSpeed;
             }
 
-            if (kbState.IsKeyDown(Keys.S))
+            if (kbState.IsKeyDown(Keys.S) && !bottomBlocked)
             {
-                collision.Y++;
+                collision.Y+= moveSpeed;
             }
 
-            if (kbState.IsKeyDown(Keys.W))
+            if (kbState.IsKeyDown(Keys.W) && !topBlocked)
             {
-                collision.Y--;
+                collision.Y-= moveSpeed;
             }
         }
 

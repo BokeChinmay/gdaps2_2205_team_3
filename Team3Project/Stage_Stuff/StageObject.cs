@@ -21,7 +21,7 @@ namespace Team3Project.Stage_Stuff
         public int TopEdge { get { return dimensions.Top; } }
         public int LeftEdge { get { return dimensions.Left; } }
         public int RightEdge { get { return dimensions.Right; } }
-        public int BottomEdge { get { return dimensions.Bottom; } }
+        public virtual int BottomEdge { get { return dimensions.Bottom; } set { } }
         public bool IsObstruction { get { return isObstruction; } }
 
         // Parameterized constructor

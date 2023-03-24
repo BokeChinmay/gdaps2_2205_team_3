@@ -28,6 +28,12 @@ namespace Team3Project.Enemy_Stuff
         //List of enemies that spawn at the beginning of the level
         List<Enemy> enemyList;
 
+        //Get-only property for enemy list, because StageObjectManager needs to see it
+        public List<Enemy> Enemies
+        {
+            get { return enemyList; }
+        }
+
         //Dictionary with values for enemy speed
         Dictionary<int, int> enemyMoveSpeed = new Dictionary<int, int>(){
             { 0, 3 },
