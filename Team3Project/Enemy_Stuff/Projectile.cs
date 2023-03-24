@@ -45,8 +45,6 @@ namespace Team3Project.Enemy_Stuff
         //Name: IsColliding
         //Purpose: Checks if the projectile is colliding with any valid target
         //Params: None
-        //*****Note: I am not sure how the projectile will actually get this list every frame,
-        //           maybe this could be done a different way?
         public bool IsColliding()
         {
             for (int i = 0; i < validTargets.Count; i++)

@@ -58,7 +58,7 @@ namespace Team3Project.Enemy_Stuff
             float distance = (float)Math.Sqrt(Math.Pow(displacement.X, 2) + Math.Pow(displacement.Y, 2));
             return distance;
         }
-
+        
         //Name: Direction to player
         //Purpose: Gives unit vector in the direction from the enemy to the player
         //Params: Vector containing X and Y positions of the player

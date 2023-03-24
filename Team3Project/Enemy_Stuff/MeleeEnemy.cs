@@ -17,8 +17,6 @@ namespace Team3Project.Enemy_Stuff
         Recovering,
     }
 
-
-
     internal class MeleeEnemy : Enemy, IDamageable
     {
         MeleeEnemyState currentState;

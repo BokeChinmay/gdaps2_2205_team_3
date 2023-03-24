@@ -32,6 +32,7 @@ namespace Team3Project.Stage_Stuff
         public StageObjectManager()
         {
             obstructiveStageObjects = new List<StageObject>();
+            levelLayouts = new Dictionary<string, TileTypes[,]>();
         }
 
         /// <summary>

@@ -49,10 +49,12 @@ namespace Team3Project
         {
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
-            playerEntity = new Player(100, 5, new Rectangle(10, 10, 32, 32), mainCharacter);
+            playerEntity = new Player(100, 5, new Rectangle(200, 10, 32, 32), mainCharacter);
 
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
+
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             if(rng.Next(0,1) == 0)
             {
@@ -119,7 +121,10 @@ namespace Team3Project
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.DarkGray);
             
+            _spriteBatch.Begin();
+
             stageObjectManager.Draw(_spriteBatch);
             playerEntity.Draw(_spriteBatch, SpriteEffects.None);
             //items.Draw(_spriteBatch, SpriteEffects.None);
