@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Team3Project.Enemy_Stuff;
+using Team3Project.Stage_Stuff;
 
 //Name: Level Manager
 //Purpose: Static Class that oversees more specific managers as well as the projectile list
@@ -19,6 +21,10 @@ namespace Team3Project
             get { return projectileList; }
         }
 
+        //Static manager objects that are updated and re-initialized for each new level
+        static EnemyManager enemyManager;
+        static StageObjectManager stageObjectManager;
+
         /// <summary>
         /// Adds a new projectile to the global projectile list
         /// </summary>
@@ -30,7 +36,9 @@ namespace Team3Project
 
         public static void Update()
         {
-
+            UpdateProjectiles();
+            enemyManager.Update();
+            stageObjectManager.Update();
         }
 
         public static void UpdateProjectiles()

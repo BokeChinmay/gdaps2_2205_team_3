@@ -71,5 +71,9 @@ namespace Team3Project.Enemy_Stuff
 
         }
 
+        public void Draw()
+        {
+
+        }
     }
 }

@@ -171,5 +171,13 @@ namespace Team3Project.Stage_Stuff
                 }
             }
         }
+
+        /// <summary>
+        /// Updates per frame
+        /// </summary>
+        public void Update()
+        {
+
+        }
     }
 }
