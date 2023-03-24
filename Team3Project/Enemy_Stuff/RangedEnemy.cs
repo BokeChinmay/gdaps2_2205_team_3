@@ -43,18 +43,31 @@ namespace Team3Project.Enemy_Stuff
             this.attackDelay = attackDelay;
             this.projectileSpeed = projectileSpeed;
             currentState = RangedEnemyState.Idle;
+            type = EnemyTypes.Ranged;
         }
 
+        /// <summary>
+        /// Does nothing
+        /// </summary>
         public override void Move()
         {
 
         }
 
+        /// <summary>
+        /// Does nothing
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public override void Update()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Updates once per frame, called once per Game1's Update()
+        /// </summary>
+        /// <param name="playerCollision"></param>
+        /// <param name="projectileList"></param>
         public override void Update(Rectangle playerCollision, List<Projectile> projectileList)
         {
             //Player position vector
@@ -102,6 +115,34 @@ namespace Team3Project.Enemy_Stuff
                         currentState = RangedEnemyState.Idle;
                     }
                     break;
+            }
+
+            //STATE MACHINE - Vulnerability state
+            switch (vulnerabilityState)
+            {
+                //Enemy is vulnerable - check if collision is intersecting a projectile.
+                //If so, take damage and become invincible
+                case VulnerabilityState.Vulnerable:
+                    foreach (Projectile projectile in projectileList)
+                    {
+                        if (collision.Intersects(projectile.Collision))
+                        {
+                            TakeDamage(projectile.Damage);
+                            invincibilityTimer = INVINCIBILITY_DURATION;
+                            vulnerabilityState = VulnerabilityState.Invincible;
+                        }
+                    }
+                    break;
+                //Enemy is invincible - cannot take damage for a few frames.
+                //When timer hits 0, return to vulnerable state
+                case VulnerabilityState.Invincible:
+                    invincibilityTimer--;
+                    if (invincibilityTimer <= 0)
+                    {
+                        vulnerabilityState = VulnerabilityState.Vulnerable;
+                    }
+                    break;
+
             }
         }
 

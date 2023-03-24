@@ -20,7 +20,6 @@ namespace Team3Project.Enemy_Stuff
     internal class MeleeEnemy : Enemy, IDamageable
     {
         MeleeEnemyState currentState;
-        VulnerabilityState vulnerabilityState;
         //Range at which the enemy begins the attack process
         const int AGGRO_RANGE = 200;
         //Range at which attack begins
@@ -29,8 +28,6 @@ namespace Team3Project.Enemy_Stuff
         const int ATTACK_DURATION = 30;
         //Duration of recovery
         const int RECOVERY_DURATION = 30;
-        //Duration of invincibility
-        const int INVINCIBILITY_DURATION = 10;
 
         //# of frames between telegraphing and attacking
         int attackDelay;
@@ -39,14 +36,12 @@ namespace Team3Project.Enemy_Stuff
         //Direction of the attack
         Vector2 attackDirection;
 
-        //Invincibility timer, designates the number of invincibility frames left
-        int invincibilityTimer;
-
         public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay) : base(health, moveSpeed, collision)
         {
             currentState = MeleeEnemyState.Idle;
             vulnerabilityState = VulnerabilityState.Vulnerable;
             this.attackDelay = attackDelay;
+            type = EnemyTypes.Melee;
         }
 
         //Name: Move

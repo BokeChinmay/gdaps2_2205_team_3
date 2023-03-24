@@ -21,6 +21,20 @@ namespace Team3Project.Enemy_Stuff
         int moveSpeed;
         Rectangle collision;
 
+        //Vulnerability/Invincibility fields and consts
+        protected VulnerabilityState vulnerabilityState;
+        //Duration of invincibility
+        protected const int INVINCIBILITY_DURATION = 10;
+        //Invincibility timer, designates the number of invincibility frames left
+        protected int invincibilityTimer;
+
+        //Type of enemy, according to enum
+        protected EnemyTypes type;
+        public EnemyTypes Type
+        {
+            get { return type; }
+        }
+
         public Enemy(int health, int moveSpeed, Rectangle collision) : base(health, moveSpeed, collision)
         {
             this.health = health;
