@@ -36,12 +36,16 @@ namespace Team3Project.Enemy_Stuff
         //Direction of the attack
         Vector2 attackDirection;
 
-        public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay) : base(health, moveSpeed, collision)
+        //Enemy texture (testing!)
+        Texture2D meleeTexture;
+
+        public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D meleeTexture) : base(health, moveSpeed, collision, meleeTexture)
         {
             currentState = MeleeEnemyState.Idle;
             vulnerabilityState = VulnerabilityState.Vulnerable;
             this.attackDelay = attackDelay;
             type = EnemyTypes.Melee;
+            this.meleeTexture = meleeTexture;
         }
 
         //Name: Move
@@ -151,9 +155,5 @@ namespace Team3Project.Enemy_Stuff
 
         }
 
-        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -25,6 +25,8 @@ namespace Team3Project
         private List<Enemy> enemyEntities;
         private StageObjectManager stageObjectManager;
 
+        private Texture2D meleeEnemy;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -42,6 +44,7 @@ namespace Team3Project
             _graphics.ApplyChanges();
 
             rng = new Random();
+            LevelManager.Initialize();
 
             base.Initialize();
         }
@@ -54,6 +57,8 @@ namespace Team3Project
 
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
+
+            meleeEnemy = this.Content.Load<Texture2D>("dog");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -109,6 +114,8 @@ namespace Team3Project
                 int playerPosX = int.Parse(playerPositions[0]);
                 int playerPosY = int.Parse(playerPositions[1]);
                 playerEntity = new Player(playerHealth, playerMoveSpeed, new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter);
+
+                LevelManager.SetUpLevel(meleeEnemy);
             }
             catch (Exception ex) { }
         }
@@ -122,6 +129,8 @@ namespace Team3Project
             stageObjectManager.Update(enemyEntities, playerEntity);
             playerEntity.Move();
 
+            LevelManager.Update();
+
             base.Update(gameTime);
         }
 
@@ -134,6 +143,8 @@ namespace Team3Project
             stageObjectManager.Draw(_spriteBatch);
             playerEntity.Draw(_spriteBatch, SpriteEffects.None);
             //items.Draw(_spriteBatch, SpriteEffects.None);
+
+            LevelManager.Draw(_spriteBatch, SpriteEffects.None);
 
             _spriteBatch.End();
 

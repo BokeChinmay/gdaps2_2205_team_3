@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,6 @@ namespace Team3Project
         //List of enemies that are currently active
         static List<Enemy> enemyList;
 
-        //Get-only property for enemy list, because StageObjectManager needs to see it
         static public List<Enemy> EnemyList
         {
             get { return enemyList; }
@@ -57,12 +57,12 @@ namespace Team3Project
         /// Purpose: Sets up level and creates the stage object manager for the level
         /// Testing use: Can call specific methods for testing things out of the traditional way the game would be played
         /// </summary>
-        public static void SetUpLevel()
+        public static void SetUpLevel(Texture2D meleeTexture)
         {
             Enemy enemy1;
             Rectangle enemy1Rect = new Rectangle(600, 600, enemyDefaults[EnemyTypes.Melee][Stats.Width], enemyDefaults[EnemyTypes.Melee][Stats.Height]);
-            enemy1 = new MeleeEnemy(enemyDefaults[EnemyTypes.Melee][Stats.Health], enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed], enemy1Rect, enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay]);
-            enemyList.Add(enemy1);
+            enemy1 = new MeleeEnemy(enemyDefaults[EnemyTypes.Melee][Stats.Health], enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed], enemy1Rect, enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay], meleeTexture);
+            AddEnemy(enemy1);
 
             //stageObjectManager = new StageObjectManager();
         }
@@ -79,8 +79,12 @@ namespace Team3Project
         /// <summary>
         /// Sets up the enemy defaults list, which is used when creating enemies
         /// </summary>
-        public static void InitializeEnemyDefaults()
+        public static void Initialize()
         {
+            enemyList = new List<Enemy>();
+            projectileList = new List<Projectile>();
+
+            //Sets up the dictionary
             enemyDefaults = new Dictionary<EnemyTypes, Dictionary<Stats, int>>();
             enemyDefaults.Add(EnemyTypes.Melee, new Dictionary<Stats, int>() { { Stats.Health, 100 }, { Stats.MoveSpeed, 5 }, { Stats.Height, 50 }, { Stats.Width, 50 }, { Stats.AttackDelay, 30 } });
             enemyDefaults.Add(EnemyTypes.Ranged, new Dictionary<Stats, int>() { { Stats.Health, 100 }, { Stats.MoveSpeed, 3 }, { Stats.Height, 100 }, { Stats.Width, 50 }, { Stats.AttackDelay, 60 } });
@@ -139,6 +143,14 @@ namespace Team3Project
                 {
                     enemy.Update();
                 }
+            }
+        }
+
+        public static void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            foreach (Enemy enemy in enemyList)
+            {
+                enemy.Draw(spriteBatch, spriteEffects);
             }
         }
     }

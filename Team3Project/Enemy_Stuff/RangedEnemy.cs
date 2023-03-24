@@ -24,6 +24,8 @@ namespace Team3Project.Enemy_Stuff
         int projectileSpeed;
         RangedEnemyState currentState;
 
+        Texture2D rangedTexture;
+
         //Constant bullet speed
         const int BULLET_SPEED = 2;
         //Constant bullet damage
@@ -38,12 +40,13 @@ namespace Team3Project.Enemy_Stuff
         int attackTimer;
 
         // Parameterized constructor
-        public RangedEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, int projectileSpeed) : base(health, moveSpeed, collision)
+        public RangedEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, int projectileSpeed, Texture2D rangedTexture) : base(health, moveSpeed, collision, rangedTexture)
         {
             this.attackDelay = attackDelay;
             this.projectileSpeed = projectileSpeed;
             currentState = RangedEnemyState.Idle;
             type = EnemyTypes.Ranged;
+            this.rangedTexture = rangedTexture;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace Team3Project.Enemy_Stuff
         int moveSpeed;
         Rectangle collision;
 
+        Texture2D texture;
+
         //Vulnerability/Invincibility fields and consts
         protected VulnerabilityState vulnerabilityState;
         //Duration of invincibility
@@ -35,7 +38,7 @@ namespace Team3Project.Enemy_Stuff
             get { return type; }
         }
 
-        public Enemy(int health, int moveSpeed, Rectangle collision) : base(health, moveSpeed, collision)
+        public Enemy(int health, int moveSpeed, Rectangle collision, Texture2D texture) : base(health, moveSpeed, collision)
         {
             this.health = health;
             this.moveSpeed = moveSpeed;
@@ -91,6 +94,11 @@ namespace Team3Project.Enemy_Stuff
         public void TakeDamage(int amount)
         {
             health -= amount;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            spriteBatch.Draw(texture, Collision, Color.White);
         }
     }
 }
