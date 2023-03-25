@@ -26,6 +26,8 @@ namespace Team3Project
         private StageObjectManager stageObjectManager;
 
         private Texture2D meleeEnemy;
+        private Texture2D rangedEnemy;
+        private Texture2D projectile;
 
         public Game1()
         {
@@ -59,7 +61,9 @@ namespace Team3Project
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
 
             meleeEnemy = this.Content.Load<Texture2D>("dog");
-            LevelManager.SetUpLevel(meleeEnemy);
+            rangedEnemy = this.Content.Load<Texture2D>("ducky");
+            projectile = this.Content.Load<Texture2D>("dogtreat");
+            LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, projectile);
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 

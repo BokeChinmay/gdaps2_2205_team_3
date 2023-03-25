@@ -57,21 +57,21 @@ namespace Team3Project.Enemy_Stuff
             
         }
 
-        //Name: Attack
-        //Purpose: Lunges enemy in a specific direction
-        //Params: Vector 2 containing unit vector in desired direction
-        public void Attack(Vector2 direction)
-        {
-            collision.X += (int)(direction.X * moveSpeed * 2);
-            collision.Y += (int)(direction.Y * moveSpeed * 2);
-        }
-
+        /// <summary>
+        /// Does nothing
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public override void Update() 
         {
             
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// New version of update() that requires player collision and projectile list
+        /// </summary>
+        /// <param name="playerCollision"></param>
+        /// <param name="projectileList"></param>
         public override void Update(Rectangle playerCollision, List<Projectile> projectileList)
         {
             //Vector 2 of player position

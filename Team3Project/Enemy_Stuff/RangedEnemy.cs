@@ -32,12 +32,16 @@ namespace Team3Project.Enemy_Stuff
         const int BULLET_DAMAGE = 50;
         
         //Range at which the attack sequence begins
-        const int AGGRO_RANGE = 200;
+        const int AGGRO_RANGE = 600;
         //Range at which the enemy runs away from the player
-        const int ESCAPE_RANGE = 50;
+        const int ESCAPE_RANGE = 300;
+        //Amount of frame downtime for telegraph/recovery
+        const int DOWNTIME = 60;
 
-        //Frame timer for telegraph/recovery
+        //Frames since last attack
         int attackTimer;
+        //Frame timer for telegraph/recovery
+        int downTimer;
 
         // Parameterized constructor
         public RangedEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, int projectileSpeed, Texture2D rangedTexture) : base(health, moveSpeed, collision, rangedTexture)
@@ -47,6 +51,7 @@ namespace Team3Project.Enemy_Stuff
             currentState = RangedEnemyState.Idle;
             type = EnemyTypes.Ranged;
             this.rangedTexture = rangedTexture;
+            attackTimer = 0;
         }
 
         /// <summary>
@@ -80,6 +85,7 @@ namespace Team3Project.Enemy_Stuff
             {
                 //Wait until player is within aggro range. If so, begin move.
                 case RangedEnemyState.Idle:
+                    attackTimer++;
                     if (DistanceFromPlayer(playerPos) < AGGRO_RANGE)
                     {
                         currentState = RangedEnemyState.Move;
@@ -87,20 +93,21 @@ namespace Team3Project.Enemy_Stuff
                     break;
                 //Move if too close to the player. Otherwise, begin telegraphing.
                 case RangedEnemyState.Move:
+                    attackTimer++;
                     if (DistanceFromPlayer(playerPos) < ESCAPE_RANGE)
                     {
                         MoveTowardPos(-1 * playerPos);
                     }
-                    else
+                    else if (attackTimer < attackDelay)
                     {
-                        attackTimer = attackDelay;
+                        downTimer = DOWNTIME;
                         currentState = RangedEnemyState.Telegraphing;
                     }
                     break;
                 //Begin telegraph delay. After timer reaches 0, begin attack
                 case RangedEnemyState.Telegraphing:
-                    attackTimer--;
-                    if (attackTimer <= 0)
+                    downTimer--;
+                    if (downTimer <= 0)
                     {
                         currentState = RangedEnemyState.Attack;
                     }
@@ -108,14 +115,16 @@ namespace Team3Project.Enemy_Stuff
                 //Create a bullet and move to recovery state
                 case RangedEnemyState.Attack:
                     LevelManager.AddProjectile(new EnemyBullet(BULLET_SPEED, DirectionToPlayer(playerPos).X, DirectionToPlayer(playerPos).Y, new Rectangle(collision.X, collision.Y, 20, 20), BULLET_DAMAGE));
-                    attackTimer = attackDelay;
+                    downTimer = DOWNTIME;
+                    currentState = RangedEnemyState.Recovering;
                     break;
                 //Begin recovery delay. When timer reaches 0, switch to idle state
                 case RangedEnemyState.Recovering:
-                    attackTimer--;
-                    if (attackTimer <= 0)
+                    downTimer--;
+                    if (downTimer <= 0)
                     {
                         currentState = RangedEnemyState.Idle;
+                        attackTimer = 0;
                     }
                     break;
             }
@@ -149,9 +158,15 @@ namespace Team3Project.Enemy_Stuff
             }
         }
 
+        /// <summary>
+        /// This is implemented in the enemy class
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
+        /// <exception cref="NotImplementedException"></exception>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            throw new NotImplementedException();
+            base.Draw(spriteBatch, spriteEffects);
         }
     }
 }

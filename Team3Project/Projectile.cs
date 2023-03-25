@@ -59,5 +59,10 @@ namespace Team3Project
         {
             throw new NotImplementedException();
         }
+
+        public void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects, Texture2D texture)
+        {
+            spriteBatch.Draw(texture, collision, Color.White);
+        }
     }
 }
