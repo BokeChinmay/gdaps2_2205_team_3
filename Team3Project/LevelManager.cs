@@ -124,16 +124,16 @@ namespace Team3Project
         /// </summary>
         public static void UpdateProjectiles()
         {
-            foreach (Projectile projectile in projectileList)
+            for (int i = 0; i < projectileList.Count; i++)
             {
                 //If a projectile is no longer active, remove it from the list
-                if (!projectile.Active)
+                if (!projectileList[i].Active)
                 {
-                    projectileList.Remove(projectile);
+                    projectileList.Remove(projectileList[i]);
                 }
                 else
                 {
-                    projectile.Update();
+                    projectileList[i].Update();
                 }
             }
         }
