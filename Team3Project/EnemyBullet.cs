@@ -21,7 +21,7 @@ namespace Team3Project
             this.damage = damage;
         }
 
-        public override void Move()
+        public void Move()
         {
             //Update position by direction vector
             collision.X += (int)direction.X;

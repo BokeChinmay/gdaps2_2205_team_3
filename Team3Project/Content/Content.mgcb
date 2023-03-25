@@ -85,6 +85,13 @@
 /processorParam:TextureFormat=Color
 /build:ducky.png
 
+#begin MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:MenuFont.spritefont
+
 #begin Meo.png
 /importer:TextureImporter
 /processor:TextureProcessor

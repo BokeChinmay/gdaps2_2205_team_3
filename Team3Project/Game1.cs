@@ -10,19 +10,35 @@ using Team3Project.Stage_Stuff;
 
 namespace Team3Project
 {
+    enum GameState
+    {
+        Menu,
+        GamePlaying,
+        GameOver
+    }
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteEffects _spriteEffects;
+
+        private SpriteFont menuFont;
+        private GameState _gameState;
+        private KeyboardState kbState;
+        private KeyboardState prevKbState;
         private Random rng;
+        
         private Texture2D mainCharacter;
         private Player playerEntity;
+        
         private Texture2D damageBoost;
         private Texture2D speedBoost;
         private Item items;
+        
         private Texture2D enemyAsset;
         private List<Enemy> enemyEntities;
+        
         private StageObjectManager stageObjectManager;
 
         private Texture2D meleeEnemy;
@@ -36,6 +52,7 @@ namespace Team3Project
             IsMouseVisible = true;
             stageObjectManager = new StageObjectManager();
             enemyEntities = new List<Enemy>();
+            _gameState = GameState.Menu;
         }
 
         protected override void Initialize()
@@ -64,6 +81,8 @@ namespace Team3Project
             rangedEnemy = this.Content.Load<Texture2D>("ducky");
             projectile = this.Content.Load<Texture2D>("dogtreat");
             LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, projectile);
+
+            menuFont = this.Content.Load<SpriteFont>("MenuFont");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -132,10 +151,32 @@ namespace Team3Project
                 Exit();
 
             // TODO: Add your update logic here
-            stageObjectManager.Update(enemyEntities, playerEntity);
-            playerEntity.Move();
 
-            LevelManager.Update(playerEntity.Collision);
+            kbState = Keyboard.GetState();
+            
+            if (_gameState == GameState.GamePlaying)
+            {
+                if (playerEntity.Active)
+                {
+                    stageObjectManager.Update(enemyEntities, playerEntity);
+                    playerEntity.Move(kbState);
+
+                    LevelManager.Update(playerEntity.Collision);
+                }
+                else
+                {
+                    _gameState = GameState.GameOver;
+                }
+            }
+            else if (_gameState == GameState.Menu)
+            {
+                if (kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space))
+                {
+                    _gameState = GameState.GamePlaying;
+                }
+            }
+
+            prevKbState = kbState;
 
             base.Update(gameTime);
         }
@@ -146,11 +187,23 @@ namespace Team3Project
             
             _spriteBatch.Begin();
 
-            stageObjectManager.Draw(_spriteBatch);
-            playerEntity.Draw(_spriteBatch, SpriteEffects.None);
-            //items.Draw(_spriteBatch, SpriteEffects.None);
+            if (_gameState == GameState.GamePlaying)
+            {
+                stageObjectManager.Draw(_spriteBatch);
+                playerEntity.Draw(_spriteBatch, SpriteEffects.None);
+                //items.Draw(_spriteBatch, SpriteEffects.None);
 
-            LevelManager.Draw(_spriteBatch, SpriteEffects.None);
+                LevelManager.Draw(_spriteBatch, SpriteEffects.None);
+            }
+            else if (_gameState == GameState.Menu)
+            {
+                _spriteBatch.DrawString(menuFont, "Meowch", 
+                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 100, 
+                    _graphics.PreferredBackBufferHeight/2 - 24), Color.Green);
+                _spriteBatch.DrawString(menuFont, "Press space to start", 
+                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 180, 
+                    _graphics.PreferredBackBufferHeight/2 + 12), Color.Green);
+            }
 
             _spriteBatch.End();
 

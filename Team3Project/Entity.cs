@@ -81,11 +81,6 @@ namespace Team3Project
         }
 
         /// <summary>
-        /// All entities should have the ability to move
-        /// </summary>
-        public abstract void Move();
-
-        /// <summary>
         /// All entities must be updated.
         /// </summary>
         public abstract void Update();

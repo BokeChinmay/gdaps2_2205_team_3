@@ -30,11 +30,6 @@ namespace Team3Project
             this.damage = damage;
         }
 
-        public override void Move()
-        {
-
-        }
-
         //Name: IsColliding
         //Purpose: Checks if the projectile is colliding with any valid target
         //Params: None

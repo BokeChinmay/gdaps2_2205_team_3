@@ -54,11 +54,6 @@ namespace Team3Project.Player_Stuff
             }
         }
 
-        public override void Move()
-        {
-            //items don't move
-        }
-
         public override void Update()
         {
             throw new NotImplementedException();

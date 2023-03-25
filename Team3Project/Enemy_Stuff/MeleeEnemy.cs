@@ -49,14 +49,6 @@ namespace Team3Project.Enemy_Stuff
             this.meleeTexture = meleeTexture;
         }
 
-        //Name: Move
-        //Purpose: Does nothing
-        //Params: None
-        public override void Move()
-        {
-            
-        }
-
         /// <summary>
         /// Does nothing
         /// </summary>

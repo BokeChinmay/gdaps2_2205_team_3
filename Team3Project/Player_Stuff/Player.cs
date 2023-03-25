@@ -13,7 +13,7 @@ namespace Team3Project.Player_Stuff
     {
         //Fields
         private Texture2D playerTexture;
-        private KeyboardState kbState = new KeyboardState();
+        private KeyboardState kbState;
         private Random rng = new Random();
 
         //Consts
@@ -29,7 +29,8 @@ namespace Team3Project.Player_Stuff
         /// <param name="moveSpeed"></param>
         /// <param name="collision"></param>
         /// <param name="playerTexture"></param>
-        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture) : base(health, moveSpeed, collision)
+        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture) 
+            : base(health, moveSpeed, collision)
         {
             this.playerTexture = playerTexture;
         }
@@ -37,9 +38,8 @@ namespace Team3Project.Player_Stuff
         /// <summary>
         /// Makes the character move.
         /// </summary>
-        public override void Move()
+        public void Move(KeyboardState kbState)
         {
-            kbState = Keyboard.GetState();
 
             if (kbState.IsKeyDown(Keys.A) && !leftBlocked)
             {

@@ -57,14 +57,6 @@ namespace Team3Project.Enemy_Stuff
         /// <summary>
         /// Does nothing
         /// </summary>
-        public override void Move()
-        {
-
-        }
-
-        /// <summary>
-        /// Does nothing
-        /// </summary>
         /// <exception cref="NotImplementedException"></exception>
         public override void Update()
         {
