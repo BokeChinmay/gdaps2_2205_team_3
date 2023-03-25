@@ -43,6 +43,7 @@ namespace Team3Project.Enemy_Stuff
             this.health = health;
             this.moveSpeed = moveSpeed;
             this.collision = collision;
+            this.texture = texture;
         }
 
         //Update method
@@ -61,6 +62,18 @@ namespace Team3Project.Enemy_Stuff
             //Multiply by speed and move
             collision.X += (int)(unitVector.X * moveSpeed);
             collision.Y += (int)(unitVector.Y * moveSpeed);
+        }
+
+        public void MoveTowardPos(Vector2 targetPos, int newSpeed)
+        {
+            //Calculate unit vector
+            Vector2 displacement = targetPos - new Vector2(collision.X, collision.Y);
+            float distance = DistanceFromPlayer(targetPos);
+            Vector2 unitVector = displacement / distance;
+
+            //Multiply by speed and move
+            collision.X += (int)(unitVector.X * newSpeed);
+            collision.Y += (int)(unitVector.Y * newSpeed);
         }
 
         //Name: DistanceFromPlayer
@@ -98,7 +111,7 @@ namespace Team3Project.Enemy_Stuff
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            spriteBatch.Draw(texture, Collision, Color.White);
+            spriteBatch.Draw(texture, collision, Color.White);
         }
     }
 }

@@ -59,6 +59,7 @@ namespace Team3Project
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
 
             meleeEnemy = this.Content.Load<Texture2D>("dog");
+            LevelManager.SetUpLevel(meleeEnemy);
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -76,6 +77,7 @@ namespace Team3Project
             }
 
             stageObjectManager.LoadContent(this.Content, _graphics);
+
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace Team3Project
                 int playerPosY = int.Parse(playerPositions[1]);
                 playerEntity = new Player(playerHealth, playerMoveSpeed, new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter);
 
-                LevelManager.SetUpLevel(meleeEnemy);
+                
             }
             catch (Exception ex) { }
         }
@@ -129,7 +131,7 @@ namespace Team3Project
             stageObjectManager.Update(enemyEntities, playerEntity);
             playerEntity.Move();
 
-            LevelManager.Update();
+            LevelManager.Update(playerEntity.Collision);
 
             base.Update(gameTime);
         }

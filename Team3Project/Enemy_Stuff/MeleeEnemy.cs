@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,13 +22,13 @@ namespace Team3Project.Enemy_Stuff
     {
         MeleeEnemyState currentState;
         //Range at which the enemy begins the attack process
-        const int AGGRO_RANGE = 200;
+        const int AGGRO_RANGE = 600;
         //Range at which attack begins
-        const int ATTACK_RANGE = 60;
+        const int ATTACK_RANGE = 200;
         //Duration of attack
         const int ATTACK_DURATION = 30;
         //Duration of recovery
-        const int RECOVERY_DURATION = 30;
+        const int RECOVERY_DURATION = 120;
 
         //# of frames between telegraphing and attacking
         int attackDelay;
@@ -61,8 +62,8 @@ namespace Team3Project.Enemy_Stuff
         //Params: Vector 2 containing unit vector in desired direction
         public void Attack(Vector2 direction)
         {
-            collision.X = (int)(direction.X * moveSpeed * 2);
-            collision.Y = (int)(direction.Y * moveSpeed * 2);
+            collision.X += (int)(direction.X * moveSpeed * 2);
+            collision.Y += (int)(direction.Y * moveSpeed * 2);
         }
 
         public override void Update() 
@@ -92,7 +93,7 @@ namespace Team3Project.Enemy_Stuff
                     if (DistanceFromPlayer(playerPos) < ATTACK_RANGE)
                     {
                         attackTimer = attackDelay;
-                        attackDirection = DirectionToPlayer(playerPos);
+                        attackDirection = playerPos;
                         currentState = MeleeEnemyState.Telegraphing;
                     }
                     break;
@@ -107,12 +108,16 @@ namespace Team3Project.Enemy_Stuff
                     break;
                 //Attacking - Move quickly in one direction for a few frames. After attack, change to idle
                 case MeleeEnemyState.Attacking:
-                    attackTimer--;
-                    Attack(attackDirection);
-                    if (attackTimer <= 0)
+                    if (DistanceFromPlayer(attackDirection) < 10)
                     {
+                        collision.X = (int)attackDirection.X;
+                        collision.Y = (int)attackDirection.Y;
                         attackTimer = RECOVERY_DURATION;
                         currentState = MeleeEnemyState.Recovering;
+                    }
+                    else
+                    {
+                        MoveTowardPos(attackDirection, moveSpeed * 3);
                     }
                     break;
                 //Recovering - A few frames of cooldown after the attack but before returning to idle state
@@ -153,6 +158,14 @@ namespace Team3Project.Enemy_Stuff
                     
             }
 
+            
+
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            base.Draw(spriteBatch, spriteEffects);
+            
         }
 
     }
