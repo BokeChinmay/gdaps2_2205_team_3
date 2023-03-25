@@ -76,6 +76,18 @@ namespace Team3Project.Enemy_Stuff
             collision.Y += (int)(unitVector.Y * newSpeed);
         }
 
+        public void MoveAwayFromPos(Vector2 targetPos)
+        {
+            //Calculate unit vector
+            Vector2 displacement = targetPos - new Vector2(collision.X, collision.Y);
+            float distance = DistanceFromPlayer(targetPos);
+            Vector2 unitVector = displacement / distance;
+
+            //Multiply by speed and move
+            collision.X -= (int)(unitVector.X * moveSpeed);
+            collision.Y -= (int)(unitVector.Y * moveSpeed);
+        }
+
         //Name: DistanceFromPlayer
         //Purpose: Determines an enemy's distance from the player
         //Params: Vector containing X and Y positions of the player
@@ -107,6 +119,15 @@ namespace Team3Project.Enemy_Stuff
         public void TakeDamage(int amount)
         {
             health -= amount;
+            if (health <= 0)
+            {
+                active = false;
+            }
+        }
+
+        public void Shoot(int bulletSpeed, Vector2 playerPos, int bulletDamage)
+        {
+            LevelManager.AddProjectile(new EnemyBullet(bulletSpeed, DirectionToPlayer(playerPos).X, DirectionToPlayer(playerPos).Y, new Rectangle(collision.X, collision.Y, 20, 20), bulletDamage));
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)

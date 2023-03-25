@@ -27,7 +27,7 @@ namespace Team3Project.Enemy_Stuff
         Texture2D rangedTexture;
 
         //Constant bullet speed
-        const int BULLET_SPEED = 2;
+        const int BULLET_SPEED = 10;
         //Constant bullet damage
         const int BULLET_DAMAGE = 50;
         
@@ -88,7 +88,7 @@ namespace Team3Project.Enemy_Stuff
                     attackTimer++;
                     if (DistanceFromPlayer(playerPos) < ESCAPE_RANGE)
                     {
-                        MoveTowardPos(-1 * playerPos);
+                        MoveAwayFromPos(playerPos);
                     }
                     else if (attackTimer < attackDelay)
                     {
@@ -106,7 +106,7 @@ namespace Team3Project.Enemy_Stuff
                     break;
                 //Create a bullet and move to recovery state
                 case RangedEnemyState.Attack:
-                    LevelManager.AddProjectile(new EnemyBullet(BULLET_SPEED, DirectionToPlayer(playerPos).X, DirectionToPlayer(playerPos).Y, new Rectangle(collision.X, collision.Y, 20, 20), BULLET_DAMAGE));
+                    Shoot(BULLET_SPEED, playerPos, BULLET_DAMAGE);
                     downTimer = DOWNTIME;
                     currentState = RangedEnemyState.Recovering;
                     break;
@@ -129,7 +129,7 @@ namespace Team3Project.Enemy_Stuff
                 case VulnerabilityState.Vulnerable:
                     foreach (Projectile projectile in projectileList)
                     {
-                        if (collision.Intersects(projectile.Collision))
+                        if (!(projectile is EnemyBullet) && collision.Intersects(projectile.Collision))
                         {
                             TakeDamage(projectile.Damage);
                             invincibilityTimer = INVINCIBILITY_DURATION;
@@ -149,6 +149,7 @@ namespace Team3Project.Enemy_Stuff
 
             }
         }
+
 
         /// <summary>
         /// This is implemented in the enemy class

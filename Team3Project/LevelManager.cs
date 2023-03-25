@@ -63,7 +63,7 @@ namespace Team3Project
         public static void SetUpLevel(Texture2D meleeTexture, Texture2D rangedTexture, Texture2D pTexture)
         {
             Enemy enemy1;
-            Rectangle enemy1Rect = new Rectangle(600, 600, enemyDefaults[EnemyTypes.Melee][Stats.Width], enemyDefaults[EnemyTypes.Melee][Stats.Height]);
+            Rectangle enemy1Rect = new Rectangle(600, 300, enemyDefaults[EnemyTypes.Melee][Stats.Width], enemyDefaults[EnemyTypes.Melee][Stats.Height]);
             enemy1 = new MeleeEnemy(enemyDefaults[EnemyTypes.Melee][Stats.Health], enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed], enemy1Rect, enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay], rangedTexture);
             AddEnemy(enemy1);
 
@@ -143,15 +143,16 @@ namespace Team3Project
         /// </summary>
         public static void UpdateEnemies(Rectangle playerCollision)
         {
-            foreach (Enemy enemy in enemyList)
+            for (int i = 0; i < enemyList.Count; i++)
             {
-                if (!enemy.Active)
+                if (!enemyList[i].Active)
                 {
-                    enemyList.Remove(enemy);
+                    enemyList.Remove(enemyList[i]);
+                    i--;
                 }
                 else
                 {
-                    enemy.Update(playerCollision, projectileList);
+                    enemyList[i].Update(playerCollision, projectileList);
                 }
             }
         }

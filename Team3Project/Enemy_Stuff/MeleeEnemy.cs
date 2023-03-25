@@ -53,9 +53,9 @@ namespace Team3Project.Enemy_Stuff
         /// Does nothing
         /// </summary>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Update() 
+        public override void Update()
         {
-            
+
             throw new NotImplementedException();
         }
 
@@ -147,18 +147,16 @@ namespace Team3Project.Enemy_Stuff
                         vulnerabilityState = VulnerabilityState.Vulnerable;
                     }
                     break;
-                    
+
             }
 
-            
+
 
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             base.Draw(spriteBatch, spriteEffects);
-            
         }
-
     }
 }
