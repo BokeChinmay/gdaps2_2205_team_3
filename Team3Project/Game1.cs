@@ -200,9 +200,12 @@ namespace Team3Project
                 _spriteBatch.DrawString(menuFont, "Meowch", 
                     new Vector2(_graphics.PreferredBackBufferWidth/2 - 100, 
                     _graphics.PreferredBackBufferHeight/2 - 24), Color.Green);
-                _spriteBatch.DrawString(menuFont, "Press space to start", 
-                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 180, 
-                    _graphics.PreferredBackBufferHeight/2 + 12), Color.Green);
+                _spriteBatch.DrawString(menuFont, "Use WASD to move", 
+                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 175, 
+                    _graphics.PreferredBackBufferHeight/2 + 36), Color.Green);
+                _spriteBatch.DrawString(menuFont, "Press space to begin",
+                    new Vector2(_graphics.PreferredBackBufferWidth / 2 - 180,
+                    _graphics.PreferredBackBufferHeight / 2 + 72), Color.Green);
             }
 
             _spriteBatch.End();
