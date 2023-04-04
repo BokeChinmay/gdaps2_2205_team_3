@@ -77,7 +77,7 @@ namespace Team3Project
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
 
-            meleeEnemy = this.Content.Load<Texture2D>("dog");
+            meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySheet");
             rangedEnemy = this.Content.Load<Texture2D>("ducky");
             projectile = this.Content.Load<Texture2D>("dogtreat");
             LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, projectile);

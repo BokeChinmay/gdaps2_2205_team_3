@@ -64,12 +64,12 @@ namespace Team3Project
         {
             Enemy enemy1;
             Rectangle enemy1Rect = new Rectangle(600, 300, enemyDefaults[EnemyTypes.Melee][Stats.Width], enemyDefaults[EnemyTypes.Melee][Stats.Height]);
-            enemy1 = new MeleeEnemy(enemyDefaults[EnemyTypes.Melee][Stats.Health], enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed], enemy1Rect, enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay], rangedTexture);
+            enemy1 = new MeleeEnemy(enemyDefaults[EnemyTypes.Melee][Stats.Health], enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed], enemy1Rect, enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay], meleeTexture);
             AddEnemy(enemy1);
 
             Enemy enemy2;
             Rectangle enemy2Rect = new Rectangle(1000, 300, enemyDefaults[EnemyTypes.Ranged][Stats.Width], enemyDefaults[EnemyTypes.Ranged][Stats.Height]);
-            enemy2 = new RangedEnemy(enemyDefaults[EnemyTypes.Ranged][Stats.Health], enemyDefaults[EnemyTypes.Ranged][Stats.MoveSpeed], enemy2Rect, enemyDefaults[EnemyTypes.Ranged][Stats.AttackDelay], enemyDefaults[EnemyTypes.Ranged][Stats.ProjectileSpeed], meleeTexture);
+            enemy2 = new RangedEnemy(enemyDefaults[EnemyTypes.Ranged][Stats.Health], enemyDefaults[EnemyTypes.Ranged][Stats.MoveSpeed], enemy2Rect, enemyDefaults[EnemyTypes.Ranged][Stats.AttackDelay], enemyDefaults[EnemyTypes.Ranged][Stats.ProjectileSpeed], rangedTexture);
             AddEnemy(enemy2);
 
             projectileTexture = pTexture;

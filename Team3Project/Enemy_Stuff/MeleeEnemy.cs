@@ -40,6 +40,18 @@ namespace Team3Project.Enemy_Stuff
         //Enemy texture (testing!)
         Texture2D meleeTexture;
 
+        //Animation
+        int frame;
+        double timeCounter;
+        double fps;
+        double timePerFrame;
+
+        // Constants for source rectangle
+        const int WalkFrameCount = 4;
+        const int RectHeight = 50;
+        const int RectWidth = 50;
+
+        //Constructor
         public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D meleeTexture) : base(health, moveSpeed, collision, meleeTexture)
         {
             currentState = MeleeEnemyState.Idle;
@@ -47,6 +59,10 @@ namespace Team3Project.Enemy_Stuff
             this.attackDelay = attackDelay;
             type = EnemyTypes.Melee;
             this.meleeTexture = meleeTexture;
+
+            //Initialize animation
+            fps = 10;
+            timePerFrame = 1.0 / fps;
         }
 
         /// <summary>
@@ -55,7 +71,6 @@ namespace Team3Project.Enemy_Stuff
         /// <exception cref="NotImplementedException"></exception>
         public override void Update()
         {
-
             throw new NotImplementedException();
         }
 
@@ -156,7 +171,51 @@ namespace Team3Project.Enemy_Stuff
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
+            //In progress
+            switch (currentState)
+            {
+                case MeleeEnemyState.Idle:
+                    break;
+                case MeleeEnemyState.Moving:
+                    break;
+                case MeleeEnemyState.Telegraphing:
+                    break;
+                case MeleeEnemyState.Attacking:
+                    break;
+                case MeleeEnemyState.Recovering:
+                    break;
+            }
             base.Draw(spriteBatch, spriteEffects);
+            /*
+            spriteBatch.Draw(
+                meleeTexture,
+                Collision,
+                new Rectangle(0, 0, RectWidth, RectHeight),
+                Color.White,
+                0,
+                Vector2.Zero,
+                spriteEffects,
+                0
+                );
+            */
+        }
+
+        private void DrawMoving(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            spriteBatch.Draw(
+                meleeTexture,                                   // - The texture to draw
+                new Vector2(collision.X, collision.Y),          // - The location to draw on the screen
+                new Rectangle(                                  // - The "source" rectangle
+                    0,                                          //   - This rectangle specifies
+                    frame * RectHeight,                         //	   where "inside" the texture
+                    RectWidth,                                  //     to get pixels (We don't want to
+                    RectHeight),                                //     draw the whole thing)
+                Color.White,                                    // - The color
+                0,                                              // - Rotation (none currently)
+                Vector2.Zero,                                   // - Origin inside the image (top left)
+                1.0f,                                           // - Scale (100% - no change)
+                spriteEffects,                                  // - Can be used to flip the image
+                0);
         }
     }
 }
