@@ -17,20 +17,26 @@ namespace Team3Project.Stage_Stuff
         // enum for use with assigning tile types on level generation
         enum TileTypes
         {
-            empty
+            empty,
+            blocked
         }
 
-        // Field declarations
+        // General field declarations
         private StreamReader reader;
+        private Random rng;
 
         // Organizing fields
         private List<StageObject> obstructiveStageObjects;
         private Dictionary<string, TileTypes[,]> levelLayouts;
+        private TileTypes[,] currentLayout;
         
         // Buffer fields
         private Texture2D bufferTexture;
         private VisualBarrier leftBuffer;
         private VisualBarrier rightBuffer;
+
+        // Tile fields
+        private Texture2D blockedTileTexture;
 
         // Fields for the other bounds of the play area
         private Texture2D backWallTexture;
@@ -40,6 +46,8 @@ namespace Team3Project.Stage_Stuff
         // Default constructor
         public StageObjectManager()
         {
+            rng = new Random();
+            
             obstructiveStageObjects = new List<StageObject>();
             levelLayouts = new Dictionary<string, TileTypes[,]>();
 
@@ -74,6 +82,9 @@ namespace Team3Project.Stage_Stuff
                 (leftBuffer.RightEdge, backWallTexture, true);
             obstructiveStageObjects.Add(backWall);
 
+            // Loading the blocked tile texture
+            blockedTileTexture = content.Load<Texture2D>("BlockedTile");
+
             // The tiles in the tile map will be 114 pixels wide by 100 pixels tall,
             // for a grid that is 10 tiles wide and 8 tiles tall
             try
@@ -94,6 +105,10 @@ namespace Team3Project.Stage_Stuff
                             if (currentLine[j] == "0")
                             {
                                 layoutTiles[j, i] = TileTypes.empty;
+                            }
+                            else if (currentLine[j] == "X")
+                            {
+                                layoutTiles[j, i] = TileTypes.blocked;
                             }
                         }
                     }
@@ -213,6 +228,47 @@ namespace Team3Project.Stage_Stuff
                 CheckBlockedSides(e);
             }
             CheckBlockedSides(player);
+        }
+
+        /// <summary>
+        /// Generates a new level, selecting a layout from those pulled from the file
+        /// </summary>
+        public void GenerateLevel()
+        {
+            foreach(BlockedTile bt in obstructiveStageObjects)
+            {
+                obstructiveStageObjects.Remove(bt);
+            }
+            
+            int layoutChoice = rng.Next(0, 4);
+
+            if (layoutChoice == 0) 
+            {
+                currentLayout = levelLayouts["Empty Layout"];
+            }
+            else if (layoutChoice == 1)
+            {
+                currentLayout = levelLayouts["Columns"];
+            }
+            else if (layoutChoice == 2)
+            {
+                currentLayout = levelLayouts["Alleys"];
+            }
+            else if (layoutChoice == 3)
+            {
+                currentLayout = levelLayouts["Lanes"];
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (currentLayout[j, i] == TileTypes.blocked)
+                    {
+                        obstructiveStageObjects.Add(new BlockedTile((180 + 114 * j), (100 + 100 * i), blockedTileTexture));
+                    }
+                }
+            }
         }
     }
 }

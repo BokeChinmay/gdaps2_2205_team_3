@@ -173,6 +173,7 @@ namespace Team3Project
                 if (kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space))
                 {
                     _gameState = GameState.GamePlaying;
+                    stageObjectManager.GenerateLevel();
                 }
             }
 
