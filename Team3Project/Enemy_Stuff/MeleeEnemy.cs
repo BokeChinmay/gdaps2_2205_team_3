@@ -37,9 +37,6 @@ namespace Team3Project.Enemy_Stuff
         //Direction of the attack
         Vector2 attackDirection;
 
-        //Enemy texture (testing!)
-        Texture2D meleeTexture;
-
         //Animation
         int frame;
         double timeCounter;
@@ -50,19 +47,21 @@ namespace Team3Project.Enemy_Stuff
         const int WalkFrameCount = 4;
         const int RectHeight = 16;
         const int RectWidth = 16;
+        const int HORIZONTAL_BUFFER = 24;
+        const int VERTICAL_BUFFER = 50;
 
         //Constructor
-        public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D meleeTexture) : base(health, moveSpeed, collision, meleeTexture)
+        public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D texture) : base(health, moveSpeed, collision, texture)
         {
             currentState = MeleeEnemyState.Idle;
             vulnerabilityState = VulnerabilityState.Vulnerable;
             this.attackDelay = attackDelay;
             type = EnemyTypes.Melee;
-            this.meleeTexture = meleeTexture;
 
             //Initialize animation
             fps = 10;
             timePerFrame = 1.0 / fps;
+            frame = 8;
         }
 
         /// <summary>
@@ -145,7 +144,7 @@ namespace Team3Project.Enemy_Stuff
                 case VulnerabilityState.Vulnerable:
                     foreach (Projectile projectile in projectileList)
                     {
-                        if (collision.Intersects(projectile.Collision))
+                        if (collision.Intersects(projectile.Collision) && !(projectile is EnemyBullet))
                         {
                             TakeDamage(projectile.Damage);
                             invincibilityTimer = INVINCIBILITY_DURATION;
@@ -185,15 +184,21 @@ namespace Team3Project.Enemy_Stuff
                 case MeleeEnemyState.Recovering:
                     break;
             }
-            //base.Draw(spriteBatch, spriteEffects);
+
+            //spriteBatch.Draw(texture, collision, Color.White);
             
             spriteBatch.Draw(
-                meleeTexture,
-                collision,
-                new Rectangle(24, 18, RectWidth, RectHeight),
+                texture,
+                new Vector2(collision.X, collision.Y),
+                new Rectangle(
+                    HORIZONTAL_BUFFER, 
+                    VERTICAL_BUFFER * (frame - 1), 
+                    RectWidth, 
+                    RectHeight),
                 Color.White,
                 0,
                 Vector2.Zero,
+                3.0f,
                 spriteEffects,
                 0
                 );
@@ -203,7 +208,7 @@ namespace Team3Project.Enemy_Stuff
         private void DrawMoving(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             spriteBatch.Draw(
-                meleeTexture,                                   // - The texture to draw
+                texture,                                   // - The texture to draw
                 new Vector2(collision.X, collision.Y),          // - The location to draw on the screen
                 new Rectangle(                                  // - The "source" rectangle
                     0,                                          //   - This rectangle specifies

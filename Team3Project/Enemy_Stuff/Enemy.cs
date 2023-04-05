@@ -17,12 +17,8 @@ namespace Team3Project.Enemy_Stuff
 
     internal abstract class Enemy : Entity
     {
-        //Fields
-        int health;
-        int moveSpeed;
-        Rectangle collision;
-
-        Texture2D texture;
+        //Texture/Sprite sheet
+        protected Texture2D texture;
 
         //Vulnerability/Invincibility fields and consts
         protected VulnerabilityState vulnerabilityState;
