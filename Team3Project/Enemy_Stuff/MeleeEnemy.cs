@@ -48,8 +48,8 @@ namespace Team3Project.Enemy_Stuff
 
         // Constants for source rectangle
         const int WalkFrameCount = 4;
-        const int RectHeight = 50;
-        const int RectWidth = 50;
+        const int RectHeight = 16;
+        const int RectWidth = 16;
 
         //Constructor
         public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D meleeTexture) : base(health, moveSpeed, collision, meleeTexture)
@@ -185,19 +185,19 @@ namespace Team3Project.Enemy_Stuff
                 case MeleeEnemyState.Recovering:
                     break;
             }
-            base.Draw(spriteBatch, spriteEffects);
-            /*
+            //base.Draw(spriteBatch, spriteEffects);
+            
             spriteBatch.Draw(
                 meleeTexture,
-                Collision,
-                new Rectangle(0, 0, RectWidth, RectHeight),
+                collision,
+                new Rectangle(24, 18, RectWidth, RectHeight),
                 Color.White,
                 0,
                 Vector2.Zero,
                 spriteEffects,
                 0
                 );
-            */
+            
         }
 
         private void DrawMoving(SpriteBatch spriteBatch, SpriteEffects spriteEffects)

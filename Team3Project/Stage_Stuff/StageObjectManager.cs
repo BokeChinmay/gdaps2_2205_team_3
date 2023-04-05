@@ -239,8 +239,8 @@ namespace Team3Project.Stage_Stuff
             {
                 obstructiveStageObjects.Remove(bt);
             }
-            
-            int layoutChoice = rng.Next(0, 4);
+
+            int layoutChoice = 0; // rng.Next(0, 4);
 
             if (layoutChoice == 0) 
             {
