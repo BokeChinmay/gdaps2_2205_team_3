@@ -77,7 +77,9 @@ namespace Team3Project
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
 
-            meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySheet");
+
+            // meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySheet");
+            meleeEnemy = this.Content.Load<Texture2D>("ducky");
             rangedEnemy = this.Content.Load<Texture2D>("ducky");
             projectile = this.Content.Load<Texture2D>("dogtreat");
             LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, projectile);
@@ -173,7 +175,7 @@ namespace Team3Project
                 if (kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space))
                 {
                     _gameState = GameState.GamePlaying;
-                    //stageObjectManager.GenerateLevel();
+                    stageObjectManager.GenerateLevel();
                 }
             }
 

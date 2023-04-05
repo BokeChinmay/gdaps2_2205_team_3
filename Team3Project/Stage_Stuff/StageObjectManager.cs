@@ -235,12 +235,18 @@ namespace Team3Project.Stage_Stuff
         /// </summary>
         public void GenerateLevel()
         {
-            foreach(BlockedTile bt in obstructiveStageObjects)
+            // Clearing all of the current tiles to make way for new ones
+            foreach(StageObject so in obstructiveStageObjects)
             {
-                obstructiveStageObjects.Remove(bt);
+                if (so is BlockedTile)
+                {
+                    obstructiveStageObjects.Remove(so);
+                }
             }
 
-            int layoutChoice = 0; // rng.Next(0, 4);
+            // Choosing a new layout at random
+
+            int layoutChoice = rng.Next(0, 4);
 
             if (layoutChoice == 0) 
             {
@@ -259,6 +265,7 @@ namespace Team3Project.Stage_Stuff
                 currentLayout = levelLayouts["Lanes"];
             }
 
+            // Creating tiles and adding them to the list of stage objects
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 10; j++)
