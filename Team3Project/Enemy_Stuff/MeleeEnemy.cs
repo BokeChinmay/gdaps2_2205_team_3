@@ -47,8 +47,8 @@ namespace Team3Project.Enemy_Stuff
         const int WalkFrameCount = 4;
         const int RectHeight = 16;
         const int RectWidth = 16;
-        const int HORIZONTAL_BUFFER = 24;
-        const int VERTICAL_BUFFER = 50;
+        const int HORIZONTAL_BUFFER = 22;
+        const int VERTICAL_BUFFER = 0;
 
         //Constructor
         public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D texture) : base(health, moveSpeed, collision, texture)
@@ -191,8 +191,8 @@ namespace Team3Project.Enemy_Stuff
                 texture,
                 new Vector2(collision.X, collision.Y),
                 new Rectangle(
-                    HORIZONTAL_BUFFER, 
-                    VERTICAL_BUFFER * (frame - 1), 
+                    HORIZONTAL_BUFFER * (frame - 1), 
+                    VERTICAL_BUFFER, 
                     RectWidth, 
                     RectHeight),
                 Color.White,

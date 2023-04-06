@@ -79,7 +79,7 @@ namespace Team3Project
 
 
             // meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySheet");
-            meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySheet");
+            meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySpritesheet");
             rangedEnemy = this.Content.Load<Texture2D>("ducky");
             projectile = this.Content.Load<Texture2D>("dogtreat");
             LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, projectile);
