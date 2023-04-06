@@ -43,7 +43,7 @@ namespace Team3Project.Enemy_Stuff
         }
 
         //Update method
-        public abstract void Update(Rectangle playerCollision, List<Projectile> projectileList);
+        public abstract void Update(Rectangle playerCollision, List<Projectile> projectileList, GameTime gameTime);
 
         //Name: MoveTowardPos
         //Purpose: Moves entity one speed unit directly toward a Vector
@@ -115,10 +115,6 @@ namespace Team3Project.Enemy_Stuff
         public void TakeDamage(int amount)
         {
             health -= amount;
-            if (health <= 0)
-            {
-                active = false;
-            }
         }
 
         public void Shoot(int bulletSpeed, Vector2 playerPos, int bulletDamage)

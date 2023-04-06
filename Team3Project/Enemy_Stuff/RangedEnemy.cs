@@ -68,7 +68,7 @@ namespace Team3Project.Enemy_Stuff
         /// </summary>
         /// <param name="playerCollision"></param>
         /// <param name="projectileList"></param>
-        public override void Update(Rectangle playerCollision, List<Projectile> projectileList)
+        public override void Update(Rectangle playerCollision, List<Projectile> projectileList, GameTime gameTime)
         {
             //Player position vector
             Vector2 playerPos = new Vector2((int)playerCollision.X, (int)playerCollision.Y);

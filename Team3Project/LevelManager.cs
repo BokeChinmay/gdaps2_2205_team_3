@@ -112,10 +112,10 @@ namespace Team3Project
         /// <summary>
         /// Update runs once per Game1's update method
         /// </summary>
-        public static void Update(Rectangle playerCollision)
+        public static void Update(Rectangle playerCollision, GameTime gameTime)
         {
             UpdateProjectiles();
-            UpdateEnemies(playerCollision);
+            UpdateEnemies(playerCollision, gameTime);
             //stageObjectManager.Update();
         }
 
@@ -141,7 +141,7 @@ namespace Team3Project
         /// <summary>
         /// Runs through the list of enemies, checking if they are still active and calling Update() for the ones that are.
         /// </summary>
-        public static void UpdateEnemies(Rectangle playerCollision)
+        public static void UpdateEnemies(Rectangle playerCollision, GameTime gameTime)
         {
             for (int i = 0; i < enemyList.Count; i++)
             {
@@ -152,7 +152,7 @@ namespace Team3Project
                 }
                 else
                 {
-                    enemyList[i].Update(playerCollision, projectileList);
+                    enemyList[i].Update(playerCollision, projectileList, gameTime);
                 }
             }
         }
