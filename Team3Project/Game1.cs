@@ -160,7 +160,7 @@ namespace Team3Project
             {
                 if (playerEntity.Active)
                 {
-                    stageObjectManager.Update(enemyEntities, playerEntity);
+                    stageObjectManager.Update(LevelManager.EnemyList, playerEntity);
                     playerEntity.Move(kbState);
 
                     LevelManager.Update(playerEntity.Collision, gameTime);

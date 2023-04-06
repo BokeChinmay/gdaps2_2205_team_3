@@ -207,7 +207,7 @@ namespace Team3Project.Enemy_Stuff
         {
             spriteBatch.Draw(
                 texture,
-                new Vector2(collision.X, collision.Y),
+                new Vector2(collision.X - 15, collision.Y - 15),
                 new Rectangle(
                     HORIZONTAL_BUFFER * (frame - 1), 
                     VERTICAL_BUFFER, 
@@ -220,7 +220,6 @@ namespace Team3Project.Enemy_Stuff
                 flipsprite,
                 0
                 );
-            
         }
 
         /// <summary>

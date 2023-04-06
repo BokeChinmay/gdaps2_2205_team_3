@@ -56,29 +56,45 @@ namespace Team3Project.Enemy_Stuff
             Vector2 unitVector = displacement / distance;
 
             //Multiply by speed and move
-            //Check if y motion should be applied
             int yMotion = (int)(unitVector.Y * moveSpeed);
+            int xMotion = (int)(unitVector.X * moveSpeed);
+            //Check if y motion should be applied
             if (yMotion < 0 && topBlocked)
             {
                 yMotion = 0;
+                if (xMotion != 0)
+                {
+                    xMotion = (xMotion / Math.Abs(xMotion)) * moveSpeed;
+                }
             }
             else if (yMotion > 0 && bottomBlocked)
             {
                 yMotion = 0;
-            }
-            collision.Y += yMotion;
+                if (xMotion != 0)
+                {
+                    xMotion = (xMotion / Math.Abs(xMotion)) * moveSpeed;
+                }
+            }           
 
             //Check if x motion should be applied
-            int xMotion = (int)(unitVector.X * moveSpeed);
             if (xMotion < 0 && leftBlocked)
             {
                 xMotion = 0;
+                if (yMotion != 0)
+                {
+                    yMotion = (yMotion / Math.Abs(yMotion)) * moveSpeed;
+                }
             }
             else if (xMotion > 0 && rightBlocked)
             {
                 xMotion = 0;
+                if (yMotion != 0)
+                {
+                    yMotion = (yMotion / Math.Abs(yMotion)) * moveSpeed;
+                }
             }
             collision.X += xMotion;
+            collision.Y += yMotion;
         }
 
         public void MoveTowardPos(Vector2 targetPos, int newSpeed)
@@ -89,29 +105,46 @@ namespace Team3Project.Enemy_Stuff
             Vector2 unitVector = displacement / distance;
 
             //Multiply by speed and move
-            //Check if y motion should be applied
             int yMotion = (int)(unitVector.Y * newSpeed);
+            int xMotion = (int)(unitVector.X * newSpeed);
+
+            //Check if y motion should be applied
             if (yMotion < 0 && topBlocked)
             {
                 yMotion = 0;
+                if (xMotion != 0)
+                {
+                    xMotion = (xMotion / Math.Abs(xMotion)) * newSpeed;
+                }
             }
             else if (yMotion > 0 && bottomBlocked)
             {
                 yMotion = 0;
-            }
-            collision.Y += yMotion;
+                if (xMotion != 0)
+                {
+                    xMotion = (xMotion / Math.Abs(xMotion)) * newSpeed;
+                }
+            }          
 
-            //Check if x motion should be applied
-            int xMotion = (int)(unitVector.X * newSpeed);
+            //Check if x motion should be applied           
             if (xMotion < 0 && leftBlocked)
             {
                 xMotion = 0;
+                if (yMotion != 0)
+                {
+                    yMotion = (yMotion / Math.Abs(yMotion)) * newSpeed;
+                }
             }
             else if (xMotion > 0 && rightBlocked)
             {
                 xMotion = 0;
+                if (yMotion != 0)
+                {
+                    yMotion = (yMotion / Math.Abs(yMotion)) * newSpeed;
+                }
             }
             collision.X += xMotion;
+            collision.Y += yMotion;
         }
 
         public void MoveAwayFromPos(Vector2 targetPos)
@@ -122,28 +155,45 @@ namespace Team3Project.Enemy_Stuff
             Vector2 unitVector = displacement / distance;
 
             //Multiply by speed and move
-            //Check if y motion should be applied
             int yMotion = (int)(unitVector.Y * moveSpeed);
+            int xMotion = (int)(unitVector.X * moveSpeed);
+
+            //Check if y motion should be applied
             if (yMotion < 0 && topBlocked)
             {
                 yMotion = 0;
+                if (xMotion != 0)
+                {
+                    xMotion = (xMotion / Math.Abs(xMotion)) * moveSpeed;
+                }
             }
             else if (yMotion > 0 && bottomBlocked)
             {
                 yMotion = 0;
+                if (xMotion != 0)
+                {
+                    xMotion = (xMotion / Math.Abs(xMotion)) * moveSpeed;
+                }
             }
-            collision.Y -= yMotion;
 
             //Check if x motion should be applied
-            int xMotion = (int)(unitVector.X * moveSpeed);
             if (xMotion < 0 && leftBlocked)
             {
                 xMotion = 0;
+                if (yMotion != 0)
+                {
+                    yMotion = (yMotion / Math.Abs(yMotion)) * moveSpeed;
+                }
             }
             else if (xMotion > 0 && rightBlocked)
             {
                 xMotion = 0;
+                if (yMotion != 0)
+                {
+                    yMotion = (yMotion / Math.Abs(yMotion)) * moveSpeed;
+                }
             }
+            collision.Y -= yMotion;
             collision.X -= xMotion;
         }
 
