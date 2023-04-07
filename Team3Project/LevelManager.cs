@@ -168,5 +168,14 @@ namespace Team3Project
                 projectile.Draw(spriteBatch, spriteEffects, projectileTexture);
             }
         }
+
+        public static void LoadNewLevel()
+        {
+            enemyList.Clear();
+            projectileList.Clear();
+
+            //Load new enemies randomly using free spaces in the top 2/3 of the screen
+
+        }
     }
 }

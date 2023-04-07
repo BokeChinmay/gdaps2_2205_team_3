@@ -29,7 +29,7 @@ namespace Team3Project.Enemy_Stuff
         //Range at which attack begins
         const int ATTACK_RANGE = 200;
         //Duration of attack
-        const int ATTACK_DURATION = 30;
+        const int ATTACK_DURATION = 120;
         //Duration of recovery
         const int RECOVERY_DURATION = 120;
 
@@ -125,9 +125,15 @@ namespace Team3Project.Enemy_Stuff
                         attackTimer = RECOVERY_DURATION;
                         currentState = MeleeEnemyState.Recovering;
                     }
+                    else if (attackTimer <= 0)
+                    {
+                        attackTimer = RECOVERY_DURATION;
+                        currentState = MeleeEnemyState.Recovering;
+                    }
                     else
                     {
                         MoveTowardPos(attackDirection, moveSpeed * 3);
+                        attackTimer--;
                     }
                     break;
                 //Recovering - A few frames of cooldown after the attack but before returning to idle state
