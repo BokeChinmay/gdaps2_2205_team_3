@@ -10,20 +10,11 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Enemy_Stuff
 {
-    enum MeleeEnemyState
-    {
-        Idle,
-        Moving,
-        Telegraphing,
-        Attacking,
-        Recovering,
-        Hurt,
-        Death
-    }
+    
 
     internal class MeleeEnemy : Enemy, IDamageable
     {
-        MeleeEnemyState currentState;
+        EnemyState currentState;
         //Range at which the enemy begins the attack process
         const int AGGRO_RANGE = 600;
         //Range at which attack begins
@@ -56,7 +47,7 @@ namespace Team3Project.Enemy_Stuff
         //Constructor
         public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D texture) : base(health, moveSpeed, collision, texture)
         {
-            currentState = MeleeEnemyState.Idle;
+            currentState = EnemyState.Idle;
             vulnerabilityState = VulnerabilityState.Vulnerable;
             this.attackDelay = attackDelay;
             type = EnemyTypes.Melee;
@@ -91,44 +82,44 @@ namespace Team3Project.Enemy_Stuff
             switch (currentState)
             {
                 //Idle - Check if player position is within aggro range
-                case MeleeEnemyState.Idle:
+                case EnemyState.Idle:
                     if (DistanceFromPlayer(playerPos) < AGGRO_RANGE)
                     {
-                        currentState = MeleeEnemyState.Moving;
+                        currentState = EnemyState.Moving;
                     }
                     break;
                 //Moving - Move directly toward player until in attacking range
-                case MeleeEnemyState.Moving:
+                case EnemyState.Moving:
                     MoveTowardPos(playerPos);
                     if (DistanceFromPlayer(playerPos) < ATTACK_RANGE)
                     {
                         attackTimer = attackDelay;
                         attackDirection = playerPos;
-                        currentState = MeleeEnemyState.Telegraphing;
+                        currentState = EnemyState.Telegraphing;
                     }
                     break;
                 //Telegraphing - wait attackSpeed # of frames before attacking
-                case MeleeEnemyState.Telegraphing:
+                case EnemyState.Telegraphing:
                     attackTimer--;
                     if (attackTimer <= 0)
                     {
                         attackTimer = ATTACK_DURATION;
-                        currentState = MeleeEnemyState.Attacking;
+                        currentState = EnemyState.Attacking;
                     }
                     break;
                 //Attacking - Move quickly in one direction for a few frames. After attack, change to idle
-                case MeleeEnemyState.Attacking:
+                case EnemyState.Attacking:
                     if (DistanceFromPlayer(attackDirection) < 10)
                     {
                         collision.X = (int)attackDirection.X;
                         collision.Y = (int)attackDirection.Y;
                         attackTimer = RECOVERY_DURATION;
-                        currentState = MeleeEnemyState.Recovering;
+                        currentState = EnemyState.Recovering;
                     }
                     else if (attackTimer <= 0)
                     {
                         attackTimer = RECOVERY_DURATION;
-                        currentState = MeleeEnemyState.Recovering;
+                        currentState = EnemyState.Recovering;
                     }
                     else
                     {
@@ -137,11 +128,11 @@ namespace Team3Project.Enemy_Stuff
                     }
                     break;
                 //Recovering - A few frames of cooldown after the attack but before returning to idle state
-                case MeleeEnemyState.Recovering:
+                case EnemyState.Recovering:
                     attackTimer--;
                     if (attackTimer <= 0)
                     {
-                        currentState = MeleeEnemyState.Idle;
+                        currentState = EnemyState.Idle;
                     }
                     break;
             }
@@ -162,11 +153,11 @@ namespace Team3Project.Enemy_Stuff
 
                             if (health <= 0)
                             {
-                                currentState = MeleeEnemyState.Death;
+                                currentState = EnemyState.Death;
                             }
                             else
                             {
-                                currentState = MeleeEnemyState.Hurt;
+                                currentState = EnemyState.Hurt;
                             }                          
                         }
                     }
@@ -178,7 +169,7 @@ namespace Team3Project.Enemy_Stuff
                     if (invincibilityTimer <= 0)
                     {
                         vulnerabilityState = VulnerabilityState.Vulnerable;
-                        currentState = MeleeEnemyState.Idle;
+                        currentState = EnemyState.Idle;
                     }
                     break;
 
@@ -195,7 +186,7 @@ namespace Team3Project.Enemy_Stuff
             }
 
             //Flip sprite if moving to the left
-            if (currentState == MeleeEnemyState.Moving)
+            if (currentState == EnemyState.Moving)
             {
                 if (DirectionToPlayer(playerPos).X < 0)
                 {
@@ -243,21 +234,21 @@ namespace Team3Project.Enemy_Stuff
             //Death: Frames 29-37
             switch (currentState)
             {
-                case MeleeEnemyState.Idle:
+                case EnemyState.Idle:
                     if (frame < 1 || frame > 7)
                     {
                         frame = 1;
                     }
                     frame++;
                     break;
-                case MeleeEnemyState.Moving:
+                case EnemyState.Moving:
                     if (frame < 8 || frame > 13)
                     {
                         frame = 8;
                     }
                     frame++;
                     break;
-                case MeleeEnemyState.Telegraphing:
+                case EnemyState.Telegraphing:
                     if (frame < 14 || frame > 16)
                     {
                         frame = 14;
@@ -267,21 +258,21 @@ namespace Team3Project.Enemy_Stuff
                         frame++;
                     }      
                     break;
-                case MeleeEnemyState.Attacking:
+                case EnemyState.Attacking:
                     if (frame < 17 || frame > 20)
                     {
                         frame = 17;
                     }
                     frame++;
                     break;
-                case MeleeEnemyState.Recovering:
+                case EnemyState.Recovering:
                     if (frame < 21 || frame > 23)
                     {
                         frame = 21;
                     }
                     frame++;
                     break;
-                case MeleeEnemyState.Hurt:
+                case EnemyState.Hurt:
                     if (frame < 25 || frame > 28)
                     {
                         frame = 25;
@@ -291,7 +282,7 @@ namespace Team3Project.Enemy_Stuff
                         frame++;
                     }
                     break;
-                case MeleeEnemyState.Death:
+                case EnemyState.Death:
                     if (frame < 29 || frame > 37)
                     {
                         frame = 29;
