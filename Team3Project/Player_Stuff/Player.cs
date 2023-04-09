@@ -13,6 +13,8 @@ namespace Team3Project.Player_Stuff
     {
         //Fields
         private Texture2D playerTexture;
+        private Texture2D meleeTexture;
+        private Texture2D bulletTexture;
         private KeyboardState kbState;
         private Random rng = new Random();
 
@@ -22,10 +24,6 @@ namespace Team3Project.Player_Stuff
         const int PlayerRectHeight = 26;
         const int PlayerRectWidth = 32;
 
-        //Bullet Textures
-        SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
-        Texture2D playerBulletTexture = this.Content.Load<Texture2D>("")
-
         /// <summary>
         /// Parameterized Constructor
         /// </summary>
@@ -33,10 +31,12 @@ namespace Team3Project.Player_Stuff
         /// <param name="moveSpeed"></param>
         /// <param name="collision"></param>
         /// <param name="playerTexture"></param>
-        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture) 
+        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture, Texture2D meleeTexture, Texture2D bulletTexture) 
             : base(health, moveSpeed, collision)
         {
             this.playerTexture = playerTexture;
+            this.meleeTexture = meleeTexture;
+            this.bulletTexture = bulletTexture;
         }
 
         /// <summary>
@@ -66,21 +66,23 @@ namespace Team3Project.Player_Stuff
             }
         }
 
-        public void MeleeAttack(KeyboardState kbState)
+        public void MeleeAttack(KeyboardState kbState, SpriteBatch spriteBatch)
         {
             if(kbState.IsKeyDown(Keys.Space))
             {
-
+                Bullet bullet = new Bullet(10, 5, 5, new Rectangle(collision.X, collision.Y, 30, 30), 50);
+                bullet.Update();
+                bullet.Draw(spriteBatch, SpriteEffects.None, meleeTexture);
             }
         }
 
-        public void RangedAttack(KeyboardState kbState)
+        public void RangedAttack(KeyboardState kbState, SpriteBatch spriteBatch)
         {
             if(kbState.IsKeyDown(Keys.LeftShift))
             {
-                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(44, 50, 30,30), 50);
+                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(collision.X, collision.Y, 30, 30), 20);
                 bullet.Update();
-                bullet.Draw(spriteBatch, SpriteEffects.None);
+                bullet.Draw(spriteBatch, SpriteEffects.None, bulletTexture);
             }
         }
 
