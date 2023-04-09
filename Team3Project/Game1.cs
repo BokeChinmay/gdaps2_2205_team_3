@@ -31,6 +31,7 @@ namespace Team3Project
         
         private Texture2D mainCharacter;
         private Player playerEntity;
+        private Texture2D playerMeleeTexture;
         private Texture2D playerBulletTexture;
 
 
@@ -74,8 +75,9 @@ namespace Team3Project
         {
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
+            playerMeleeTexture = this.Content.Load<Texture2D>("MeleeAttack");
             playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
-            playerEntity = new Player(100, 5, new Rectangle(185, 864, 32, 32), mainCharacter, playerBulletTexture);
+            playerEntity = new Player(100, 5, new Rectangle(185, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
