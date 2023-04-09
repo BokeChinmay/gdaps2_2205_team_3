@@ -159,7 +159,8 @@ namespace Team3Project
                 string[] playerPositions = streamReader.ReadLine().Split(',');
                 int playerPosX = int.Parse(playerPositions[0]);
                 int playerPosY = int.Parse(playerPositions[1]);
-                playerEntity = new Player(playerHealth, playerMoveSpeed, new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, playerBulletTexture);
+                playerEntity = new Player(playerHealth, playerMoveSpeed, 
+                               new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
                 
             }
