@@ -7,31 +7,22 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+//Class name: Enemy bullet
+//Purpose: Inherits from bullet class. Used for distinction between enemy and player bullets.
+
 namespace Team3Project
 {
-    internal class EnemyBullet : Projectile
+    internal class EnemyBullet : Bullet
     {
-        // A vector for the projectile's direction
-        private Vector2 direction;
 
-        public EnemyBullet(int speed, float xDirection, float yDirection, Rectangle collision, int damage) : base(1, speed, collision)
+        public EnemyBullet(int speed, float xDirection, float yDirection, Rectangle collision, int damage) : base(speed, xDirection, yDirection, collision, damage)
         {
-            direction = new Vector2(xDirection * speed, yDirection * speed);
-            validTargets = new List<Entity>();
-            this.damage = damage;
-        }
-
-        public void Move()
-        {
-            //Update position by direction vector
-            collision.X += (int)direction.X;
-            collision.Y += (int)direction.Y;
+            
         }
 
         public override void Update()
         {
-            Move();
+            base.Update();
         }
-
     }
 }

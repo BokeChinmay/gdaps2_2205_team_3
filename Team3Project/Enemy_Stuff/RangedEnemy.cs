@@ -203,7 +203,7 @@ namespace Team3Project.Enemy_Stuff
                 Color.White,
                 0,
                 Vector2.Zero,
-                3.0f,
+                3.5f,
                 flipsprite,
                 0
                 );
