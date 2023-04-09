@@ -245,7 +245,6 @@ namespace Team3Project.Stage_Stuff
             }
 
             // Choosing a new layout at random
-
             int layoutChoice = rng.Next(0, 4);
 
             if (layoutChoice == 0) 
