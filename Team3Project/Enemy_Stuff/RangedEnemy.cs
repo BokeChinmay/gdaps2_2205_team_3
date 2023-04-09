@@ -8,21 +8,12 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Enemy_Stuff
 {
-    enum RangedEnemyState
-    {
-        Idle,
-        Move,
-        Telegraphing,
-        Attack,
-        Recovering,
-    }
-
     internal class RangedEnemy : Enemy, IDamageable
     {
         // Class-specific fields
         int attackDelay;
         int projectileSpeed;
-        RangedEnemyState currentState;
+        EnemyState currentState;
 
         Texture2D rangedTexture;
 
@@ -43,15 +34,34 @@ namespace Team3Project.Enemy_Stuff
         //Frame timer for telegraph/recovery
         int downTimer;
 
+        //Animation
+        int frame;
+        double timeCounter;
+        double fps;
+        double timePerFrame;
+        SpriteEffects flipsprite;
+
+        // Constants for source rectangle
+        const int RECT_HEGHT = 27;
+        const int RECT_WIDTH = 21;
+        const int HORIZONTAL_BUFFER = 21;
+        const int VERTICAL_BUFFER = 0;
+
         // Parameterized constructor
         public RangedEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, int projectileSpeed, Texture2D rangedTexture) : base(health, moveSpeed, collision, rangedTexture)
         {
             this.attackDelay = attackDelay;
             this.projectileSpeed = projectileSpeed;
-            currentState = RangedEnemyState.Idle;
+            currentState = EnemyState.Idle;
             type = EnemyTypes.Ranged;
             this.rangedTexture = rangedTexture;
             attackTimer = 0;
+
+            //Initialize animation
+            fps = 5.0;
+            timePerFrame = 1.0 / fps;
+            frame = 1;
+            flipsprite = SpriteEffects.None;
         }
 
         /// <summary>
@@ -76,15 +86,15 @@ namespace Team3Project.Enemy_Stuff
             switch (currentState)
             {
                 //Wait until player is within aggro range. If so, begin move.
-                case RangedEnemyState.Idle:
+                case EnemyState.Idle:
                     attackTimer++;
                     if (DistanceFromPlayer(playerPos) < AGGRO_RANGE)
                     {
-                        currentState = RangedEnemyState.Move;
+                        currentState = EnemyState.Moving;
                     }
                     break;
                 //Move if too close to the player. Otherwise, begin telegraphing.
-                case RangedEnemyState.Move:
+                case EnemyState.Moving:
                     attackTimer++;
                     if (DistanceFromPlayer(playerPos) < ESCAPE_RANGE)
                     {
@@ -93,29 +103,29 @@ namespace Team3Project.Enemy_Stuff
                     else if (attackTimer < attackDelay)
                     {
                         downTimer = DOWNTIME;
-                        currentState = RangedEnemyState.Telegraphing;
+                        currentState = EnemyState.Telegraphing;
                     }
                     break;
                 //Begin telegraph delay. After timer reaches 0, begin attack
-                case RangedEnemyState.Telegraphing:
+                case EnemyState.Telegraphing:
                     downTimer--;
                     if (downTimer <= 0)
                     {
-                        currentState = RangedEnemyState.Attack;
+                        currentState = EnemyState.Attacking;
                     }
                     break;
                 //Create a bullet and move to recovery state
-                case RangedEnemyState.Attack:
+                case EnemyState.Attacking:
                     Shoot(BULLET_SPEED, playerPos, BULLET_DAMAGE);
                     downTimer = DOWNTIME;
-                    currentState = RangedEnemyState.Recovering;
+                    currentState = EnemyState.Recovering;
                     break;
                 //Begin recovery delay. When timer reaches 0, switch to idle state
-                case RangedEnemyState.Recovering:
+                case EnemyState.Recovering:
                     downTimer--;
                     if (downTimer <= 0)
                     {
-                        currentState = RangedEnemyState.Idle;
+                        currentState = EnemyState.Idle;
                         attackTimer = 0;
                     }
                     break;
@@ -148,6 +158,29 @@ namespace Team3Project.Enemy_Stuff
                     break;
 
             }
+
+            //Animation - update frame if enough time has passed
+            // How much time has passed?  
+            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+            // If enough time has passed:
+            if (timeCounter >= timePerFrame)
+            {
+                UpdateFrame();
+                timeCounter = 0;
+            }
+
+            //Flip sprite if moving to the left
+            if (currentState == EnemyState.Moving)
+            {
+                if (DirectionToPlayer(playerPos).X < 0)
+                {
+                    flipsprite = SpriteEffects.FlipHorizontally;
+                }
+                else
+                {
+                    flipsprite = SpriteEffects.None;
+                }
+            }
         }
 
 
@@ -159,7 +192,87 @@ namespace Team3Project.Enemy_Stuff
         /// <exception cref="NotImplementedException"></exception>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            base.Draw(spriteBatch, spriteEffects);
+            spriteBatch.Draw(
+                texture,
+                new Vector2(collision.X - 15, collision.Y - 15),
+                new Rectangle(
+                    HORIZONTAL_BUFFER * (frame - 1),
+                    VERTICAL_BUFFER,
+                    RECT_WIDTH,
+                    RECT_HEGHT),
+                Color.White,
+                0,
+                Vector2.Zero,
+                3.5f,
+                flipsprite,
+                0
+                );
+        }
+
+        private void UpdateFrame()
+        {
+            //For this spritesheet:
+            //Idle: Frames 1-10
+            //Moving: Frame 11
+            //Telegraphing: Frames 12-13
+            //Attacking: Frame 12
+            //Recovering: Frames 14-16
+            //Hurt: Frames 20-17 (backwards)
+            //Death: Frames 17-25
+            switch (currentState)
+            {
+                case EnemyState.Idle:
+                    if (frame < 1 || frame > 10)
+                    {
+                        frame = 1;
+                    }
+                    frame++;
+                    break;
+                case EnemyState.Moving:
+                    frame = 11;
+                    break;
+                case EnemyState.Telegraphing:
+                    if (frame < 11 || frame > 12)
+                    {
+                        frame = 11;
+                    }
+                    frame++;
+                    break;
+                case EnemyState.Attacking:
+                    frame = 12;
+                    break;
+                case EnemyState.Recovering:
+                    if (frame < 13 || frame > 15)
+                    {
+                        frame = 13;
+                    }
+                    frame++;
+                    break;
+                case EnemyState.Hurt:
+                    if (frame < 17 || frame > 20)
+                    {
+                        frame = 20;
+                    }
+                    else if (frame != 17)
+                    {
+                        frame--;
+                    }
+                    break;
+                case EnemyState.Death:
+                    if (frame < 17 || frame > 25)
+                    {
+                        frame = 17;
+                    }
+                    else if (frame != 29)
+                    {
+                        frame++;
+                    }
+                    else
+                    {
+                        active = false;
+                    }
+                    break;
+            }
         }
     }
 }

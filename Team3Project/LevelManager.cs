@@ -70,7 +70,7 @@ namespace Team3Project
             Enemy enemy2;
             Rectangle enemy2Rect = new Rectangle(1000, 300, enemyDefaults[EnemyTypes.Ranged][Stats.Width], enemyDefaults[EnemyTypes.Ranged][Stats.Height]);
             enemy2 = new RangedEnemy(enemyDefaults[EnemyTypes.Ranged][Stats.Health], enemyDefaults[EnemyTypes.Ranged][Stats.MoveSpeed], enemy2Rect, enemyDefaults[EnemyTypes.Ranged][Stats.AttackDelay], enemyDefaults[EnemyTypes.Ranged][Stats.ProjectileSpeed], rangedTexture);
-            //AddEnemy(enemy2);
+            AddEnemy(enemy2);
 
             projectileTexture = pTexture;
 
@@ -111,21 +111,27 @@ namespace Team3Project
 
         /// <summary>
         /// Update runs once per Game1's update method
+        /// Updating enemies must be done BEFORE projectiles due to projectiles becoming inactive when they contact enemies
         /// </summary>
         public static void Update(Rectangle playerCollision, GameTime gameTime)
         {
-            UpdateProjectiles();
             UpdateEnemies(playerCollision, gameTime);
-            //stageObjectManager.Update();
+            UpdateProjectiles(playerCollision);
         }
 
         /// <summary>
         /// Runs through the list of projectiles, checking if they are still active and calling Update() for the ones that are.
         /// </summary>
-        public static void UpdateProjectiles()
+        public static void UpdateProjectiles(Rectangle playerCollision)
         {
             for (int i = 0; i < projectileList.Count; i++)
             {
+                //Deactivate projectile if it is in contact with the player
+                if (projectileList[i].Collision.Intersects(playerCollision))
+                {
+                    projectileList[i].Active = false;
+                }
+                
                 //If a projectile is no longer active, remove it from the list
                 if (!projectileList[i].Active)
                 {

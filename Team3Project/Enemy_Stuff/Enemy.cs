@@ -15,6 +15,17 @@ namespace Team3Project.Enemy_Stuff
         Invincible
     }
 
+    enum EnemyState
+    {
+        Idle,
+        Moving,
+        Telegraphing,
+        Attacking,
+        Recovering,
+        Hurt,
+        Death
+    }
+
     internal abstract class Enemy : Entity
     {
         //Texture/Sprite sheet

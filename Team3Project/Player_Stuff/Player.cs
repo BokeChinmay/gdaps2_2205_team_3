@@ -22,6 +22,10 @@ namespace Team3Project.Player_Stuff
         const int PlayerRectHeight = 26;
         const int PlayerRectWidth = 32;
 
+        //Bullet Textures
+        SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
+        Texture2D playerBulletTexture = this.Content.Load<Texture2D>("")
+
         /// <summary>
         /// Parameterized Constructor
         /// </summary>
@@ -59,6 +63,24 @@ namespace Team3Project.Player_Stuff
             if (kbState.IsKeyDown(Keys.W) && !topBlocked)
             {
                 collision.Y-= moveSpeed;
+            }
+        }
+
+        public void MeleeAttack(KeyboardState kbState)
+        {
+            if(kbState.IsKeyDown(Keys.Space))
+            {
+
+            }
+        }
+
+        public void RangedAttack(KeyboardState kbState)
+        {
+            if(kbState.IsKeyDown(Keys.LeftShift))
+            {
+                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(44, 50, 30,30), 50);
+                bullet.Update();
+                bullet.Draw(spriteBatch, SpriteEffects.None);
             }
         }
 

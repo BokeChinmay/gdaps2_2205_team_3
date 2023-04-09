@@ -43,6 +43,12 @@ namespace Team3Project.Stage_Stuff
         private VisualBarrier backWall;
         private HiddenStageObject bottomBounds;
 
+        //Get-only property for obstructive stage objects
+        public List<StageObject> ObstructiveStageObjects
+        {
+            get { return obstructiveStageObjects; }
+        }
+
         // Default constructor
         public StageObjectManager()
         {
@@ -226,6 +232,10 @@ namespace Team3Project.Stage_Stuff
             foreach (Enemy e in enemies) 
             { 
                 CheckBlockedSides(e);
+            }
+            foreach (Projectile p in LevelManager.ProjectileList)
+            {
+                CheckBlockedSides(p);
             }
             CheckBlockedSides(player);
         }

@@ -46,7 +46,7 @@ namespace Team3Project
 
         private Texture2D meleeEnemy;
         private Texture2D rangedEnemy;
-        private Texture2D projectile;
+        private Texture2D enemyBullet;
 
         private Texture2D gameTitle;
         private Texture2D titleOption1;
@@ -90,9 +90,9 @@ namespace Team3Project
 
             // meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySheet");
             meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySpritesheet");
-            rangedEnemy = this.Content.Load<Texture2D>("ducky");
-            projectile = this.Content.Load<Texture2D>("dogtreat");
-            LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, projectile);
+            rangedEnemy = this.Content.Load<Texture2D>("RangedEnemySpritesheet");
+            enemyBullet = this.Content.Load<Texture2D>("EnemyBullet");
+            LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, enemyBullet);
 
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
             gameTitle = this.Content.Load<Texture2D>("MEOWCH_logo");
@@ -176,6 +176,7 @@ namespace Team3Project
                 {
                     stageObjectManager.Update(LevelManager.EnemyList, playerEntity);
                     playerEntity.Move(kbState);
+                    playerEntity.RangedAttack(kbState);
 
                     LevelManager.Update(playerEntity.Collision, gameTime);
                 }
