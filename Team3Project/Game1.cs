@@ -14,7 +14,8 @@ namespace Team3Project
     {
         Menu,
         GamePlaying,
-        GameOver
+        GameOver,
+        Controls
     }
 
     public class Game1 : Game
@@ -27,6 +28,8 @@ namespace Team3Project
         private GameState _gameState;
         private KeyboardState kbState;
         private KeyboardState prevKbState;
+        private MouseState mouseState;
+        private MouseState prevMouseState;
         private Random rng;
         
         private Texture2D mainCharacter;
@@ -48,6 +51,12 @@ namespace Team3Project
         private Texture2D rangedEnemy;
         private Texture2D enemyBullet;
 
+        private Texture2D gameTitle;
+        private Texture2D titleOption1;
+        private Texture2D titleOption2;
+        private Texture2D controls;
+        private int titleOption;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -56,6 +65,7 @@ namespace Team3Project
             stageObjectManager = new StageObjectManager();
             enemyEntities = new List<Enemy>();
             _gameState = GameState.Menu;
+            titleOption = 1;
         }
 
         protected override void Initialize()
@@ -90,6 +100,10 @@ namespace Team3Project
             LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, enemyBullet);
 
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
+            gameTitle = this.Content.Load<Texture2D>("MEOWCH_logo");
+            titleOption1 = this.Content.Load<Texture2D>("Main_Menu_1");
+            titleOption2 = this.Content.Load<Texture2D>("Main_Menu_2");
+            controls = this.Content.Load<Texture2D>("Controls_v2");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -178,10 +192,34 @@ namespace Team3Project
             }
             else if (_gameState == GameState.Menu)
             {
-                if (kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space))
+                if ((kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space)) && titleOption == 1)
                 {
                     _gameState = GameState.GamePlaying;
                     stageObjectManager.GenerateLevel();
+                }
+
+                if ((kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space)) && titleOption == 2)
+                {
+                    _gameState = GameState.Controls;
+                }
+
+                if (((kbState.IsKeyUp(Keys.Down) && prevKbState.IsKeyDown(Keys.Down)) || 
+                    (kbState.IsKeyUp(Keys.S) && prevKbState.IsKeyDown(Keys.S))) && titleOption == 1)
+                {
+                    titleOption = 2;
+                }
+
+                if (((kbState.IsKeyUp(Keys.Up) && prevKbState.IsKeyDown(Keys.Up)) ||
+                    (kbState.IsKeyUp(Keys.W) && prevKbState.IsKeyDown(Keys.W))) && titleOption == 2)
+                {
+                    titleOption = 1;
+                }
+            }
+            else if (_gameState == GameState.Controls)
+            {
+                if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
+                {
+                    _gameState = GameState.Menu;
                 }
             }
 
@@ -192,12 +230,12 @@ namespace Team3Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkGray);
-            
-            _spriteBatch.Begin();
-
             if (_gameState == GameState.GamePlaying)
             {
+                GraphicsDevice.Clear(Color.DarkGray);
+
+                _spriteBatch.Begin();
+
                 stageObjectManager.Draw(_spriteBatch);
                 playerEntity.Draw(_spriteBatch, SpriteEffects.None);
                 //items.Draw(_spriteBatch, SpriteEffects.None);
@@ -206,15 +244,28 @@ namespace Team3Project
             }
             else if (_gameState == GameState.Menu)
             {
-                _spriteBatch.DrawString(menuFont, "Meowch", 
-                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 100, 
-                    _graphics.PreferredBackBufferHeight/2 - 24), Color.Green);
-                _spriteBatch.DrawString(menuFont, "Use WASD to move", 
-                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 175, 
-                    _graphics.PreferredBackBufferHeight/2 + 36), Color.Green);
-                _spriteBatch.DrawString(menuFont, "Press space to begin",
-                    new Vector2(_graphics.PreferredBackBufferWidth / 2 - 180,
-                    _graphics.PreferredBackBufferHeight / 2 + 72), Color.Green);
+                GraphicsDevice.Clear(Color.Black);
+                
+                _spriteBatch.Begin();
+
+                _spriteBatch.Draw(gameTitle, new Rectangle(120, 200, 1280, 250), Color.White);
+
+                if (titleOption == 1)
+                {
+                    _spriteBatch.Draw(titleOption1, new Rectangle(350, 600, 800, 200), Color.White);
+                }
+                else if (titleOption == 2) 
+                {
+                    _spriteBatch.Draw(titleOption2, new Rectangle(350, 600, 800, 200), Color.White);
+                }
+            }
+            else if (_gameState == GameState.Controls)
+            {
+                GraphicsDevice.Clear(Color.Black);
+
+                _spriteBatch.Begin();
+
+                _spriteBatch.Draw(controls, new Rectangle(273, 274, 954, 378), Color.White);
             }
 
             _spriteBatch.End();

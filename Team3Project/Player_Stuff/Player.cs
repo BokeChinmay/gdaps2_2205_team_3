@@ -156,6 +156,8 @@ namespace Team3Project.Player_Stuff
             {
                 Active = false;
             }
+
+            // When adding attack capabilities to the player, make left click shoot and right click melee
         }
     }
 }

@@ -49,7 +49,19 @@
 /processorParam:TextureFormat=Color
 /build:BlockedTile.png
 
-#begin Buffer.png
+#begin Controls_v2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Controls_v2.png
+
+#begin DamageUp.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -85,7 +97,7 @@
 /processorParam:TextureFormat=Color
 /build:EnemyBullet.png
 
-#begin Melee.png
+#begin ducky.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -95,7 +107,31 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Melee.png
+/build:ducky.png
+
+#begin Main_Menu_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Main_Menu_1.png
+
+#begin Main_Menu_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Main_Menu_2.png
 
 #begin MeleeEnemySpritesheet.png
 /importer:TextureImporter
@@ -139,6 +175,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:RangedEnemySpritesheet.png
+
+#begin MEOWCH_logo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:MEOWCH_logo.png
 
 #begin SpeedBoost.png
 /importer:TextureImporter
