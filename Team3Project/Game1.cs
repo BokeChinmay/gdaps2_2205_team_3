@@ -91,7 +91,7 @@ namespace Team3Project
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerMeleeTexture = this.Content.Load<Texture2D>("MeleeAttack");
             playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
-            playerEntity = new Player(100, 5, new Rectangle(185, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
+            playerEntity = new Player(3, 5, new Rectangle(185, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
@@ -160,10 +160,6 @@ namespace Team3Project
                 {
                     int playerHealth = int.Parse(streamReader.ReadLine());
                     int playerMoveSpeed = int.Parse(streamReader.ReadLine());
-                    //--------------------------------
-                    // Temporary code adjusting player move speed for testing
-                    playerMoveSpeed = 5;
-                    //--------------------------------
                     string[] playerPositions = streamReader.ReadLine().Split(',');
                     int playerPosX = int.Parse(playerPositions[0]);
                     int playerPosY = int.Parse(playerPositions[1]);

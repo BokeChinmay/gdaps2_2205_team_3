@@ -48,6 +48,15 @@ namespace Team3Project.Stage_Stuff
         private Texture2D elevatorOpen;
         private Elevator elevator;
 
+        // Fields for UI elements
+        private SpriteFont font;
+        private Texture2D fullHP;
+        private Texture2D emptyHP;
+        private Texture2D brokenHP;
+        private Texture2D fullLife;
+        private Texture2D emptyLife;
+        private HealthDisplay healthDisplay;
+
         // Get-only property for obstructive stage objects
         public List<StageObject> ObstructiveStageObjects
         {
@@ -105,6 +114,16 @@ namespace Team3Project.Stage_Stuff
 
             elevator = new Elevator(elevatorOpen, elevatorClosed);
 
+            // Loading and initializing the UI
+            font = content.Load<SpriteFont>("MenuFont");
+            fullHP = content.Load<Texture2D>("Full_HP");
+            emptyHP = content.Load<Texture2D>("Empty_HP");
+            brokenHP = content.Load<Texture2D>("Broken_HP");
+            fullLife = content.Load<Texture2D>("Full_Life");
+            emptyLife = content.Load<Texture2D>("Empty_Life");
+
+            healthDisplay = new HealthDisplay(font, fullHP, emptyHP, brokenHP, fullLife, emptyLife);
+
             // Loading the blocked tile texture
             blockedTileTexture = content.Load<Texture2D>("BlockedTile");
 
@@ -160,6 +179,8 @@ namespace Team3Project.Stage_Stuff
             }
 
             elevator.Draw(_spriteBatch, SpriteEffects.None);
+
+            healthDisplay.Draw(_spriteBatch, SpriteEffects.None);
         }
 
         /// <summary>
@@ -261,6 +282,8 @@ namespace Team3Project.Stage_Stuff
             CheckBlockedSides(player);
 
             elevator.PlayerEnters(player);
+
+            healthDisplay.Health = player.Health;
         }
 
         /// <summary>

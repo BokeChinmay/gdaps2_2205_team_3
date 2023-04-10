@@ -37,7 +37,7 @@
 /processorParam:TextureFormat=Color
 /build:BlockedTile.png
 
-#begin Buffer.png
+#begin Broken_HP.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Buffer.png
+/build:Broken_HP.png
 
 #begin Buffer.png
 /importer:TextureImporter
@@ -71,8 +71,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DamageUp.png
 /build:Controls_v2.png
+
+#begin DamageUp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DamageUp.png
 
 #begin Elevator_Closed.png
 /importer:TextureImporter
@@ -98,6 +109,30 @@
 /processorParam:TextureFormat=Color
 /build:Elevator_Open.png
 
+#begin Empty_HP.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Empty_HP.png
+
+#begin Empty_Life.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Empty_Life.png
+
 #begin EnemyBullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -109,6 +144,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:EnemyBullet.png
+
+#begin Full_HP.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Full_HP.png
+
+#begin Full_Life.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Full_Life.png
 
 #begin Main_Menu_1.png
 /importer:TextureImporter
@@ -212,7 +271,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayerBullet.png
-/build:MEOWCH_logo.png
 
 #begin RangedEnemySpritesheet.png
 /importer:TextureImporter
