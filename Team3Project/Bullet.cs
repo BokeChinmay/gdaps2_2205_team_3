@@ -17,10 +17,9 @@ namespace Team3Project
         // A vector for the projectile's direction
         private Vector2 direction;
 
-        public Bullet(int speed, float xDirection, float yDirection, Rectangle collision, int damage) : base(1, speed, collision)
+        public Bullet(int speed, float xDirection, float yDirection, Rectangle collision, int damage, Texture2D texture) : base(1, speed, collision, texture)
         {
             direction = new Vector2(xDirection * speed, yDirection * speed);
-            validTargets = new List<Entity>();
             this.damage = damage;
         }
 
