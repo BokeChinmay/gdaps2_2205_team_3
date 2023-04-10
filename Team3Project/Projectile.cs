@@ -11,8 +11,8 @@ namespace Team3Project
 {
     internal class Projectile : Entity
     {
-        // The targets that a projectile is able to damage
-        protected List<Entity> validTargets;
+        //Texture
+        Texture2D texture;
 
         //Damage that the projectile deals
         protected int damage;
@@ -24,25 +24,10 @@ namespace Team3Project
         }
 
         // Parameterized constructor to establish a projectile's speed and velocity
-        public Projectile(int speed, int damage, Rectangle collision) : base(1, speed, collision)
+        public Projectile(int speed, int damage, Rectangle collision, Texture2D texture) : base(1, speed, collision)
         {
-            validTargets = new List<Entity>();
             this.damage = damage;
-        }
-
-        //Name: IsColliding
-        //Purpose: Checks if the projectile is colliding with any valid target
-        //Params: None
-        public bool IsColliding()
-        {
-            for (int i = 0; i < validTargets.Count; i++)
-            {
-                if (collision.Intersects(validTargets[i].Collision))
-                {
-                    return true;
-                }
-            }
-            return false;
+            this.texture = texture;
         }
 
         public override void Update()
@@ -52,12 +37,7 @@ namespace Team3Project
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects, Texture2D texture)
-        {
             spriteBatch.Draw(texture, collision, Color.White);
         }
     }
-}
+} 

@@ -67,12 +67,12 @@ namespace Team3Project
             enemy1 = new MeleeEnemy(enemyDefaults[EnemyTypes.Melee][Stats.Health], enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed], enemy1Rect, enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay], meleeTexture);
             AddEnemy(enemy1);
 
+            projectileTexture = pTexture;
+
             Enemy enemy2;
             Rectangle enemy2Rect = new Rectangle(1000, 300, enemyDefaults[EnemyTypes.Ranged][Stats.Width], enemyDefaults[EnemyTypes.Ranged][Stats.Height]);
-            enemy2 = new RangedEnemy(enemyDefaults[EnemyTypes.Ranged][Stats.Health], enemyDefaults[EnemyTypes.Ranged][Stats.MoveSpeed], enemy2Rect, enemyDefaults[EnemyTypes.Ranged][Stats.AttackDelay], enemyDefaults[EnemyTypes.Ranged][Stats.ProjectileSpeed], rangedTexture);
+            enemy2 = new RangedEnemy(enemyDefaults[EnemyTypes.Ranged][Stats.Health], enemyDefaults[EnemyTypes.Ranged][Stats.MoveSpeed], enemy2Rect, enemyDefaults[EnemyTypes.Ranged][Stats.AttackDelay], enemyDefaults[EnemyTypes.Ranged][Stats.ProjectileSpeed], rangedTexture, pTexture);
             AddEnemy(enemy2);
-
-            projectileTexture = pTexture;
 
             //stageObjectManager = new StageObjectManager();
         }
@@ -171,7 +171,7 @@ namespace Team3Project
             }
             foreach (Projectile projectile in projectileList)
             {
-                projectile.Draw(spriteBatch, spriteEffects, projectileTexture);
+                projectile.Draw(spriteBatch, spriteEffects);
             }
         }
 
