@@ -59,6 +59,7 @@ namespace Team3Project
         private Texture2D titleOption2;
         private Texture2D controls;
         private Texture2D pause;
+        private Texture2D gameOver;
         private int titleOption;
 
         public Game1()
@@ -81,6 +82,8 @@ namespace Team3Project
 
             rng = new Random();
             LevelManager.Initialize();
+
+            //stageObjectManager.Elevator.NewLevel += LevelManager.LoadNewLevel;
 
             base.Initialize();
         }
@@ -109,6 +112,7 @@ namespace Team3Project
             titleOption2 = this.Content.Load<Texture2D>("Main_Menu_2");
             controls = this.Content.Load<Texture2D>("Controls_v2");
             pause = this.Content.Load<Texture2D>("Pause_Menu");
+            gameOver = this.Content.Load<Texture2D>("Game_Over");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -230,6 +234,12 @@ namespace Team3Project
                 {
                     titleOption = 1;
                 }
+
+                // FOR TESTING -- comment out when GameOver can be reached naturally
+                if (kbState.IsKeyUp(Keys.NumPad1) && prevKbState.IsKeyDown(Keys.NumPad1))
+                {
+                    _gameState = GameState.GameOver;
+                }
             }
             else if (_gameState == GameState.Controls)
             {
@@ -251,6 +261,13 @@ namespace Team3Project
                 if (kbState.IsKeyUp(Keys.S) && prevKbState.IsKeyDown(Keys.S))
                 {
                     SaveData();
+                }
+            }
+            else if (_gameState == GameState.GameOver)
+            {
+                if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
+                {
+                    _gameState = GameState.Menu;
                 }
             }
 
@@ -307,6 +324,14 @@ namespace Team3Project
 
                 _spriteBatch.Draw(controls, new Rectangle(273, 200, 954, 378), Color.White);
                 _spriteBatch.Draw(pause, new Rectangle(365, 578, 770, 130), Color.White);
+            }
+            else if (_gameState == GameState.GameOver)
+            {
+                GraphicsDevice.Clear(Color.Black);
+
+                _spriteBatch.Begin();
+
+                _spriteBatch.Draw(gameOver, new Rectangle(150, 250, 1200, 400), Color.White);
             }
 
             _spriteBatch.End();

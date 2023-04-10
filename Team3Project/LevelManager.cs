@@ -73,8 +73,6 @@ namespace Team3Project
             Rectangle enemy2Rect = new Rectangle(1000, 300, enemyDefaults[EnemyTypes.Ranged][Stats.Width], enemyDefaults[EnemyTypes.Ranged][Stats.Height]);
             enemy2 = new RangedEnemy(enemyDefaults[EnemyTypes.Ranged][Stats.Health], enemyDefaults[EnemyTypes.Ranged][Stats.MoveSpeed], enemy2Rect, enemyDefaults[EnemyTypes.Ranged][Stats.AttackDelay], enemyDefaults[EnemyTypes.Ranged][Stats.ProjectileSpeed], rangedTexture, pTexture);
             AddEnemy(enemy2);
-
-            //stageObjectManager = new StageObjectManager();
         }
 
         /// <summary>

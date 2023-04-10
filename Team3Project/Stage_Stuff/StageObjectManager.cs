@@ -27,6 +27,7 @@ namespace Team3Project.Stage_Stuff
 
         // Organizing fields
         private List<StageObject> obstructiveStageObjects;
+        private List<Rectangle> emptyTiles;
         private Dictionary<string, TileTypes[,]> levelLayouts;
         private TileTypes[,] currentLayout;
         
@@ -63,6 +64,12 @@ namespace Team3Project.Stage_Stuff
             get { return obstructiveStageObjects; }
         }
 
+        // Get-only property for the list of empty tiles
+        public List<Rectangle> EmptyTiles
+        { 
+            get { return emptyTiles; } 
+        }
+
         // Get-only property for the elevator
         public Elevator Elevator
         {
@@ -75,6 +82,7 @@ namespace Team3Project.Stage_Stuff
             rng = new Random();
             
             obstructiveStageObjects = new List<StageObject>();
+            emptyTiles = new List<Rectangle>();
             levelLayouts = new Dictionary<string, TileTypes[,]>();
 
             bottomBounds = new HiddenStageObject(1500, 200, 0, 901);
@@ -300,8 +308,10 @@ namespace Team3Project.Stage_Stuff
                 }
             }
 
+            emptyTiles.Clear();
+
             // Choosing a new layout at random
-            int layoutChoice = rng.Next(0, 4);
+            int layoutChoice = rng.Next(1, 4);
 
             if (layoutChoice == 0) 
             {
@@ -328,6 +338,10 @@ namespace Team3Project.Stage_Stuff
                     if (currentLayout[j, i] == TileTypes.blocked)
                     {
                         obstructiveStageObjects.Add(new BlockedTile((180 + 114 * j), (100 + 100 * i), blockedTileTexture));
+                    }
+                    else if ((currentLayout[j, i] == TileTypes.empty))
+                    {
+                        emptyTiles.Add(new Rectangle((180 + 114 * j), (100 + 100 * i), 114, 100));
                     }
                 }
             }
