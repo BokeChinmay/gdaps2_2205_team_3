@@ -34,7 +34,11 @@ namespace Team3Project.Stage_Stuff
             isOpen = false;
         }
 
-        // Draw method
+        /// <summary>
+        /// Draws the elevator based on whether it's open
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (isOpen) 
@@ -47,7 +51,10 @@ namespace Team3Project.Stage_Stuff
             }
         }
 
-        // Calls an event if the player enters the elevator while it's open
+        /// <summary>
+        /// Calls an event if the player enters the elevator while it's open
+        /// </summary>
+        /// <param name="player"> takes in the player to check if they're intersecting the elevator </param>
         public void PlayerEnters(Player player)
         {
             if (isOpen && player.Collision.Intersects(dimensions))
