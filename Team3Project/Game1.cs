@@ -56,6 +56,7 @@ namespace Team3Project
         private Texture2D titleOption1;
         private Texture2D titleOption2;
         private Texture2D controls;
+        private Texture2D pause;
         private int titleOption;
 
         public Game1()
@@ -105,6 +106,7 @@ namespace Team3Project
             titleOption1 = this.Content.Load<Texture2D>("Main_Menu_1");
             titleOption2 = this.Content.Load<Texture2D>("Main_Menu_2");
             controls = this.Content.Load<Texture2D>("Controls_v2");
+            pause = this.Content.Load<Texture2D>("Pause_Menu");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -187,6 +189,11 @@ namespace Team3Project
                     playerEntity.RangedAttack(kbState, _spriteBatch);
 
                     LevelManager.Update(playerEntity.Collision, gameTime);
+
+                    if (kbState.IsKeyUp(Keys.P) && prevKbState.IsKeyDown(Keys.P))
+                    {
+                        _gameState = GameState.Pause;
+                    }
                 }
                 else
                 {
@@ -223,6 +230,21 @@ namespace Team3Project
                 if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
                 {
                     _gameState = GameState.Menu;
+                }
+            }
+            else if (_gameState == GameState.Pause)
+            {
+                if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
+                {
+                    _gameState = GameState.GamePlaying;
+                }
+                if (kbState.IsKeyUp(Keys.Q) && prevKbState.IsKeyDown(Keys.Q))
+                {
+                    _gameState = GameState.Menu;
+                }
+                if (kbState.IsKeyUp(Keys.S) && prevKbState.IsKeyDown(Keys.S))
+                {
+                    SaveData();
                 }
             }
 
@@ -277,6 +299,7 @@ namespace Team3Project
                 _spriteBatch.Begin();
 
                 _spriteBatch.Draw(controls, new Rectangle(273, 200, 954, 378), Color.White);
+                _spriteBatch.Draw(pause, new Rectangle(365, 578, 770, 130), Color.White);
             }
 
             _spriteBatch.End();
