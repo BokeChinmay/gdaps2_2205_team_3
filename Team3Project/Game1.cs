@@ -179,6 +179,7 @@ namespace Team3Project
 
             // TODO: Add your update logic here
 
+            mouseState = Mouse.GetState();
             kbState = Keyboard.GetState();
             
             if (_gameState == GameState.GamePlaying)
@@ -189,8 +190,8 @@ namespace Team3Project
                     playerEntity.Move(kbState);
 
                     _spriteBatch.Begin();
-                    playerEntity.MeleeAttack(kbState, _spriteBatch);
-                    playerEntity.RangedAttack(kbState, _spriteBatch);
+                    playerEntity.MeleeAttack(mouseState, kbState, _spriteBatch);
+                    playerEntity.RangedAttack(mouseState, kbState, _spriteBatch);
                     _spriteBatch.End();
 
                     LevelManager.Update(playerEntity.Collision, gameTime);
@@ -255,6 +256,7 @@ namespace Team3Project
                 }
             }
 
+            prevMouseState = mouseState;
             prevKbState = kbState;
 
             base.Update(gameTime);

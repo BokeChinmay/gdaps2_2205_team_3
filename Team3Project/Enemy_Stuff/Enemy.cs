@@ -166,8 +166,8 @@ namespace Team3Project.Enemy_Stuff
             Vector2 unitVector = displacement / distance;
 
             //Multiply by speed and move
-            int yMotion = (int)(unitVector.Y * moveSpeed);
-            int xMotion = (int)(unitVector.X * moveSpeed);
+            int yMotion = -(int)(unitVector.Y * moveSpeed);
+            int xMotion = -(int)(unitVector.X * moveSpeed);
 
             //Check if y motion should be applied
             if (yMotion < 0 && topBlocked)
@@ -204,8 +204,8 @@ namespace Team3Project.Enemy_Stuff
                     yMotion = (yMotion / Math.Abs(yMotion)) * moveSpeed;
                 }
             }
-            collision.Y -= yMotion;
-            collision.X -= xMotion;
+            collision.Y += yMotion;
+            collision.X += xMotion;
         }
 
         //Name: DistanceFromPlayer

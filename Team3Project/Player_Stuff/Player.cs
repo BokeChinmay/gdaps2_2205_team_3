@@ -15,7 +15,8 @@ namespace Team3Project.Player_Stuff
         private Texture2D playerTexture;
         private Texture2D meleeTexture;
         private Texture2D bulletTexture;
-        private KeyboardState kbState;
+        private KeyboardState prevKbState;
+        private MouseState prevMouseState;
         private Random rng = new Random();
 
         private int meleeDamage = 50;
@@ -82,24 +83,78 @@ namespace Team3Project.Player_Stuff
             }
         }
 
-        public void MeleeAttack(KeyboardState kbState, SpriteBatch spriteBatch)
+        public void MeleeAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
-            if(kbState.IsKeyDown(Keys.Space))
+            prevMouseState = Mouse.GetState();
+            prevKbState = Keyboard.GetState();
+
+            if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
             {
-                Bullet bullet = new Bullet(10, 5, 5, new Rectangle(collision.X, collision.Y, 30, 30), meleeDamage, bulletTexture);
-                bullet.Update();
-                bullet.Draw(spriteBatch, SpriteEffects.None);
+                if(prevKbState.IsKeyDown(Keys.W) && kbState.IsKeyDown(Keys.W))
+                {
+                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.None);
+                }
+                else if (prevKbState.IsKeyDown(Keys.S) && kbState.IsKeyDown(Keys.S))
+                {
+                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y + 30, 30, 30), meleeDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.FlipVertically);
+                }
+                else if (prevKbState.IsKeyDown(Keys.A) && kbState.IsKeyDown(Keys.A))
+                {
+                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.FlipHorizontally);
+                }
+                else if (prevKbState.IsKeyDown(Keys.D) && kbState.IsKeyDown(Keys.D))
+                {
+                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.None);
+                }
             }
+
+            prevMouseState = mouseState;
+            prevKbState = kbState;
         }
 
-        public void RangedAttack(KeyboardState kbState, SpriteBatch spriteBatch)
+        public void RangedAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
-            if(kbState.IsKeyDown(Keys.LeftShift))
+            prevMouseState = Mouse.GetState();
+            prevKbState = Keyboard.GetState();
+
+            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
             {
-                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(collision.X, collision.Y, 30, 30), projectileDamage, bulletTexture);
-                bullet.Update();
-                bullet.Draw(spriteBatch, SpriteEffects.None);
+                if (prevKbState.IsKeyDown(Keys.W) && kbState.IsKeyUp(Keys.W))
+                {
+                    Bullet bullet = new Bullet(10, 0, collision.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.None);
+                }
+                else if (prevKbState.IsKeyDown(Keys.S) && kbState.IsKeyUp(Keys.S))
+                {
+                    Bullet bullet = new Bullet(10, 0, collision.Y, new Rectangle(collision.X, collision.Y + 30, 30, 30), projectileDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.None);
+                }
+                else if (prevKbState.IsKeyDown(Keys.A) && kbState.IsKeyUp(Keys.A))
+                {
+                    Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.None);
+                }
+                else if (prevKbState.IsKeyDown(Keys.D) && kbState.IsKeyUp(Keys.D))
+                {
+                    Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
+                    bullet.Update();
+                    bullet.Draw(spriteBatch, SpriteEffects.None);
+                }   
             }
+
+            prevMouseState = mouseState;
+            prevKbState = kbState;
         }
 
         /// <summary>
