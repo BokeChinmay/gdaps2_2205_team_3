@@ -18,11 +18,27 @@ namespace Team3Project.Player_Stuff
         private KeyboardState kbState;
         private Random rng = new Random();
 
+        private int meleeDamage = 50;
+        private int projectileDamage = 20;
+
         //Consts
         const int PlayerOffsetX = 4;
         const int PlayerOffsetY = 9;
         const int PlayerRectHeight = 26;
         const int PlayerRectWidth = 32;
+
+        //Properties
+        public int MeleeDamage
+        {
+            get { return meleeDamage; }
+            set { meleeDamage = value; }
+        }
+
+        public int ProjectileDamage
+        {
+            get { return projectileDamage; }
+            set { projectileDamage = value; }
+        }
 
         /// <summary>
         /// Parameterized Constructor
@@ -70,7 +86,7 @@ namespace Team3Project.Player_Stuff
         {
             if(kbState.IsKeyDown(Keys.Space))
             {
-                Bullet bullet = new Bullet(10, 5, 5, new Rectangle(collision.X, collision.Y, 30, 30), 50);
+                Bullet bullet = new Bullet(10, 5, 5, new Rectangle(collision.X, collision.Y, 30, 30), meleeDamage);
                 bullet.Update();
                 bullet.Draw(spriteBatch, SpriteEffects.None, meleeTexture);
             }
@@ -80,7 +96,7 @@ namespace Team3Project.Player_Stuff
         {
             if(kbState.IsKeyDown(Keys.LeftShift))
             {
-                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(collision.X, collision.Y, 30, 30), 20);
+                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(collision.X, collision.Y, 30, 30), projectileDamage);
                 bullet.Update();
                 bullet.Draw(spriteBatch, SpriteEffects.None, bulletTexture);
             }
