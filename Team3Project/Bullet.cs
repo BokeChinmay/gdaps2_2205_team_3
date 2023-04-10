@@ -29,6 +29,8 @@ namespace Team3Project
             collision.X += (int)direction.X;
             collision.Y += (int)direction.Y;
 
+            //There's a method in StageObjectManager now that checks this based on collision boxes
+
             //Check if the direction the bullet is moving in is blocked. If so, set active to false
             if (direction.X > 0 && rightBlocked)
             {

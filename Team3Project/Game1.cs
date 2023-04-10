@@ -19,8 +19,6 @@ namespace Team3Project
         Pause
     }
 
-    public delegate void NewLevelDelegate();
-
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -83,6 +81,8 @@ namespace Team3Project
             rng = new Random();
             LevelManager.Initialize();
 
+            // When this method is up and running, uncomment this so that it's called
+            // when the player enters a new level
             //stageObjectManager.Elevator.NewLevel += LevelManager.LoadNewLevel;
 
             base.Initialize();
@@ -170,6 +170,19 @@ namespace Team3Project
                     playerEntity = new Player(playerHealth, playerMoveSpeed,
                                    new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
                 }
+                streamReader.Close();
+            }
+            catch (Exception ex) { }
+        }
+
+        public void ClearData()
+        {
+            StreamWriter streamWriter = null;
+            try
+            {
+                streamWriter = new StreamWriter("../../../savedData.txt");
+                streamWriter.WriteLine("empty");
+                streamWriter.Close();
             }
             catch (Exception ex) { }
         }

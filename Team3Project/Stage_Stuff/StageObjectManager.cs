@@ -285,7 +285,13 @@ namespace Team3Project.Stage_Stuff
             }
             foreach (Projectile p in LevelManager.ProjectileList)
             {
-                CheckBlockedSides(p);
+                foreach(StageObject so in ObstructiveStageObjects)
+                {
+                    if (p.Collision.Intersects(so.Dimensions))
+                    {
+                        p.Active = false;
+                    }
+                }
             }
             CheckBlockedSides(player);
 

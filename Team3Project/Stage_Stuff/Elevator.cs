@@ -16,7 +16,7 @@ namespace Team3Project.Stage_Stuff
         private Texture2D closed;
         private bool isOpen;
 
-        public event NewLevelDelegate NewLevel;
+        public event Action NewLevel;
 
         // Read-and-write propety for whether the elevator is open
         public bool IsOpen

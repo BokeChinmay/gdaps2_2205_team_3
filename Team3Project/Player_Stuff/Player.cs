@@ -28,6 +28,8 @@ namespace Team3Project.Player_Stuff
         private int meleeDamage = 50;
         private int projectileDamage = 20;
 
+        public event Action gameOver;
+
         //Consts
         const int PlayerOffsetX = 4;
         const int PlayerOffsetY = 9;
@@ -236,7 +238,7 @@ namespace Team3Project.Player_Stuff
         {
             if(Health < 0)
             {
-                Active = false;
+                gameOver();
             }
 
             // When adding attack capabilities to the player, make left click shoot and right click melee
