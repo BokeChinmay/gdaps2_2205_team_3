@@ -15,7 +15,7 @@ namespace Team3Project
     internal class EnemyBullet : Bullet
     {
 
-        public EnemyBullet(int speed, float xDirection, float yDirection, Rectangle collision, int damage) : base(speed, xDirection, yDirection, collision, damage)
+        public EnemyBullet(int speed, float xDirection, float yDirection, Rectangle collision, int damage, Texture2D texture) : base(speed, xDirection, yDirection, collision, damage, texture)
         {
             
         }

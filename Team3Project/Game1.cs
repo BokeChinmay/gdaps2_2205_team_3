@@ -15,8 +15,11 @@ namespace Team3Project
         Menu,
         GamePlaying,
         GameOver,
-        Controls
+        Controls,
+        Pause
     }
+
+    public delegate void NewLevelDelegate();
 
     public class Game1 : Game
     {
@@ -34,7 +37,10 @@ namespace Team3Project
         
         private Texture2D mainCharacter;
         private Player playerEntity;
-        
+        private Texture2D playerMeleeTexture;
+        private Texture2D playerBulletTexture;
+
+
         private Texture2D damageBoost;
         private Texture2D speedBoost;
         private Item items;
@@ -52,6 +58,7 @@ namespace Team3Project
         private Texture2D titleOption1;
         private Texture2D titleOption2;
         private Texture2D controls;
+        private Texture2D pause;
         private int titleOption;
 
         public Game1()
@@ -82,7 +89,9 @@ namespace Team3Project
         {
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
-            playerEntity = new Player(100, 5, new Rectangle(185, 864, 32, 32), mainCharacter, _spriteBatch);
+            playerMeleeTexture = this.Content.Load<Texture2D>("MeleeAttack");
+            playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
+            playerEntity = new Player(100, 5, new Rectangle(185, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
@@ -99,6 +108,7 @@ namespace Team3Project
             titleOption1 = this.Content.Load<Texture2D>("Main_Menu_1");
             titleOption2 = this.Content.Load<Texture2D>("Main_Menu_2");
             controls = this.Content.Load<Texture2D>("Controls_v2");
+            pause = this.Content.Load<Texture2D>("Pause_Menu");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -154,7 +164,8 @@ namespace Team3Project
                 string[] playerPositions = streamReader.ReadLine().Split(',');
                 int playerPosX = int.Parse(playerPositions[0]);
                 int playerPosY = int.Parse(playerPositions[1]);
-                playerEntity = new Player(playerHealth, playerMoveSpeed, new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, _spriteBatch);
+                playerEntity = new Player(playerHealth, playerMoveSpeed, 
+                               new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
                 
             }
@@ -168,6 +179,7 @@ namespace Team3Project
 
             // TODO: Add your update logic here
 
+            mouseState = Mouse.GetState();
             kbState = Keyboard.GetState();
             
             if (_gameState == GameState.GamePlaying)
@@ -176,9 +188,20 @@ namespace Team3Project
                 {
                     stageObjectManager.Update(LevelManager.EnemyList, playerEntity);
                     playerEntity.Move(kbState);
-                    playerEntity.RangedAttack(kbState);
+
+                    _spriteBatch.Begin();
+                    playerEntity.MeleeAttack(mouseState, kbState, _spriteBatch);
+                    playerEntity.RangedAttack(mouseState, kbState, _spriteBatch);
+                    _spriteBatch.End();
 
                     LevelManager.Update(playerEntity.Collision, gameTime);
+
+                    stageObjectManager.Elevator.PlayerEnters(playerEntity);
+
+                    if (kbState.IsKeyUp(Keys.P) && prevKbState.IsKeyDown(Keys.P))
+                    {
+                        _gameState = GameState.Pause;
+                    }
                 }
                 else
                 {
@@ -217,7 +240,23 @@ namespace Team3Project
                     _gameState = GameState.Menu;
                 }
             }
+            else if (_gameState == GameState.Pause)
+            {
+                if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
+                {
+                    _gameState = GameState.GamePlaying;
+                }
+                if (kbState.IsKeyUp(Keys.Q) && prevKbState.IsKeyDown(Keys.Q))
+                {
+                    _gameState = GameState.Menu;
+                }
+                if (kbState.IsKeyUp(Keys.S) && prevKbState.IsKeyDown(Keys.S))
+                {
+                    SaveData();
+                }
+            }
 
+            prevMouseState = mouseState;
             prevKbState = kbState;
 
             base.Update(gameTime);
@@ -261,6 +300,15 @@ namespace Team3Project
                 _spriteBatch.Begin();
 
                 _spriteBatch.Draw(controls, new Rectangle(273, 274, 954, 378), Color.White);
+            }
+            else if (_gameState == GameState.Pause)
+            {
+                GraphicsDevice.Clear(Color.Black);
+
+                _spriteBatch.Begin();
+
+                _spriteBatch.Draw(controls, new Rectangle(273, 200, 954, 378), Color.White);
+                _spriteBatch.Draw(pause, new Rectangle(365, 578, 770, 130), Color.White);
             }
 
             _spriteBatch.End();

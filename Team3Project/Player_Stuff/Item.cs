@@ -18,6 +18,8 @@ namespace Team3Project.Player_Stuff
     {
         //loads in the current texture of the item
         private Texture2D itemTexture;
+
+        private ItemType itemType;
         
 
         //for now we will make the item's location be the center of the room hopefully we can introduce enemy drops at a later date
@@ -33,24 +35,32 @@ namespace Team3Project.Player_Stuff
         public Item(int health, int moveSpeed, Rectangle collision, Texture2D itemTexture , ItemType itemType) : base (health, moveSpeed, collision)
         {
             this.itemTexture = itemTexture;
+            this.itemType = itemType;
         }
 
-        
+
         public void CheckCollision(Entity check)
         {
             if (check.Collision.Intersects(collision))
             {
                 Active = false;
             }
+
+            if(itemType == ItemType.SpeedBoost)
+            {
+                if(check is Player)
+                {
+                    check = (Player)check;
+                }
+            }
         }
-    
+
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             while (Active)
             {
-                spriteBatch.Draw(itemTexture, Collision, Color.White);
-                    
+                spriteBatch.Draw(itemTexture, Collision, Color.White);  
             }
         }
 

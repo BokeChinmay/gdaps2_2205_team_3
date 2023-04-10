@@ -166,8 +166,8 @@ namespace Team3Project.Enemy_Stuff
             Vector2 unitVector = displacement / distance;
 
             //Multiply by speed and move
-            int yMotion = (int)(unitVector.Y * moveSpeed);
-            int xMotion = (int)(unitVector.X * moveSpeed);
+            int yMotion = -(int)(unitVector.Y * moveSpeed);
+            int xMotion = -(int)(unitVector.X * moveSpeed);
 
             //Check if y motion should be applied
             if (yMotion < 0 && topBlocked)
@@ -204,8 +204,8 @@ namespace Team3Project.Enemy_Stuff
                     yMotion = (yMotion / Math.Abs(yMotion)) * moveSpeed;
                 }
             }
-            collision.Y -= yMotion;
-            collision.X -= xMotion;
+            collision.Y += yMotion;
+            collision.X += xMotion;
         }
 
         //Name: DistanceFromPlayer
@@ -241,9 +241,9 @@ namespace Team3Project.Enemy_Stuff
             health -= amount;
         }
 
-        public void Shoot(int bulletSpeed, Vector2 playerPos, int bulletDamage)
+        public void Shoot(int bulletSpeed, Vector2 playerPos, int bulletDamage, Texture2D pTexture)
         {
-            LevelManager.AddProjectile(new EnemyBullet(bulletSpeed, DirectionToPlayer(playerPos).X, DirectionToPlayer(playerPos).Y, new Rectangle(collision.X, collision.Y, 20, 20), bulletDamage));
+            LevelManager.AddProjectile(new EnemyBullet(bulletSpeed, DirectionToPlayer(playerPos).X, DirectionToPlayer(playerPos).Y, new Rectangle(collision.X, collision.Y, 20, 20), bulletDamage, pTexture));
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
