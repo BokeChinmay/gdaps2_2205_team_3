@@ -15,7 +15,8 @@ namespace Team3Project
         Menu,
         GamePlaying,
         GameOver,
-        Controls
+        Controls,
+        Pause
     }
 
     public class Game1 : Game
@@ -268,6 +269,14 @@ namespace Team3Project
                 _spriteBatch.Begin();
 
                 _spriteBatch.Draw(controls, new Rectangle(273, 274, 954, 378), Color.White);
+            }
+            else if (_gameState == GameState.Pause)
+            {
+                GraphicsDevice.Clear(Color.Black);
+
+                _spriteBatch.Begin();
+
+                _spriteBatch.Draw(controls, new Rectangle(273, 200, 954, 378), Color.White);
             }
 
             _spriteBatch.End();

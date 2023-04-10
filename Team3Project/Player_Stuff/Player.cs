@@ -86,9 +86,9 @@ namespace Team3Project.Player_Stuff
         {
             if(kbState.IsKeyDown(Keys.Space))
             {
-                Bullet bullet = new Bullet(10, 5, 5, new Rectangle(collision.X, collision.Y, 30, 30), meleeDamage);
+                Bullet bullet = new Bullet(10, 5, 5, new Rectangle(collision.X, collision.Y, 30, 30), meleeDamage, bulletTexture);
                 bullet.Update();
-                bullet.Draw(spriteBatch, SpriteEffects.None, meleeTexture);
+                bullet.Draw(spriteBatch, SpriteEffects.None);
             }
         }
 
@@ -96,9 +96,9 @@ namespace Team3Project.Player_Stuff
         {
             if(kbState.IsKeyDown(Keys.LeftShift))
             {
-                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(collision.X, collision.Y, 30, 30), projectileDamage);
+                Bullet bullet = new Bullet(10, collision.X, collision.Y, new Rectangle(collision.X, collision.Y, 30, 30), projectileDamage, bulletTexture);
                 bullet.Update();
-                bullet.Draw(spriteBatch, SpriteEffects.None, bulletTexture);
+                bullet.Draw(spriteBatch, SpriteEffects.None);
             }
         }
 

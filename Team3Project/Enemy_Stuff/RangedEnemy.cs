@@ -16,6 +16,7 @@ namespace Team3Project.Enemy_Stuff
         EnemyState currentState;
 
         Texture2D rangedTexture;
+        Texture2D pTexture;
 
         //Constant bullet speed
         const int BULLET_SPEED = 10;
@@ -48,20 +49,21 @@ namespace Team3Project.Enemy_Stuff
         const int VERTICAL_BUFFER = 0;
 
         // Parameterized constructor
-        public RangedEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, int projectileSpeed, Texture2D rangedTexture) : base(health, moveSpeed, collision, rangedTexture)
+        public RangedEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, int projectileSpeed, Texture2D rangedTexture, Texture2D pTexture) : base(health, moveSpeed, collision, rangedTexture)
         {
             this.attackDelay = attackDelay;
             this.projectileSpeed = projectileSpeed;
             currentState = EnemyState.Idle;
             type = EnemyTypes.Ranged;
             this.rangedTexture = rangedTexture;
+            this.pTexture = pTexture;
             attackTimer = 0;
 
             //Initialize animation
             fps = 5.0;
             timePerFrame = 1.0 / fps;
             frame = 1;
-            flipsprite = SpriteEffects.None;
+            flipsprite = SpriteEffects.None;            
         }
 
         /// <summary>
@@ -116,7 +118,7 @@ namespace Team3Project.Enemy_Stuff
                     break;
                 //Create a bullet and move to recovery state
                 case EnemyState.Attacking:
-                    Shoot(BULLET_SPEED, playerPos, BULLET_DAMAGE);
+                    Shoot(BULLET_SPEED, playerPos, BULLET_DAMAGE, pTexture);
                     downTimer = DOWNTIME;
                     currentState = EnemyState.Recovering;
                     break;
