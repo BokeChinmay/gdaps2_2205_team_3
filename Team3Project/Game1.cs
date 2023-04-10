@@ -82,7 +82,7 @@ namespace Team3Project
         {
             // TODO: use this.Content to load your game content here
             mainCharacter = this.Content.Load<Texture2D>("Meo");
-            playerEntity = new Player(100, 5, new Rectangle(185, 864, 32, 32), mainCharacter);
+            playerEntity = new Player(100, 5, new Rectangle(185, 864, 32, 32), mainCharacter, _spriteBatch);
 
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
@@ -154,7 +154,7 @@ namespace Team3Project
                 string[] playerPositions = streamReader.ReadLine().Split(',');
                 int playerPosX = int.Parse(playerPositions[0]);
                 int playerPosY = int.Parse(playerPositions[1]);
-                playerEntity = new Player(playerHealth, playerMoveSpeed, new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter);
+                playerEntity = new Player(playerHealth, playerMoveSpeed, new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, _spriteBatch);
 
                 
             }

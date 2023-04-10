@@ -23,8 +23,8 @@ namespace Team3Project.Player_Stuff
         const int PlayerRectWidth = 32;
 
         //Bullet Textures
-        SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
-        Texture2D playerBulletTexture = this.Content.Load<Texture2D>("")
+        SpriteBatch spriteBatch;
+        //Texture2D playerBulletTexture = this.Content.Load<Texture2D>("");
 
         /// <summary>
         /// Parameterized Constructor
@@ -33,10 +33,11 @@ namespace Team3Project.Player_Stuff
         /// <param name="moveSpeed"></param>
         /// <param name="collision"></param>
         /// <param name="playerTexture"></param>
-        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture) 
+        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture, SpriteBatch spriteBatch) 
             : base(health, moveSpeed, collision)
         {
             this.playerTexture = playerTexture;
+            this.spriteBatch = spriteBatch;
         }
 
         /// <summary>
