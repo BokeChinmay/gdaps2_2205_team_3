@@ -16,6 +16,7 @@ namespace Team3Project.Player_Stuff
         private Texture2D meleeTexture;
         private Texture2D bulletTexture;
         private KeyboardState prevKbState;
+        private MouseState prevMouseState;
         private Random rng = new Random();
 
         private int meleeDamage = 50;
@@ -82,11 +83,12 @@ namespace Team3Project.Player_Stuff
             }
         }
 
-        public void MeleeAttack(KeyboardState kbState, SpriteBatch spriteBatch)
+        public void MeleeAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
+            prevMouseState = Mouse.GetState();
             prevKbState = Keyboard.GetState();
 
-            if(kbState.IsKeyDown(Keys.Space) && prevKbState.IsKeyUp(Keys.Space))
+            if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
             {
                 if(prevKbState.IsKeyDown(Keys.W) && kbState.IsKeyDown(Keys.W))
                 {
@@ -114,14 +116,16 @@ namespace Team3Project.Player_Stuff
                 }
             }
 
+            prevMouseState = mouseState;
             prevKbState = kbState;
         }
 
-        public void RangedAttack(KeyboardState kbState, SpriteBatch spriteBatch)
+        public void RangedAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
+            prevMouseState = Mouse.GetState();
             prevKbState = Keyboard.GetState();
 
-            if (kbState.IsKeyDown(Keys.LeftShift) && prevKbState.IsKeyUp(Keys.LeftShift))
+            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
             {
                 if (prevKbState.IsKeyDown(Keys.W) && kbState.IsKeyUp(Keys.W))
                 {
@@ -146,10 +150,10 @@ namespace Team3Project.Player_Stuff
                     Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
-                }
-                    
+                }   
             }
 
+            prevMouseState = mouseState;
             prevKbState = kbState;
         }
 
