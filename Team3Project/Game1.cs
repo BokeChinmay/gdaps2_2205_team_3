@@ -19,6 +19,8 @@ namespace Team3Project
         Pause
     }
 
+    public delegate void NewLevelDelegate();
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -192,6 +194,8 @@ namespace Team3Project
                     _spriteBatch.End();
 
                     LevelManager.Update(playerEntity.Collision, gameTime);
+
+                    stageObjectManager.Elevator.PlayerEnters(playerEntity);
 
                     if (kbState.IsKeyUp(Keys.P) && prevKbState.IsKeyDown(Keys.P))
                     {

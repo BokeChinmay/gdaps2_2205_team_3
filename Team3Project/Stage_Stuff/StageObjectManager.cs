@@ -43,10 +43,21 @@ namespace Team3Project.Stage_Stuff
         private VisualBarrier backWall;
         private HiddenStageObject bottomBounds;
 
-        //Get-only property for obstructive stage objects
+        // Fields for interactive stage elements
+        private Texture2D elevatorClosed;
+        private Texture2D elevatorOpen;
+        private Elevator elevator;
+
+        // Get-only property for obstructive stage objects
         public List<StageObject> ObstructiveStageObjects
         {
             get { return obstructiveStageObjects; }
+        }
+
+        // Get-only property for the elevator
+        public Elevator Elevator
+        {
+            get { return elevator; }
         }
 
         // Default constructor
@@ -88,6 +99,12 @@ namespace Team3Project.Stage_Stuff
                 (leftBuffer.RightEdge, backWallTexture, true);
             obstructiveStageObjects.Add(backWall);
 
+            // Loading the and initializaing the elevator
+            elevatorOpen = content.Load<Texture2D>("Elevator_Open");
+            elevatorClosed = content.Load<Texture2D>("Elevator_Closed");
+
+            elevator = new Elevator(elevatorOpen, elevatorClosed);
+
             // Loading the blocked tile texture
             blockedTileTexture = content.Load<Texture2D>("BlockedTile");
 
@@ -127,6 +144,8 @@ namespace Team3Project.Stage_Stuff
             {
                 levelLayouts.Add("Empty Layout", new TileTypes[10, 8]);
             }
+
+            elevator.NewLevel += GenerateLevel;
         }
 
         /// <summary>
@@ -139,6 +158,8 @@ namespace Team3Project.Stage_Stuff
             {
                 s.Draw(_spriteBatch, SpriteEffects.None);
             }
+
+            elevator.Draw(_spriteBatch, SpriteEffects.None);
         }
 
         /// <summary>
@@ -238,6 +259,8 @@ namespace Team3Project.Stage_Stuff
                 CheckBlockedSides(p);
             }
             CheckBlockedSides(player);
+
+            elevator.PlayerEnters(player);
         }
 
         /// <summary>
