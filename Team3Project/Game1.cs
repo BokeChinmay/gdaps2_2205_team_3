@@ -138,6 +138,7 @@ namespace Team3Project
             try
             {
                 streamWriter = new StreamWriter("../../../savedData.txt");
+                streamWriter.WriteLine("Data present");
                 streamWriter.WriteLine(playerEntity.Health);
                 streamWriter.WriteLine(playerEntity.MoveSpeed);
                 streamWriter.WriteLine(playerEntity.Collision.X + ", " + playerEntity.Collision.Y);
@@ -155,19 +156,20 @@ namespace Team3Project
             try
             {
                 streamReader = new StreamReader("../../../savedData.txt");
-                int playerHealth = int.Parse(streamReader.ReadLine());
-                int playerMoveSpeed = int.Parse(streamReader.ReadLine());
-                //--------------------------------
-                // Temporary code adjusting player move speed for testing
-                playerMoveSpeed = 5;
-                //--------------------------------
-                string[] playerPositions = streamReader.ReadLine().Split(',');
-                int playerPosX = int.Parse(playerPositions[0]);
-                int playerPosY = int.Parse(playerPositions[1]);
-                playerEntity = new Player(playerHealth, playerMoveSpeed, 
-                               new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
-
-                
+                if (streamReader.ReadLine() != "empty")
+                {
+                    int playerHealth = int.Parse(streamReader.ReadLine());
+                    int playerMoveSpeed = int.Parse(streamReader.ReadLine());
+                    //--------------------------------
+                    // Temporary code adjusting player move speed for testing
+                    playerMoveSpeed = 5;
+                    //--------------------------------
+                    string[] playerPositions = streamReader.ReadLine().Split(',');
+                    int playerPosX = int.Parse(playerPositions[0]);
+                    int playerPosY = int.Parse(playerPositions[1]);
+                    playerEntity = new Player(playerHealth, playerMoveSpeed,
+                                   new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
+                }
             }
             catch (Exception ex) { }
         }

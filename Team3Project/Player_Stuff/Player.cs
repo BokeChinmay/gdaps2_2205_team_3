@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Player_Stuff
 {
+    enum LastKbState
+    {
+        W, A, S, D
+    }
+
     internal class Player : Entity, IDamageable
     {
         //Fields
@@ -18,6 +23,7 @@ namespace Team3Project.Player_Stuff
         private KeyboardState prevKbState;
         private MouseState prevMouseState;
         private Random rng = new Random();
+        private LastKbState lastKbState;
 
         private int meleeDamage = 50;
         private int projectileDamage = 20;
@@ -54,6 +60,7 @@ namespace Team3Project.Player_Stuff
             this.playerTexture = playerTexture;
             this.meleeTexture = meleeTexture;
             this.bulletTexture = bulletTexture;
+            lastKbState = LastKbState.W;
         }
 
         /// <summary>
@@ -65,50 +72,54 @@ namespace Team3Project.Player_Stuff
             if (kbState.IsKeyDown(Keys.A) && !leftBlocked)
             {
                 collision.X-= moveSpeed;
+                lastKbState = LastKbState.A;
             }
 
             if (kbState.IsKeyDown(Keys.D) && !rightBlocked)
             {
                 collision.X+= moveSpeed;
+                lastKbState = LastKbState.D;
             }
 
             if (kbState.IsKeyDown(Keys.S) && !bottomBlocked)
             {
                 collision.Y+= moveSpeed;
+                lastKbState = LastKbState.S;
             }
 
             if (kbState.IsKeyDown(Keys.W) && !topBlocked)
             {
                 collision.Y-= moveSpeed;
+                lastKbState = LastKbState.W;
             }
         }
 
         public void MeleeAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
-            prevMouseState = Mouse.GetState();
-            prevKbState = Keyboard.GetState();
+            prevMouseState = mouseState;
+            prevKbState = kbState;
 
             if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
             {
-                if(prevKbState.IsKeyDown(Keys.W) && kbState.IsKeyDown(Keys.W))
+                if(lastKbState == LastKbState.W)
                 {
                     Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
-                else if (prevKbState.IsKeyDown(Keys.S) && kbState.IsKeyDown(Keys.S))
+                else if (lastKbState == LastKbState.S)
                 {
                     Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y + 30, 30, 30), meleeDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.FlipVertically);
                 }
-                else if (prevKbState.IsKeyDown(Keys.A) && kbState.IsKeyDown(Keys.A))
+                else if (lastKbState == LastKbState.A)
                 {
                     Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.FlipHorizontally);
                 }
-                else if (prevKbState.IsKeyDown(Keys.D) && kbState.IsKeyDown(Keys.D))
+                else if (lastKbState == LastKbState.D)
                 {
                     Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
                     bullet.Update();
@@ -122,30 +133,30 @@ namespace Team3Project.Player_Stuff
 
         public void RangedAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
-            prevMouseState = Mouse.GetState();
-            prevKbState = Keyboard.GetState();
+            prevMouseState = mouseState;
+            prevKbState = kbState;
 
             if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
             {
-                if (prevKbState.IsKeyDown(Keys.W) && kbState.IsKeyUp(Keys.W))
+                if (lastKbState == LastKbState.W)
                 {
                     Bullet bullet = new Bullet(10, 0, collision.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
-                else if (prevKbState.IsKeyDown(Keys.S) && kbState.IsKeyUp(Keys.S))
+                else if (lastKbState == LastKbState.S)
                 {
                     Bullet bullet = new Bullet(10, 0, collision.Y, new Rectangle(collision.X, collision.Y + 30, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
-                else if (prevKbState.IsKeyDown(Keys.A) && kbState.IsKeyUp(Keys.A))
+                else if (lastKbState == LastKbState.A)
                 {
                     Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
-                else if (prevKbState.IsKeyDown(Keys.D) && kbState.IsKeyUp(Keys.D))
+                else if (lastKbState == LastKbState.D)
                 {
                     Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
