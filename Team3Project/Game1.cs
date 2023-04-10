@@ -183,8 +183,11 @@ namespace Team3Project
                 {
                     stageObjectManager.Update(LevelManager.EnemyList, playerEntity);
                     playerEntity.Move(kbState);
+
+                    _spriteBatch.Begin();
                     playerEntity.MeleeAttack(kbState, _spriteBatch);
                     playerEntity.RangedAttack(kbState, _spriteBatch);
+                    _spriteBatch.End();
 
                     LevelManager.Update(playerEntity.Collision, gameTime);
                 }
