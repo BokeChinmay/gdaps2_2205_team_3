@@ -263,7 +263,7 @@ namespace Team3Project.Player_Stuff
                              );
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             throw new NotImplementedException();
         }
@@ -279,6 +279,8 @@ namespace Team3Project.Player_Stuff
             {
                 currentIFrames -= 1;
             }
+
+            Move(kbState);
 
             // When adding attack capabilities to the player, make left click shoot and right click melee
         }
