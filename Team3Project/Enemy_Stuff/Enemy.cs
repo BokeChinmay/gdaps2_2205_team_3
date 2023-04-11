@@ -34,7 +34,7 @@ namespace Team3Project.Enemy_Stuff
         //Vulnerability/Invincibility fields and consts
         protected VulnerabilityState vulnerabilityState;
         //Duration of invincibility
-        protected const int INVINCIBILITY_DURATION = 10;
+        protected const int INVINCIBILITY_DURATION = 30;
         //Invincibility timer, designates the number of invincibility frames left
         protected int invincibilityTimer;
 
