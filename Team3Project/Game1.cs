@@ -208,7 +208,7 @@ namespace Team3Project
                     playerEntity.Update(kbState);
 
                     _spriteBatch.Begin();
-                    //playerEntity.MeleeAttack(mouseState, kbState, _spriteBatch);
+                    //playerEntity.MeleeAttack(mouseState, kbddState, _spriteBatch);
                     playerEntity.RangedAttack(mouseState, prevMouseState, kbState, _spriteBatch);
                     _spriteBatch.End();
 
