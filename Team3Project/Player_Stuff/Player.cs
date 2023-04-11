@@ -249,13 +249,15 @@ namespace Team3Project.Player_Stuff
                              );
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             throw new NotImplementedException();
         }
 
         public void Update(KeyboardState kbState)
         {
+            Move(kbState);
+
             if(Health < 0)
             {
                 gameOver();
