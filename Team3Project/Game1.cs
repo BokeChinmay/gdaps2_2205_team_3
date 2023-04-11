@@ -132,8 +132,7 @@ namespace Team3Project
             }
 
             stageObjectManager.LoadContent(this.Content, _graphics);
-            LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, 1);
-            stageObjectManager.Elevator.NewLevel += playerEntity.nextLevel;
+            stageObjectManager.Elevator.NewLevel += LoadNewLevel;
         }
 
         /// <summary>
@@ -148,7 +147,7 @@ namespace Team3Project
                 streamWriter.WriteLine("Data present");
                 streamWriter.WriteLine(playerEntity.Health);
                 streamWriter.WriteLine(playerEntity.MoveSpeed);
-                streamWriter.WriteLine(playerEntity.Collision.X + ", " + playerEntity.Collision.Y);
+                streamWriter.WriteLine(playerEntity.Level);
                 streamWriter.Close();
             }
             catch(Exception ex) {}
@@ -167,12 +166,12 @@ namespace Team3Project
                 {
                     int playerHealth = int.Parse(streamReader.ReadLine());
                     int playerMoveSpeed = int.Parse(streamReader.ReadLine());
-                    string[] playerPositions = streamReader.ReadLine().Split(',');
-                    int playerPosX = int.Parse(playerPositions[0]);
-                    int playerPosY = int.Parse(playerPositions[1]);
+                    int playerLevel = int.Parse(streamReader.ReadLine());
+                    int playerScore = int.Parse(streamReader.ReadLine());
 
                     playerEntity.Health = playerHealth;
                     playerEntity.MoveSpeed = playerMoveSpeed;
+                    playerEntity.Level = playerLevel;
                 }
                 streamReader.Close();
             }
@@ -236,6 +235,7 @@ namespace Team3Project
                     _gameState = GameState.GamePlaying;
                     stageObjectManager.GenerateLevel();
                     LoadData();
+                    LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
                 }
 
                 if ((kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space)) && titleOption == 2)
@@ -255,10 +255,9 @@ namespace Team3Project
                     titleOption = 1;
                 }
 
-                // FOR TESTING -- comment out when GameOver can be reached naturally
                 if (kbState.IsKeyUp(Keys.NumPad1) && prevKbState.IsKeyDown(Keys.NumPad1))
                 {
-                    _gameState = GameState.GameOver;
+                    ClearData();
                 }
             }
             else if (_gameState == GameState.Controls)
@@ -362,6 +361,12 @@ namespace Team3Project
         protected void GameOver()
         {
             _gameState = GameState.GameOver;
+        }
+
+        protected void LoadNewLevel()
+        {
+            playerEntity.nextLevel();
+            LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
         }
     }
 }

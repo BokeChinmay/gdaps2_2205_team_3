@@ -37,7 +37,6 @@ namespace Team3Project.Player_Stuff
         private int currentIFrames;
 
         private int currentLevel;
-        private int currentScore;
 
         public event Action gameOver;
 
@@ -66,12 +65,6 @@ namespace Team3Project.Player_Stuff
             set { currentLevel = value; }
         }
 
-        public int Score
-        {
-            get { return currentScore; }
-            set { currentScore = value; }
-        }
-
         /// <summary>
         /// Parameterized Constructor
         /// </summary>
@@ -87,6 +80,7 @@ namespace Team3Project.Player_Stuff
             this.bulletTexture = bulletTexture;
             lastKbState = LastKbState.W;
             currentIFrames = 0;
+            currentLevel = 1;
         }
 
         /// <summary>
@@ -293,7 +287,6 @@ namespace Team3Project.Player_Stuff
             collision.X = 734;
             collision.Y = 864;
             currentLevel++;
-            currentScore += 1000;
             
             if (health < 3)
             {

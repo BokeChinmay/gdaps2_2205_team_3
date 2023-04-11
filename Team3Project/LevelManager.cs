@@ -125,7 +125,7 @@ namespace Team3Project
 
             foreach (Enemy enemy in enemyList) 
             { 
-                if (enemy.Collision.Intersects(player.Collision))
+                if (enemy.Collision.Intersects(player.Collision) && enemy.Active)
                 {
                     player.TakeDamage(1);
                 }

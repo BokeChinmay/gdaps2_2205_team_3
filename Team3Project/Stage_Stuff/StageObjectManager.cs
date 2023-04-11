@@ -57,6 +57,7 @@ namespace Team3Project.Stage_Stuff
         private Texture2D fullLife;
         private Texture2D emptyLife;
         private HealthDisplay healthDisplay;
+        private ScoreDisplay scoreDisplay;
 
         // Get-only property for obstructive stage objects
         public List<StageObject> ObstructiveStageObjects
@@ -131,6 +132,7 @@ namespace Team3Project.Stage_Stuff
             emptyLife = content.Load<Texture2D>("Empty_Life");
 
             healthDisplay = new HealthDisplay(font, fullHP, emptyHP, brokenHP, fullLife, emptyLife);
+            scoreDisplay = new ScoreDisplay(font);
 
             // Loading the blocked tile texture
             blockedTileTexture = content.Load<Texture2D>("BlockedTile");
@@ -189,6 +191,7 @@ namespace Team3Project.Stage_Stuff
             elevator.Draw(_spriteBatch, SpriteEffects.None);
 
             healthDisplay.Draw(_spriteBatch, SpriteEffects.None);
+            scoreDisplay.Draw(_spriteBatch, SpriteEffects.None);
         }
 
         /// <summary>
@@ -308,6 +311,7 @@ namespace Team3Project.Stage_Stuff
             elevator.PlayerEnters(player);
 
             healthDisplay.Health = player.Health;
+            scoreDisplay.Update(player);
         }
 
         /// <summary>
