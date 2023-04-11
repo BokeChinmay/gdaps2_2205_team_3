@@ -104,7 +104,7 @@ namespace Team3Project
             meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySpritesheet");
             rangedEnemy = this.Content.Load<Texture2D>("RangedEnemySpritesheet");
             enemyBullet = this.Content.Load<Texture2D>("EnemyBullet");
-            LevelManager.SetUpLevel(meleeEnemy, rangedEnemy, enemyBullet);
+            LevelManager.SetUpTextures(meleeEnemy, rangedEnemy, enemyBullet);
 
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
             gameTitle = this.Content.Load<Texture2D>("MEOWCH_logo");
@@ -130,7 +130,7 @@ namespace Team3Project
             }
 
             stageObjectManager.LoadContent(this.Content, _graphics);
-
+            LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, 1);
         }
 
         /// <summary>
