@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Player_Stuff
 {
+    enum VulnerabilityState
+    {  
+        Vulnerable,
+        Invincible
+    }
     enum LastKbState
     {
         W, A, S, D
@@ -25,8 +30,11 @@ namespace Team3Project.Player_Stuff
         private Random rng = new Random();
         private LastKbState lastKbState;
 
+        private VulnerabilityState vulnerabilityState = VulnerabilityState.Vulnerable;
+        private double invinsibilityFrames = 5;
         private int meleeDamage = 50;
         private int projectileDamage = 20;
+
 
         public event Action gameOver;
 
@@ -215,6 +223,8 @@ namespace Team3Project.Player_Stuff
             {
                 Active = false;
             }
+
+
         }
 
         /// <summary>
@@ -240,14 +250,30 @@ namespace Team3Project.Player_Stuff
                              );
         }
 
-        public override void Update()
+        public abstract void Update(GameTime gameTime)
         {
             if(Health < 0)
             {
                 gameOver();
             }
 
-            // When adding attack capabilities to the player, make left click shoot and right click melee
+            switch(vulnerabilityState)
+            {
+                case VulnerabilityState.Vulnerable:
+                    int health = Health;
+                    if (health < Health)
+                    {
+                        vulnerabilityState = VulnerabilityState.Invincible;
+                    }
+                    break;
+                case VulnerabilityState.Invincible:
+                    double invincibilityCounter = 0;
+                    invincibilityCounter += gameTime.ElapsedGameTime.TotalSeconds;
+                    if(invincibilityCounter >= invinsibilityFrames)
+                    {
+                        vulnerabilityState = VulnerabilityState.Vulnerable;
+                    }
+            }
         }
     }
 }
