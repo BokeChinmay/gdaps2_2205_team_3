@@ -27,6 +27,7 @@ namespace Team3Project.Player_Stuff
 
         private int meleeDamage = 50;
         private int projectileDamage = 20;
+        private int currentIFrames;
 
         public event Action gameOver;
 
@@ -63,6 +64,7 @@ namespace Team3Project.Player_Stuff
             this.meleeTexture = meleeTexture;
             this.bulletTexture = bulletTexture;
             lastKbState = LastKbState.W;
+            currentIFrames = 0;
         }
 
         /// <summary>
@@ -209,11 +211,10 @@ namespace Team3Project.Player_Stuff
         /// <param name="entity"></param>
         public void TakeDamage(int damage)
         {
-            Health = Health - damage;
-
-            if (Health == 0)
+            if (currentIFrames <= 0)
             {
-                Active = false;
+                Health = Health - damage;
+                currentIFrames = 60;
             }
         }
 
@@ -242,10 +243,22 @@ namespace Team3Project.Player_Stuff
 
         public override void Update()
         {
-            if(Health < 0)
+            throw new NotImplementedException();
+        }
+
+        public void Update(KeyboardState kbState)
+        {
+            if(Health <= 0)
             {
                 gameOver();
             }
+
+            if (currentIFrames > -5)
+            {
+                currentIFrames -= 1;
+            }
+
+            Move(kbState);
 
             // When adding attack capabilities to the player, make left click shoot and right click melee
         }

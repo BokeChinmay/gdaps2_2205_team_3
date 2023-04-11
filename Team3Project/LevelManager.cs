@@ -111,6 +111,14 @@ namespace Team3Project
         {
             UpdateEnemies(player.Collision, gameTime);
             UpdateProjectiles(player);
+
+            foreach (Enemy enemy in enemyList) 
+            { 
+                if (enemy.Collision.Intersects(player.Collision))
+                {
+                    player.TakeDamage(1);
+                }
+            }
         }
 
         /// <summary>
