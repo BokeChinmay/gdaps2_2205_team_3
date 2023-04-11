@@ -135,6 +135,14 @@ namespace Team3Project.Enemy_Stuff
                         currentState = EnemyState.Idle;
                     }
                     break;
+                //Hurt - A few frames of idleness after being hurt
+                case EnemyState.Hurt:
+                    //No update
+                    break;
+                //Death - Play death animation and then die
+                case EnemyState.Death:
+                    //No update
+                    break;
             }
 
             //STATE MACHINE - Vulnerability state
@@ -165,6 +173,10 @@ namespace Team3Project.Enemy_Stuff
                 //Enemy is invincible - cannot take damage for a few frames.
                 //When timer hits 0, return to vulnerable state
                 case VulnerabilityState.Invincible:
+                    if (currentState == EnemyState.Death)
+                    {
+                        break;
+                    }
                     invincibilityTimer--;
                     if (invincibilityTimer <= 0)
                     {

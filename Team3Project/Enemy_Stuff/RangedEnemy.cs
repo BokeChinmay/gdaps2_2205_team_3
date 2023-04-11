@@ -131,6 +131,14 @@ namespace Team3Project.Enemy_Stuff
                         attackTimer = 0;
                     }
                     break;
+                //Hurt - A few frames of idleness after being hurt
+                case EnemyState.Hurt:
+                    //No update
+                    break;
+                //Death - Play death animation and then die
+                case EnemyState.Death:
+                    //No update
+                    break;
             }
 
             //STATE MACHINE - Vulnerability state
@@ -141,21 +149,35 @@ namespace Team3Project.Enemy_Stuff
                 case VulnerabilityState.Vulnerable:
                     foreach (Projectile projectile in projectileList)
                     {
-                        if (!(projectile is EnemyBullet) && collision.Intersects(projectile.Collision))
+                        if (collision.Intersects(projectile.Collision) && !(projectile is EnemyBullet))
                         {
                             TakeDamage(projectile.Damage);
                             invincibilityTimer = INVINCIBILITY_DURATION;
                             vulnerabilityState = VulnerabilityState.Invincible;
+
+                            if (health <= 0)
+                            {
+                                currentState = EnemyState.Death;
+                            }
+                            else
+                            {
+                                currentState = EnemyState.Hurt;
+                            }
                         }
                     }
                     break;
                 //Enemy is invincible - cannot take damage for a few frames.
                 //When timer hits 0, return to vulnerable state
                 case VulnerabilityState.Invincible:
+                    if (currentState == EnemyState.Death)
+                    {
+                        break;
+                    }
                     invincibilityTimer--;
                     if (invincibilityTimer <= 0)
                     {
                         vulnerabilityState = VulnerabilityState.Vulnerable;
+                        currentState = EnemyState.Idle;
                     }
                     break;
 
@@ -265,7 +287,7 @@ namespace Team3Project.Enemy_Stuff
                     {
                         frame = 17;
                     }
-                    else if (frame != 29)
+                    else if (frame != 25)
                     {
                         frame++;
                     }
