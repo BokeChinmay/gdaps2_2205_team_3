@@ -21,7 +21,7 @@ namespace Team3Project.Enemy_Stuff
         //Constant bullet speed
         const int BULLET_SPEED = 10;
         //Constant bullet damage
-        const int BULLET_DAMAGE = 50;
+        const int BULLET_DAMAGE = 1;
         
         //Range at which the attack sequence begins
         const int AGGRO_RANGE = 600;

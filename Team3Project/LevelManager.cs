@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Team3Project.Enemy_Stuff;
+using Team3Project.Player_Stuff;
 using Team3Project.Stage_Stuff;
 
 //Name: Level Manager
@@ -106,23 +107,24 @@ namespace Team3Project
         /// Update runs once per Game1's update method
         /// Updating enemies must be done BEFORE projectiles due to projectiles becoming inactive when they contact enemies
         /// </summary>
-        public static void Update(Rectangle playerCollision, GameTime gameTime)
+        public static void Update(Player player, GameTime gameTime)
         {
-            UpdateEnemies(playerCollision, gameTime);
-            UpdateProjectiles(playerCollision);
+            UpdateEnemies(player.Collision, gameTime);
+            UpdateProjectiles(player);
         }
 
         /// <summary>
         /// Runs through the list of projectiles, checking if they are still active and calling Update() for the ones that are.
         /// </summary>
-        public static void UpdateProjectiles(Rectangle playerCollision)
+        public static void UpdateProjectiles(Player player)
         {
             for (int i = 0; i < projectileList.Count; i++)
             {
                 //Deactivate projectile if it is in contact with the player
-                if (projectileList[i].Collision.Intersects(playerCollision) && !projectileList[i].Friendly)
+                if (projectileList[i].Collision.Intersects(player.Collision) && !projectileList[i].Friendly)
                 {
                     projectileList[i].Active = false;
+                    player.TakeDamage(projectileList[i].Damage);
                 }
                 
                 //If a projectile is no longer active, remove it from the list

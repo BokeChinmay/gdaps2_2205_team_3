@@ -209,7 +209,7 @@ namespace Team3Project
                     playerEntity.RangedAttack(mouseState, prevMouseState, kbState, _spriteBatch);
                     _spriteBatch.End();
 
-                    LevelManager.Update(playerEntity.Collision, gameTime);                  
+                    LevelManager.Update(playerEntity, gameTime);                  
 
                     stageObjectManager.Elevator.PlayerEnters(playerEntity);
 
