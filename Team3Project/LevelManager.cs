@@ -52,6 +52,14 @@ namespace Team3Project
         //Dictionary for enemy default stats
         static Dictionary<EnemyTypes, Dictionary<Stats, int>> enemyDefaults;
 
+        // Field and property allowing other classes to see whether enemies are present
+        static bool enemiesPresent;
+
+        static public bool EnemiesPresent
+        {
+            get { return enemiesPresent; }
+        }
+
         //Static manager objects that are updated and re-initialized for each new level
         static StageObjectManager stageObjectManager;
 
@@ -101,6 +109,7 @@ namespace Team3Project
         public static void AddEnemy(Enemy enemy)
         {
             enemyList.Add(enemy);
+            enemiesPresent = true;
         }
 
         /// <summary>
@@ -112,11 +121,18 @@ namespace Team3Project
             UpdateEnemies(player.Collision, gameTime);
             UpdateProjectiles(player);
 
+            enemiesPresent = false;
+
             foreach (Enemy enemy in enemyList) 
             { 
                 if (enemy.Collision.Intersects(player.Collision))
                 {
                     player.TakeDamage(1);
+                }
+
+                if (enemy.Active)
+                {
+                    enemiesPresent = true;
                 }
             }
         }
