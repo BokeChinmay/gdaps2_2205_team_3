@@ -177,15 +177,16 @@ namespace Team3Project.Player_Stuff
         /// <returns></returns>
         public void CheckCollision(Entity check)
         {
-            if (check.Collision.Intersects(collision) )
-            {
-                TakeDamage(1);
-            }
-            else if(check is Item && check.Collision.Intersects(collision))
+            
+            if(check is Item && check.Collision.Intersects(collision))
             {
                 Item item = (Item)check;
 
                 item.CheckCollision(this);
+            }
+            else if (check.Collision.Intersects(collision))
+            {
+                TakeDamage(1);
             }
         }
 

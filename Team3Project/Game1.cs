@@ -116,17 +116,17 @@ namespace Team3Project
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            if(rng.Next(0,1) == 0)
+            if (rng.Next(0, 1) == 0)
             {
                 items = new Item(1, 0,
-                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20), 
-                                 damageBoost, ItemType.DamageBoost);
+                                new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
+                                damageBoost, ItemType.DamageBoost);
             }
             else
             {
                 items = new Item(1, 0,
-                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
-                                 speedBoost, ItemType.SpeedBoost);
+                                new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
+                                speedBoost, ItemType.SpeedBoost);
             }
 
             stageObjectManager.LoadContent(this.Content, _graphics);
@@ -212,6 +212,8 @@ namespace Team3Project
                     LevelManager.Update(playerEntity.Collision, gameTime);
 
                     stageObjectManager.Elevator.PlayerEnters(playerEntity);
+
+                    items.CheckCollision(playerEntity);
 
                     if (kbState.IsKeyUp(Keys.P) && prevKbState.IsKeyDown(Keys.P))
                     {

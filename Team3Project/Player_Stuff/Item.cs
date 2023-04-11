@@ -74,6 +74,24 @@ namespace Team3Project.Player_Stuff
             }
         }
 
+        public Item GetItem()
+        {
+            Item newItem;
+            if (rng.Next(0, 1) == 0)
+            {
+                 newItem = new Item(1, 0,
+                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
+                                 itemTexture, ItemType.DamageBoost);
+            }
+            else
+            {
+                 newItem = new Item(1, 0,
+                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
+                                 itemTexture, ItemType.SpeedBoost);
+            }
+
+            return newItem;
+        }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
@@ -85,12 +103,7 @@ namespace Team3Project.Player_Stuff
 
         public override void Update()
         {
-            throw new NotImplementedException();
+            GetItem();
         }
-
-
-
-
-
     }
 }
