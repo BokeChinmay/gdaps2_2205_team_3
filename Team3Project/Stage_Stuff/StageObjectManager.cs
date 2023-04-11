@@ -293,6 +293,16 @@ namespace Team3Project.Stage_Stuff
                     }
                 }
             }
+
+            if (!LevelManager.EnemiesPresent)
+            {
+                elevator.IsOpen = true;
+            }
+            else
+            {
+                elevator.IsOpen = false;
+            }
+
             CheckBlockedSides(player);
 
             elevator.PlayerEnters(player);
@@ -306,11 +316,12 @@ namespace Team3Project.Stage_Stuff
         public void GenerateLevel()
         {
             // Clearing all of the current tiles to make way for new ones
-            foreach(StageObject so in obstructiveStageObjects)
+            for(int i = 0; i < obstructiveStageObjects.Count; i++)
             {
-                if (so is BlockedTile)
+                if (obstructiveStageObjects[i] is BlockedTile)
                 {
-                    obstructiveStageObjects.Remove(so);
+                    obstructiveStageObjects.Remove(obstructiveStageObjects[i]);
+                    i--;
                 }
             }
 

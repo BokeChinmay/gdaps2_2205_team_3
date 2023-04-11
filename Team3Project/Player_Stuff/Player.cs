@@ -29,6 +29,9 @@ namespace Team3Project.Player_Stuff
         private int projectileDamage = 20;
         private int currentIFrames;
 
+        private int currentLevel;
+        private int currentScore;
+
         public event Action gameOver;
 
         //Consts
@@ -48,6 +51,18 @@ namespace Team3Project.Player_Stuff
         {
             get { return projectileDamage; }
             set { projectileDamage = value; }
+        }
+
+        public int Level
+        {
+            get { return currentLevel; }
+            set { currentLevel = value; }
+        }
+
+        public int Score
+        {
+            get { return currentScore; }
+            set { currentScore = value; }
         }
 
         /// <summary>
@@ -261,6 +276,22 @@ namespace Team3Project.Player_Stuff
             Move(kbState);
 
             // When adding attack capabilities to the player, make left click shoot and right click melee
+        }
+
+        /// <summary>
+        /// Reorients the player when a new level is started
+        /// </summary>
+        public void nextLevel()
+        {
+            collision.X = 734;
+            collision.Y = 864;
+            currentLevel++;
+            currentScore += 1000;
+            
+            if (health < 3)
+            {
+                health += 1;
+            }
         }
     }
 }

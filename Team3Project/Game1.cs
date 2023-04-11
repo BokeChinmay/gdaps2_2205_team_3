@@ -94,7 +94,7 @@ namespace Team3Project
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerMeleeTexture = this.Content.Load<Texture2D>("MeleeAttack");
             playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
-            playerEntity = new Player(3, 5, new Rectangle(185, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
+            playerEntity = new Player(3, 5, new Rectangle(734, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
             playerEntity.gameOver += GameOver;
 
@@ -133,6 +133,7 @@ namespace Team3Project
 
             stageObjectManager.LoadContent(this.Content, _graphics);
             LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, 1);
+            stageObjectManager.Elevator.NewLevel += playerEntity.nextLevel;
         }
 
         /// <summary>
@@ -169,8 +170,9 @@ namespace Team3Project
                     string[] playerPositions = streamReader.ReadLine().Split(',');
                     int playerPosX = int.Parse(playerPositions[0]);
                     int playerPosY = int.Parse(playerPositions[1]);
-                    playerEntity = new Player(playerHealth, playerMoveSpeed,
-                                   new Rectangle(playerPosX, playerPosY, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
+
+                    playerEntity.Health = playerHealth;
+                    playerEntity.MoveSpeed = playerMoveSpeed;
                 }
                 streamReader.Close();
             }
@@ -233,6 +235,7 @@ namespace Team3Project
                 {
                     _gameState = GameState.GamePlaying;
                     stageObjectManager.GenerateLevel();
+                    LoadData();
                 }
 
                 if ((kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space)) && titleOption == 2)
