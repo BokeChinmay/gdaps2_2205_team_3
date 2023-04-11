@@ -224,8 +224,6 @@ namespace Team3Project.Player_Stuff
                 Health = Health - damage;
                 currentIFrames = 60;
             }
-
-
         }
 
         /// <summary>
@@ -258,7 +256,7 @@ namespace Team3Project.Player_Stuff
 
         public void Update(KeyboardState kbState)
         {
-            if(Health <= 0)
+            if(Health < 0)
             {
                 gameOver();
             }

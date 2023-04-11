@@ -96,6 +96,8 @@ namespace Team3Project
             playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
             playerEntity = new Player(3, 5, new Rectangle(185, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
+            playerEntity.gameOver += GameOver;
+
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
 
@@ -202,14 +204,14 @@ namespace Team3Project
                 if (playerEntity.Active)
                 {
                     stageObjectManager.Update(LevelManager.EnemyList, playerEntity);
-                    playerEntity.Move(kbState);
+                    playerEntity.Update(kbState);
 
                     _spriteBatch.Begin();
                     //playerEntity.MeleeAttack(mouseState, kbState, _spriteBatch);
                     playerEntity.RangedAttack(mouseState, prevMouseState, kbState, _spriteBatch);
                     _spriteBatch.End();
 
-                    LevelManager.Update(playerEntity.Collision, gameTime);                  
+                    LevelManager.Update(playerEntity, gameTime);                  
 
                     stageObjectManager.Elevator.PlayerEnters(playerEntity);
 
@@ -352,6 +354,11 @@ namespace Team3Project
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        protected void GameOver()
+        {
+            _gameState = GameState.GameOver;
         }
     }
 }
