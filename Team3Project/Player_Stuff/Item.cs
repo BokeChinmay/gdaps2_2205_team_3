@@ -27,6 +27,12 @@ namespace Team3Project.Player_Stuff
 
         private Random rng = new Random();
 
+        //Properties
+        public ItemType ItemType
+        {
+            get { return itemType; }
+        }
+
         /// <summary>
         /// Parameterized Constructor
         /// </summary>
@@ -50,7 +56,20 @@ namespace Team3Project.Player_Stuff
             {
                 if(check is Player)
                 {
-                    check = (Player)check;
+                    Player player = (Player)check;
+
+                    player.MoveSpeed = player.MoveSpeed + (player.MoveSpeed / 2);
+                }
+            }
+
+            if(itemType == ItemType.DamageBoost)
+            {
+                if(check is Player)
+                {
+                    Player player = (Player)check;
+
+                    player.MeleeDamage = player.MeleeDamage + (player.MeleeDamage / 2);
+                    player.ProjectileDamage = player.ProjectileDamage + (player.ProjectileDamage / 2);
                 }
             }
         }

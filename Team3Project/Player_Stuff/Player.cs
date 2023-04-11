@@ -183,16 +183,9 @@ namespace Team3Project.Player_Stuff
             }
             else if(check is Item && check.Collision.Intersects(collision))
             {
-                if (rng.Next(1) == 0)
-                {
-                    moveSpeed++;
-                }
+                Item item = (Item)check;
 
-                else if (rng.Next(1) == 1)
-                {
-                    health++;
-                }
-
+                item.CheckCollision(this);
             }
         }
 
