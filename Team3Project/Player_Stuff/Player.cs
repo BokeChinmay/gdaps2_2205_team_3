@@ -133,41 +133,53 @@ namespace Team3Project.Player_Stuff
             prevKbState = kbState;
         }
 
-        public void RangedAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
+        public void RangedAttack(MouseState mouseState, MouseState prevMouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
-            prevMouseState = mouseState;
-            prevKbState = kbState;
 
+            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released) 
+            {
+                //Calculate unit vector
+                Vector2 displacement = new Vector2(mouseState.X, mouseState.Y) - new Vector2(collision.X, collision.Y);
+                float distance = (float)Math.Sqrt(Math.Pow(displacement.X, 2) + Math.Pow(displacement.Y, 2)); ;
+                Vector2 unitVector = displacement / distance;
+
+                //Create a new bullet
+                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture));
+            }
+
+            /*
             if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
             {
                 if (lastKbState == LastKbState.W)
                 {
-                    Bullet bullet = new Bullet(10, 0, collision.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 0, 1, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
+                    LevelManager.ProjectileList.Add(bullet);
                 }
                 else if (lastKbState == LastKbState.S)
                 {
                     Bullet bullet = new Bullet(10, 0, collision.Y, new Rectangle(collision.X, collision.Y + 30, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
+                    LevelManager.ProjectileList.Add(bullet);
                 }
                 else if (lastKbState == LastKbState.A)
                 {
                     Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
+                    LevelManager.ProjectileList.Add(bullet);
                 }
                 else if (lastKbState == LastKbState.D)
                 {
                     Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
+                    LevelManager.ProjectileList.Add(bullet);
                 }   
             }
-
-            prevMouseState = mouseState;
-            prevKbState = kbState;
+            */
         }
 
         /// <summary>

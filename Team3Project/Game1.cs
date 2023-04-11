@@ -206,10 +206,10 @@ namespace Team3Project
 
                     _spriteBatch.Begin();
                     playerEntity.MeleeAttack(mouseState, kbState, _spriteBatch);
-                    playerEntity.RangedAttack(mouseState, kbState, _spriteBatch);
+                    playerEntity.RangedAttack(mouseState, prevMouseState, kbState, _spriteBatch);
                     _spriteBatch.End();
 
-                    LevelManager.Update(playerEntity.Collision, gameTime);
+                    LevelManager.Update(playerEntity.Collision, gameTime);                  
 
                     stageObjectManager.Elevator.PlayerEnters(playerEntity);
 
