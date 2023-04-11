@@ -105,25 +105,25 @@ namespace Team3Project.Player_Stuff
             {
                 if(lastKbState == LastKbState.W)
                 {
-                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
                 else if (lastKbState == LastKbState.S)
                 {
-                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y + 30, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y + 30, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.FlipVertically);
                 }
                 else if (lastKbState == LastKbState.A)
                 {
-                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.FlipHorizontally);
                 }
                 else if (lastKbState == LastKbState.D)
                 {
-                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
@@ -144,7 +144,7 @@ namespace Team3Project.Player_Stuff
                 Vector2 unitVector = displacement / distance;
 
                 //Create a new bullet
-                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture));
+                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture, true));
             }
 
             /*

@@ -120,7 +120,7 @@ namespace Team3Project
             for (int i = 0; i < projectileList.Count; i++)
             {
                 //Deactivate projectile if it is in contact with the player
-                if (projectileList[i].Collision.Intersects(playerCollision))
+                if (projectileList[i].Collision.Intersects(playerCollision) && !projectileList[i].Friendly)
                 {
                     projectileList[i].Active = false;
                 }

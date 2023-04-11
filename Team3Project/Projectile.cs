@@ -16,6 +16,13 @@ namespace Team3Project
 
         //Damage that the projectile deals
         protected int damage;
+        private bool friendly;
+
+        // Get-only property for whether the bullet is friendly
+        public bool Friendly
+        {
+            get { return friendly; }
+        }
 
         //Property for the damage field
         public int Damage
@@ -24,10 +31,11 @@ namespace Team3Project
         }
 
         // Parameterized constructor to establish a projectile's speed and velocity
-        public Projectile(int speed, int damage, Rectangle collision, Texture2D texture) : base(1, speed, collision)
+        public Projectile(int speed, int damage, Rectangle collision, Texture2D texture, bool friendly) : base(1, speed, collision)
         {
             this.damage = damage;
             this.texture = texture;
+            this.friendly = friendly;
         }
 
         public override void Update()
