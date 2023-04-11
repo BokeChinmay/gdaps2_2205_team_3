@@ -34,6 +34,7 @@ namespace Team3Project.Player_Stuff
         private double invinsibilityFrames = 5;
         private int meleeDamage = 50;
         private int projectileDamage = 20;
+        private int currentIFrames;
 
 
         public event Action gameOver;
@@ -71,6 +72,7 @@ namespace Team3Project.Player_Stuff
             this.meleeTexture = meleeTexture;
             this.bulletTexture = bulletTexture;
             lastKbState = LastKbState.W;
+            currentIFrames = 0;
         }
 
         /// <summary>
@@ -113,25 +115,25 @@ namespace Team3Project.Player_Stuff
             {
                 if(lastKbState == LastKbState.W)
                 {
-                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
                 else if (lastKbState == LastKbState.S)
                 {
-                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y + 30, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y + 30, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.FlipVertically);
                 }
                 else if (lastKbState == LastKbState.A)
                 {
-                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.FlipHorizontally);
                 }
                 else if (lastKbState == LastKbState.D)
                 {
-                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), meleeDamage, bulletTexture);
+                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), meleeDamage, bulletTexture, true);
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
@@ -152,7 +154,7 @@ namespace Team3Project.Player_Stuff
                 Vector2 unitVector = displacement / distance;
 
                 //Create a new bullet
-                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture));
+                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture, true));
             }
 
             /*
@@ -217,11 +219,10 @@ namespace Team3Project.Player_Stuff
         /// <param name="entity"></param>
         public void TakeDamage(int damage)
         {
-            Health = Health - damage;
-
-            if (Health == 0)
+            if (currentIFrames <= 0)
             {
-                Active = false;
+                Health = Health - damage;
+                currentIFrames = 60;
             }
 
 
@@ -250,30 +251,24 @@ namespace Team3Project.Player_Stuff
                              );
         }
 
-        public abstract void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            if(Health < 0)
+            throw new NotImplementedException();
+        }
+
+        public void Update(KeyboardState kbState)
+        {
+            if(Health <= 0)
             {
                 gameOver();
             }
 
-            switch(vulnerabilityState)
+            if (currentIFrames > -5)
             {
-                case VulnerabilityState.Vulnerable:
-                    int health = Health;
-                    if (health < Health)
-                    {
-                        vulnerabilityState = VulnerabilityState.Invincible;
-                    }
-                    break;
-                case VulnerabilityState.Invincible:
-                    double invincibilityCounter = 0;
-                    invincibilityCounter += gameTime.ElapsedGameTime.TotalSeconds;
-                    if(invincibilityCounter >= invinsibilityFrames)
-                    {
-                        vulnerabilityState = VulnerabilityState.Vulnerable;
-                    }
+                currentIFrames -= 1;
             }
+
+            // When adding attack capabilities to the player, make left click shoot and right click melee
         }
     }
 }
