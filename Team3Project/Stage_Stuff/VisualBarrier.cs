@@ -9,7 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Name: VisualBarrier
-//Purpose: StageObject that defines the barriers around the play area
+//Purpose: StageObject that defines the barriers on the sides and top of the play area,
+//         where the UI and elevator are placed, respectively
 //Restrictions: Inherits from StageObject
 
 namespace Team3Project.Stage_Stuff
@@ -19,7 +20,7 @@ namespace Team3Project.Stage_Stuff
         // Field declarations
         private Texture2D texture;
 
-        // This will be used exclusively for the back wall
+        // Field and property that will be used exclusively for the back wall
         private int bottomEdgeOverride;
 
         public override int BottomEdge

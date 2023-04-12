@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Name: IDamageable
+// Purpose: defines a health property and takedamage method necessary for an object to be able
+//          to be damaged and destroyed
+
 namespace Team3Project
 {
     internal interface IDamageable

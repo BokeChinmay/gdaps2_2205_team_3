@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 namespace Team3Project.Stage_Stuff
 {
     internal class HiddenStageObject : StageObject
-    {             
+    {       
+        // Parameterized constructor
         public HiddenStageObject(int width, int height, int xPos, int yPos) 
             : base (width, height, xPos, yPos)
         {
