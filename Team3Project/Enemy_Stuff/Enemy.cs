@@ -112,6 +112,7 @@ namespace Team3Project.Enemy_Stuff
             collision.Y += yMotion;
         }
 
+        //Overload that can be passed a new speed that is different from the field moveSpeed
         public void MoveTowardPos(Vector2 targetPos, int newSpeed)
         {
             //Calculate unit vector
@@ -162,6 +163,10 @@ namespace Team3Project.Enemy_Stuff
             collision.Y += yMotion;
         }
 
+        /// <summary>
+        /// Similar to MoveTowardPos, except moves in the opposite direction
+        /// </summary>
+        /// <param name="targetPos"></param>
         public void MoveAwayFromPos(Vector2 targetPos)
         {
             //Calculate unit vector
@@ -245,11 +250,23 @@ namespace Team3Project.Enemy_Stuff
             health -= amount;
         }
 
+        /// <summary>
+        /// Creates an enemy bullet in the direction of the player
+        /// </summary>
+        /// <param name="bulletSpeed">Speed of the projectile</param>
+        /// <param name="playerPos">Position vector of the player</param>
+        /// <param name="bulletDamage">Damage of the bullet</param>
+        /// <param name="pTexture">Bullet texture</param>
         public void Shoot(int bulletSpeed, Vector2 playerPos, int bulletDamage, Texture2D pTexture)
         {
             LevelManager.AddProjectile(new EnemyBullet(bulletSpeed, DirectionToPlayer(playerPos).X, DirectionToPlayer(playerPos).Y, new Rectangle(collision.X, collision.Y, 20, 20), bulletDamage, pTexture));
         }
 
+        /// <summary>
+        /// Basic draw method. Not useful for spritesheets
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             spriteBatch.Draw(texture, collision, Color.White);

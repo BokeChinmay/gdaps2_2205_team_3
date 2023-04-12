@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: StageObject
+//Purpose: Parent class for objects that make up the layout of the stage
+
 namespace Team3Project.Stage_Stuff
 {
     internal abstract class StageObject : IObstruction

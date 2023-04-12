@@ -7,6 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Team3Project.Player_Stuff;
 
+//Name: Elevator
+//Purpose: Class for the elevator object the player uses to progress to the next level
+//Restrictions: Inherits from StageObject
+
 namespace Team3Project.Stage_Stuff
 {
     internal class Elevator : StageObject

@@ -25,6 +25,9 @@ namespace Team3Project
             this.damage = damage;
         }
 
+        /// <summary>
+        /// Moves in the direction of the direction vector
+        /// </summary>
         public void Move()
         {
             //Update position by direction vector

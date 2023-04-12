@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: UIObject
+//Purpose: Parent class for features of the UI, like the health bar and score
+
 namespace Team3Project.Stage_Stuff
 {
     internal abstract class UIObject

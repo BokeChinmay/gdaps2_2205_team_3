@@ -216,6 +216,11 @@ namespace Team3Project.Enemy_Stuff
 
         }
 
+        /// <summary>
+        /// Overriden draw method. Draws a source rectangle from within the spritesheet based on the current frame
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             spriteBatch.Draw(
@@ -307,6 +312,7 @@ namespace Team3Project.Enemy_Stuff
                     {
                         frame++;
                     }
+                    //When the final frame of the death animation is complete, deactivate the object
                     else
                     {
                         active = false;

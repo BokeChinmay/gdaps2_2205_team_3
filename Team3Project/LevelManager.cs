@@ -182,6 +182,11 @@ namespace Team3Project
             }
         }
 
+        /// <summary>
+        /// Calls draw method for enemies and projectiles
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
         public static void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             foreach (Enemy enemy in enemyList)
@@ -194,6 +199,11 @@ namespace Team3Project
             }
         }
 
+        /// <summary>
+        /// Generates enemies based on the current level
+        /// </summary>
+        /// <param name="obstructiveObjects">The list of obstructive stage objects. Enemies can't be spawned on top of these</param>
+        /// <param name="level">Current level</param>
         public static void LoadNewLevel(List<StageObject> obstructiveObjects, int level)
         {
             enemyList.Clear();

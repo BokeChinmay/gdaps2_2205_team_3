@@ -8,6 +8,10 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: BlockedTile
+//Purpose: Class for tiles that can't be moved across by players, enemies, or projectiles
+//Restrictions: Inherits from StageObject
+
 namespace Team3Project.Stage_Stuff
 {
     internal class BlockedTile : StageObject

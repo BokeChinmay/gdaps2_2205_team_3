@@ -237,6 +237,9 @@ namespace Team3Project.Enemy_Stuff
                 );
         }
 
+        /// <summary>
+        /// Updates frame based on AI state
+        /// </summary>
         private void UpdateFrame()
         {
             //For this spritesheet:
@@ -295,6 +298,7 @@ namespace Team3Project.Enemy_Stuff
                     {
                         frame++;
                     }
+                    //When the final frame of the death animation is reached, deactivate the object
                     else
                     {
                         active = false;

@@ -8,6 +8,10 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: VisualBarrier
+//Purpose: StageObject that defines the barriers around the play area
+//Restrictions: Inherits from StageObject
+
 namespace Team3Project.Stage_Stuff
 {
     internal class VisualBarrier : StageObject
