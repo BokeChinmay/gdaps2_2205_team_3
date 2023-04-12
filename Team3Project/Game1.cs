@@ -361,6 +361,8 @@ namespace Team3Project
         protected void GameOver()
         {
             _gameState = GameState.GameOver;
+            ClearData();
+            playerEntity.Health = 3;
         }
 
         protected void LoadNewLevel()
