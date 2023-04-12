@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+//Name: Item
+//Purpose: Class for item objects, which the player can pick up to boost stats
+//Restrictions: Inherits from Entity
+
 namespace Team3Project.Player_Stuff
 {
     public enum ItemType

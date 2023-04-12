@@ -6,6 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: RangedEnemy
+//Purpose: Enemy child class for ranged enemy objects
+//Restrictions: Inherits from Enemy
+
 namespace Team3Project.Enemy_Stuff
 {
     internal class RangedEnemy : Enemy, IDamageable

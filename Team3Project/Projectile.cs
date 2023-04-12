@@ -7,6 +7,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: Projectile
+//Purpose: Parent class for any entity that could hurt the player or enemies
+//Restrictions: Inherits from Entity
+
 namespace Team3Project
 {
     internal class Projectile : Entity

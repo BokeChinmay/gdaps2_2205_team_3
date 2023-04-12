@@ -8,6 +8,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: MeleeEnemy
+//Purpose: Enemy child class for melee enemy objects.
+//Restrictions: Inherits from Enemy
+
 namespace Team3Project.Enemy_Stuff
 {
     

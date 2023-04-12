@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: Player
+//Purpose: Class for the player object
+//Restrictions: Inherits from Entity
+
 namespace Team3Project.Player_Stuff
 {
     enum VulnerabilityState

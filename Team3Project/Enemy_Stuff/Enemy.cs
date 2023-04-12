@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Class: Enemy
+//Purpose: Parent class for enemy classes. Contains helpful methods and enums that are used in multiple different enemy classes.
+
 namespace Team3Project.Enemy_Stuff
 {
     //Enum for possible vulnerability states
@@ -15,6 +18,7 @@ namespace Team3Project.Enemy_Stuff
         Invincible
     }
 
+    //Enum for enemy AI states
     enum EnemyState
     {
         Idle,

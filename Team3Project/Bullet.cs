@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 //Name: Bullet
 //Purpose: A class for bullet projectiles that move in a straight line.
+//Restrictions: Inherits from Projectile
 
 namespace Team3Project
 {
