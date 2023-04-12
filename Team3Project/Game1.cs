@@ -21,11 +21,13 @@ namespace Team3Project
 
     public class Game1 : Game
     {
+        // Graphics fields
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteEffects _spriteEffects;
-
         private SpriteFont menuFont;
+
+        // Fields related to states
         private GameState _gameState;
         private KeyboardState kbState;
         private KeyboardState prevKbState;
@@ -33,25 +35,28 @@ namespace Team3Project
         private MouseState prevMouseState;
         private Random rng;
         
+        // Fields for textures for the player
         private Texture2D mainCharacter;
         private Player playerEntity;
         private Texture2D playerMeleeTexture;
         private Texture2D playerBulletTexture;
 
-
+        // Fields for items
         private Texture2D damageBoost;
         private Texture2D speedBoost;
         private Item items;
-        
-        private Texture2D enemyAsset;
-        private List<Enemy> enemyEntities;
-        
+
+        // Field for the stage object manager
         private StageObjectManager stageObjectManager;
 
+        // Fields for enemies
+        private Texture2D enemyAsset;
+        private List<Enemy> enemyEntities;
         private Texture2D meleeEnemy;
         private Texture2D rangedEnemy;
         private Texture2D enemyBullet;
 
+        // Fields for the UI
         private Texture2D gameTitle;
         private Texture2D titleOption1;
         private Texture2D titleOption2;
@@ -81,33 +86,33 @@ namespace Team3Project
             rng = new Random();
             LevelManager.Initialize();
 
-            // When this method is up and running, uncomment this so that it's called
-            // when the player enters a new level
-            //stageObjectManager.Elevator.NewLevel += LevelManager.LoadNewLevel;
-
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             // TODO: use this.Content to load your game content here
+            
+            // Loading player textures
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerMeleeTexture = this.Content.Load<Texture2D>("MeleeAttack");
             playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
             playerEntity = new Player(3, 5, new Rectangle(734, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
+            // Subscribing the central GameOver method to the player's relevant event
             playerEntity.gameOver += GameOver;
 
+            // Loading item textures
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
 
-
-            // meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySheet");
+            // Loading enemy textures, and passing them into the level manager
             meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySpritesheet");
             rangedEnemy = this.Content.Load<Texture2D>("RangedEnemySpritesheet");
             enemyBullet = this.Content.Load<Texture2D>("EnemyBullet");
             LevelManager.SetUpTextures(meleeEnemy, rangedEnemy, enemyBullet);
 
+            // Loading UI and menu elements
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
             gameTitle = this.Content.Load<Texture2D>("MEOWCH_logo");
             titleOption1 = this.Content.Load<Texture2D>("Main_Menu_1");
@@ -131,6 +136,8 @@ namespace Team3Project
                                 speedBoost, ItemType.SpeedBoost);
             }
 
+            // Loading the stage object manager's content, and subscribing the central load new
+            // level method to its elevator's relevant event
             stageObjectManager.LoadContent(this.Content, _graphics);
             stageObjectManager.Elevator.NewLevel += LoadNewLevel;
         }
@@ -178,6 +185,9 @@ namespace Team3Project
             catch (Exception ex) { }
         }
 
+        /// <summary>
+        /// File IO data clearing (for use mostly when the player loses)
+        /// </summary>
         public void ClearData()
         {
             StreamWriter streamWriter = null;
@@ -197,9 +207,13 @@ namespace Team3Project
 
             // TODO: Add your update logic here
 
+            // Getting current keyboard and mouse states
             mouseState = Mouse.GetState();
             kbState = Keyboard.GetState();
             
+            // OVERARCHING FSM
+            
+            // Updating when the game is being played
             if (_gameState == GameState.GamePlaying)
             {
                 if (playerEntity.Active)
@@ -218,6 +232,7 @@ namespace Team3Project
 
                     items.CheckCollision(playerEntity);
 
+                    // Allowing the game to be paused
                     if (kbState.IsKeyUp(Keys.P) && prevKbState.IsKeyDown(Keys.P))
                     {
                         _gameState = GameState.Pause;
@@ -228,8 +243,10 @@ namespace Team3Project
                     _gameState = GameState.GameOver;
                 }
             }
+            // Updating while in the main menu
             else if (_gameState == GameState.Menu)
             {
+                // Allowing the gameplay state to be started
                 if ((kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space)) && titleOption == 1)
                 {
                     _gameState = GameState.GamePlaying;
@@ -238,11 +255,13 @@ namespace Team3Project
                     LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
                 }
 
+                // Allowing the controls display state to be started
                 if ((kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space)) && titleOption == 2)
                 {
                     _gameState = GameState.Controls;
                 }
 
+                // Allowing the main menu to be navigated
                 if (((kbState.IsKeyUp(Keys.Down) && prevKbState.IsKeyDown(Keys.Down)) || 
                     (kbState.IsKeyUp(Keys.S) && prevKbState.IsKeyDown(Keys.S))) && titleOption == 1)
                 {
@@ -255,41 +274,53 @@ namespace Team3Project
                     titleOption = 1;
                 }
 
+                // Testing command for checking if game over is functional
                 if (kbState.IsKeyUp(Keys.NumPad1) && prevKbState.IsKeyDown(Keys.NumPad1))
                 {
                     ClearData();
                 }
             }
+            // Updating while in the controls display
             else if (_gameState == GameState.Controls)
             {
+                // Allowing returning to the main menu
                 if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
                 {
                     _gameState = GameState.Menu;
                 }
             }
+            // Updating while in the pause menu
             else if (_gameState == GameState.Pause)
             {
+                // Returning to the game
                 if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
                 {
                     _gameState = GameState.GamePlaying;
                 }
+
+                // Returning to the menu
                 if (kbState.IsKeyUp(Keys.Q) && prevKbState.IsKeyDown(Keys.Q))
                 {
                     _gameState = GameState.Menu;
                 }
+
+                // Saving current progress
                 if (kbState.IsKeyUp(Keys.S) && prevKbState.IsKeyDown(Keys.S))
                 {
                     SaveData();
                 }
             }
+            // Updating while in the game over screen
             else if (_gameState == GameState.GameOver)
             {
+                // Returning to the menu
                 if (kbState.IsKeyUp(Keys.R) && prevKbState.IsKeyDown(Keys.R))
                 {
                     _gameState = GameState.Menu;
                 }
             }
 
+            // Getting previous keyboard and mouse states
             prevMouseState = mouseState;
             prevKbState = kbState;
 
@@ -298,6 +329,7 @@ namespace Team3Project
 
         protected override void Draw(GameTime gameTime)
         {
+            // Drawing the gameplay state
             if (_gameState == GameState.GamePlaying)
             {
                 GraphicsDevice.Clear(Color.DarkGray);
@@ -310,6 +342,7 @@ namespace Team3Project
 
                 LevelManager.Draw(_spriteBatch, SpriteEffects.None);
             }
+            // Drawing the main menu
             else if (_gameState == GameState.Menu)
             {
                 GraphicsDevice.Clear(Color.Black);
@@ -318,6 +351,7 @@ namespace Team3Project
 
                 _spriteBatch.Draw(gameTitle, new Rectangle(120, 200, 1280, 250), Color.White);
 
+                // Checking what option the player is on
                 if (titleOption == 1)
                 {
                     _spriteBatch.Draw(titleOption1, new Rectangle(350, 600, 800, 200), Color.White);
@@ -327,6 +361,7 @@ namespace Team3Project
                     _spriteBatch.Draw(titleOption2, new Rectangle(350, 600, 800, 200), Color.White);
                 }
             }
+            // Drawing the controls display
             else if (_gameState == GameState.Controls)
             {
                 GraphicsDevice.Clear(Color.Black);
@@ -335,6 +370,7 @@ namespace Team3Project
 
                 _spriteBatch.Draw(controls, new Rectangle(273, 274, 954, 378), Color.White);
             }
+            // Drawing the pause menu
             else if (_gameState == GameState.Pause)
             {
                 GraphicsDevice.Clear(Color.Black);
@@ -344,6 +380,7 @@ namespace Team3Project
                 _spriteBatch.Draw(controls, new Rectangle(273, 200, 954, 378), Color.White);
                 _spriteBatch.Draw(pause, new Rectangle(365, 578, 770, 130), Color.White);
             }
+            // Drawing the game over screen
             else if (_gameState == GameState.GameOver)
             {
                 GraphicsDevice.Clear(Color.Black);
@@ -358,6 +395,9 @@ namespace Team3Project
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// A group of actions to occur when the player dies
+        /// </summary>
         protected void GameOver()
         {
             _gameState = GameState.GameOver;
@@ -365,6 +405,9 @@ namespace Team3Project
             playerEntity.Health = 3;
         }
 
+        /// <summary>
+        /// A group of actions to occur when a new level is generated
+        /// </summary>
         protected void LoadNewLevel()
         {
             playerEntity.nextLevel();
