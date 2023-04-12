@@ -6,6 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: RangedEnemy
+//Purpose: Enemy child class for ranged enemy objects
+//Restrictions: Inherits from Enemy
+
 namespace Team3Project.Enemy_Stuff
 {
     internal class RangedEnemy : Enemy, IDamageable
@@ -233,6 +237,9 @@ namespace Team3Project.Enemy_Stuff
                 );
         }
 
+        /// <summary>
+        /// Updates frame based on AI state
+        /// </summary>
         private void UpdateFrame()
         {
             //For this spritesheet:
@@ -291,6 +298,7 @@ namespace Team3Project.Enemy_Stuff
                     {
                         frame++;
                     }
+                    //When the final frame of the death animation is reached, deactivate the object
                     else
                     {
                         active = false;

@@ -7,6 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Team3Project.Player_Stuff;
 
+//Name: Health Display
+//Purpose: Displays the player's health on the left side of the screen
+//Restrictions: Inherits from UI Object
+
 namespace Team3Project.Stage_Stuff
 {
     internal class HealthDisplay : UIObject

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using Team3Project.Enemy_Stuff;
 using Team3Project.Player_Stuff;
 
+//Name: StageObjectManager
+//Purpose: Manager class that loads levels and sets them up on screen. Also sets every entity's side blocked fields.
+
 namespace Team3Project.Stage_Stuff
 {
     internal class StageObjectManager

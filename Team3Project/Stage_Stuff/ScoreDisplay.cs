@@ -7,6 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Team3Project.Player_Stuff;
 
+//Name: ScoreDisplay
+//Purpose: Displays the current level on the top right of the screen
+//Inherits from: UIObject
+
 namespace Team3Project.Stage_Stuff
 {
     internal class ScoreDisplay : UIObject
