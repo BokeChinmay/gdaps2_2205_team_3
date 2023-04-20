@@ -184,7 +184,6 @@ namespace Team3Project.Enemy_Stuff
                         currentState = EnemyState.Idle;
                     }
                     break;
-
             }
 
             //Animation - update frame if enough time has passed

@@ -187,11 +187,12 @@ namespace Team3Project
         /// </summary>
         /// <param name="spriteBatch"></param>
         /// <param name="spriteEffects"></param>
-        public static void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        public static void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects, SpriteFont font)
         {
             foreach (Enemy enemy in enemyList)
             {
                 enemy.Draw(spriteBatch, spriteEffects);
+                spriteBatch.DrawString(font, String.Format("Health: " + enemy.Health), new Vector2(enemy.Collision.X, enemy.Collision.Y - 20), Color.White);
             }
             foreach (Projectile projectile in projectileList)
             {
