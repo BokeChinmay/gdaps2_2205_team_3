@@ -251,6 +251,7 @@ namespace Team3Project.Enemy_Stuff
             //Death: Frames 17-25
             switch (currentState)
             {
+                //Idle - looping
                 case EnemyState.Idle:
                     if (frame < 1 || frame > 10)
                     {
@@ -258,9 +259,11 @@ namespace Team3Project.Enemy_Stuff
                     }
                     frame++;
                     break;
+                //Moving - static frame
                 case EnemyState.Moving:
                     frame = 11;
                     break;
+                //Telegraphing - looping
                 case EnemyState.Telegraphing:
                     if (frame < 11 || frame > 12)
                     {
@@ -268,9 +271,11 @@ namespace Team3Project.Enemy_Stuff
                     }
                     frame++;
                     break;
+                //Attacking - static frame
                 case EnemyState.Attacking:
                     frame = 12;
                     break;
+                //Recovering - looping
                 case EnemyState.Recovering:
                     if (frame < 13 || frame > 15)
                     {
@@ -278,6 +283,7 @@ namespace Team3Project.Enemy_Stuff
                     }
                     frame++;
                     break;
+                //Hurt - does not loop
                 case EnemyState.Hurt:
                     if (frame < 17 || frame > 20)
                     {
@@ -288,6 +294,7 @@ namespace Team3Project.Enemy_Stuff
                         frame--;
                     }
                     break;
+                //Death - does not loop
                 case EnemyState.Death:
                     if (frame < 17 || frame > 25)
                     {

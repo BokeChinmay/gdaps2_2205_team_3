@@ -57,6 +57,16 @@ namespace Team3Project
 
         public override void Update()
         {
+            if (Friendly)
+            {
+                foreach (Enemy_Stuff.Enemy enemy in LevelManager.EnemyList)
+                {
+                    if (collision.Intersects(enemy.Collision))
+                    {
+                        active = false;
+                    }
+                }
+            }
             Move();
         }
 

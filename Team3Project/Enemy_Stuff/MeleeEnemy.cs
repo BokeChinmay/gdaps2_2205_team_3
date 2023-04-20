@@ -255,6 +255,7 @@ namespace Team3Project.Enemy_Stuff
             //Death: Frames 29-37
             switch (currentState)
             {
+                //Idle frames - looping
                 case EnemyState.Idle:
                     if (frame < 1 || frame > 7)
                     {
@@ -262,6 +263,7 @@ namespace Team3Project.Enemy_Stuff
                     }
                     frame++;
                     break;
+                //Moving frames - looping
                 case EnemyState.Moving:
                     if (frame < 8 || frame > 13)
                     {
@@ -269,6 +271,7 @@ namespace Team3Project.Enemy_Stuff
                     }
                     frame++;
                     break;
+                //Telegraph - does not loop
                 case EnemyState.Telegraphing:
                     if (frame < 14 || frame > 16)
                     {
@@ -279,6 +282,7 @@ namespace Team3Project.Enemy_Stuff
                         frame++;
                     }      
                     break;
+                //Attacking - looping
                 case EnemyState.Attacking:
                     if (frame < 17 || frame > 20)
                     {
@@ -286,6 +290,7 @@ namespace Team3Project.Enemy_Stuff
                     }
                     frame++;
                     break;
+                //Recovering - looping
                 case EnemyState.Recovering:
                     if (frame < 21 || frame > 23)
                     {
@@ -293,6 +298,7 @@ namespace Team3Project.Enemy_Stuff
                     }
                     frame++;
                     break;
+                //Hurt - does not loop
                 case EnemyState.Hurt:
                     if (frame < 25 || frame > 28)
                     {
@@ -303,6 +309,7 @@ namespace Team3Project.Enemy_Stuff
                         frame++;
                     }
                     break;
+                //Death - does not loop
                 case EnemyState.Death:
                     if (frame < 29 || frame > 37)
                     {
