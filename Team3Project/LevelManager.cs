@@ -208,6 +208,7 @@ namespace Team3Project
         {
             enemyList.Clear();
             projectileList.Clear();
+            double healthMultiplier = 1 + (0.1 * level);
 
             //Load new enemies randomly using free spaces in the top 2/3 of the screen
             //This funtion will increase the number of enemies for later levels
@@ -253,7 +254,7 @@ namespace Team3Project
                     case EnemyTypes.Melee:
                         enemyList.Add(
                             new MeleeEnemy(
-                                enemyDefaults[enemyType][Stats.Health],
+                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
                                 enemyDefaults[enemyType][Stats.MoveSpeed],
                                 newCollision,
                                 enemyDefaults[enemyType][Stats.AttackDelay],
@@ -264,7 +265,7 @@ namespace Team3Project
                     case EnemyTypes.Ranged:
                         enemyList.Add(
                             new RangedEnemy(
-                                enemyDefaults[enemyType][Stats.Health],
+                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
                                 enemyDefaults[enemyType][Stats.MoveSpeed],
                                 newCollision,
                                 enemyDefaults[enemyType][Stats.AttackDelay],
