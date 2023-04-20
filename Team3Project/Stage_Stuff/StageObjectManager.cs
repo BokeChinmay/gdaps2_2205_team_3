@@ -41,6 +41,7 @@ namespace Team3Project.Stage_Stuff
 
         // Tile fields
         private Texture2D blockedTileTexture;
+        private Texture2D emptyTileTexture;
 
         // Fields for the other bounds of the play area
         private Texture2D backWallTexture;
@@ -140,6 +141,9 @@ namespace Team3Project.Stage_Stuff
             // Loading the blocked tile texture
             blockedTileTexture = content.Load<Texture2D>("BlockedTile");
 
+            // Loading the empty tile texture
+            emptyTileTexture = content.Load<Texture2D>("emptyTile");
+
             // The tiles in the tile map will be 114 pixels wide by 100 pixels tall,
             // for a grid that is 10 tiles wide and 8 tiles tall
             try
@@ -195,6 +199,11 @@ namespace Team3Project.Stage_Stuff
 
             healthDisplay.Draw(_spriteBatch, SpriteEffects.None);
             scoreDisplay.Draw(_spriteBatch, SpriteEffects.None);
+
+            foreach(Rectangle emptyTile in emptyTiles)
+            {
+                _spriteBatch.Draw(emptyTileTexture, emptyTile, Color.White);
+            }
         }
 
         /// <summary>
