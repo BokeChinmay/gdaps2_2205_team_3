@@ -159,7 +159,6 @@ namespace Team3Project.Enemy_Stuff
                     {
                         if (collision.Intersects(projectile.Collision) && !(projectile is EnemyBullet))
                         {
-                            TakeDamage(projectile.Damage);
                             invincibilityTimer = INVINCIBILITY_DURATION;
                             vulnerabilityState = VulnerabilityState.Invincible;
 

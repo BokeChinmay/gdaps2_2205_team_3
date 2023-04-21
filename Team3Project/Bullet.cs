@@ -63,6 +63,7 @@ namespace Team3Project
                 {
                     if (collision.Intersects(enemy.Collision))
                     {
+                        enemy.TakeDamage(damage);
                         active = false;
                     }
                 }

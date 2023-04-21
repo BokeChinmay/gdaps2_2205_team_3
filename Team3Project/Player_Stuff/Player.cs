@@ -37,7 +37,7 @@ namespace Team3Project.Player_Stuff
         private VulnerabilityState vulnerabilityState = VulnerabilityState.Vulnerable;
         private double invinsibilityFrames = 5;
         private int meleeDamage = 50;
-        private int projectileDamage = 20;
+        private int projectileDamage;
         private int currentIFrames;
 
         private int currentLevel;
@@ -82,6 +82,8 @@ namespace Team3Project.Player_Stuff
             this.playerTexture = playerTexture;
             this.meleeTexture = meleeTexture;
             this.bulletTexture = bulletTexture;
+            projectileDamage = 20;
+
             lastKbState = LastKbState.W;
             currentIFrames = 0;
             currentLevel = 1;
@@ -166,7 +168,7 @@ namespace Team3Project.Player_Stuff
                 Vector2 unitVector = displacement / distance;
 
                 //Create a new bullet
-                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture, true));
+                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X + playerTexture.Width/4, collision.Y + playerTexture.Height/4, 30, 30), projectileDamage, bulletTexture, true));
             }
 
             /*

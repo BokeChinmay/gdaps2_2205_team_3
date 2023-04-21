@@ -17,19 +17,43 @@ namespace Team3Project.Stage_Stuff
     internal class BlockedTile : StageObject
     {
         // Field declaration
-        private Texture2D texture;
+        private Texture2D topTexture;
+        private Texture2D bottomTexture;
+        private Texture2D basicTexture;
+        private bool basic;
+
+        // Property for whether the tile is basic
+        public bool Basic
+        {
+            get { return basic; }
+        }
 
         // Parameterized constructor
-        public BlockedTile(int xPos, int yPos, Texture2D texture) : base(114, 100, xPos, yPos)
+        public BlockedTile(int xPos, int yPos, Texture2D topTexture, Texture2D bottomTexture, Texture2D basicTexture, bool basic) : base(114, 100, xPos, yPos)
         {
-            this.texture = texture;
+            this.topTexture = topTexture;
+            this.bottomTexture = bottomTexture;
+            this.basicTexture = basicTexture;
+            this.basic = basic;
             isObstruction = true;
         }
 
         // Draw method override
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            spriteBatch.Draw(texture, dimensions, Color.White);
+            spriteBatch.Draw(basicTexture, new Rectangle(dimensions.X, dimensions.Y - 8, dimensions.Width, dimensions.Height), Color.White);
+        }
+
+        // Draws a lower layer
+        public void DrawBottom(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            spriteBatch.Draw(bottomTexture, new Rectangle(dimensions.X, dimensions.Y + 30, bottomTexture.Width, bottomTexture.Height), Color.White);
+        }
+
+        // Draws a second layer
+        public void DrawTop(SpriteBatch spriteBatch, SpriteEffects spriteEffects) 
+        {
+            spriteBatch.Draw(topTexture, new Rectangle(dimensions.X, dimensions.Y - 10, dimensions.Width, 60), Color.White);
         }
     }
 }

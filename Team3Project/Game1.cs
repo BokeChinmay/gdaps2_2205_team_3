@@ -336,11 +336,12 @@ namespace Team3Project
 
                 _spriteBatch.Begin();
 
-                stageObjectManager.Draw(_spriteBatch);
+                stageObjectManager.Draw1(_spriteBatch);
                 playerEntity.Draw(_spriteBatch, SpriteEffects.None);
                 //items.Draw(_spriteBatch, SpriteEffects.None);
 
                 LevelManager.Draw(_spriteBatch, SpriteEffects.None, menuFont);
+                stageObjectManager.Draw2(_spriteBatch);
             }
             // Drawing the main menu
             else if (_gameState == GameState.Menu)
