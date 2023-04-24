@@ -209,11 +209,8 @@ namespace Team3Project.Stage_Stuff
                 if (s is BlockedTile)
                 {
                     BlockedTile currentTile = (BlockedTile)s;
-
-                    if (!currentTile.Basic)
-                    {
-                        currentTile.DrawBottom(_spriteBatch, SpriteEffects.None);
-                    }
+                    
+                    currentTile.DrawBottom(_spriteBatch, SpriteEffects.None);
                 }
                 else
                 {
@@ -385,7 +382,7 @@ namespace Team3Project.Stage_Stuff
             emptyTiles.Clear();
 
             // Choosing a new layout at random
-            int layoutChoice = rng.Next(1, 4);
+            int layoutChoice = rng.Next(1, 5);
 
             if (layoutChoice == 0) 
             {
@@ -402,6 +399,10 @@ namespace Team3Project.Stage_Stuff
             else if (layoutChoice == 3)
             {
                 currentLayout = levelLayouts["Lanes"];
+            }
+            else if (layoutChoice == 4)
+            {
+                currentLayout = levelLayouts["Scatter"];
             }
 
             // Creating tiles and adding them to the list of stage objects

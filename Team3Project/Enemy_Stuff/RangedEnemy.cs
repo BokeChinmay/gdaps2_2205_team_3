@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Team3Project.Enemy_Stuff
 {
-    internal class RangedEnemy : Enemy, IDamageable
+    internal class RangedEnemy : Enemy
     {
         // Class-specific fields
         int attackDelay;
@@ -158,7 +158,7 @@ namespace Team3Project.Enemy_Stuff
                             invincibilityTimer = INVINCIBILITY_DURATION;
                             vulnerabilityState = VulnerabilityState.Invincible;
 
-                            if (health <= 0)
+                            if (health <= 0 + projectile.Damage)
                             {
                                 currentState = EnemyState.Death;
                             }

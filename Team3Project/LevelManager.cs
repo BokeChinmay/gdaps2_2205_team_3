@@ -147,8 +147,17 @@ namespace Team3Project
                 //Deactivate projectile if it is in contact with the player
                 if (projectileList[i].Collision.Intersects(player.Collision) && !projectileList[i].Friendly)
                 {
-                    projectileList[i].Active = false;
                     player.TakeDamage(projectileList[i].Damage);
+                    projectileList[i].Active = false;
+                }
+
+                foreach (Enemy enemy in enemyList)
+                {
+                    if (projectileList[i].Collision.Intersects(enemy.Collision) && projectileList[i].Friendly)
+                    {
+                        enemy.TakeDamage((Bullet)projectileList[i]);
+                        projectileList[i].Active = false;
+                    }
                 }
                 
                 //If a projectile is no longer active, remove it from the list

@@ -16,7 +16,7 @@ namespace Team3Project.Enemy_Stuff
 {
     
 
-    internal class MeleeEnemy : Enemy, IDamageable
+    internal class MeleeEnemy : Enemy
     {
         EnemyState currentState;
         //Range at which the enemy begins the attack process
@@ -162,7 +162,7 @@ namespace Team3Project.Enemy_Stuff
                             invincibilityTimer = INVINCIBILITY_DURATION;
                             vulnerabilityState = VulnerabilityState.Invincible;
 
-                            if (health <= 0)
+                            if (health <= 0 + projectile.Damage)
                             {
                                 currentState = EnemyState.Death;
                             }

@@ -245,9 +245,16 @@ namespace Team3Project.Enemy_Stuff
         //Name: Take Damage
         //Purpose: Changes health by damage amount
         //Params: Damage amount
-        public void TakeDamage(int amount)
+        public void TakeDamage(Bullet bullet)
         {
-            health -= amount;
+            if (0 < bullet.Damage)
+            {
+                health -= bullet.Damage;
+            }
+            else
+            {
+                health -= 1;
+            }
         }
 
         /// <summary>

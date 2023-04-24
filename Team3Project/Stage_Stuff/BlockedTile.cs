@@ -41,7 +41,7 @@ namespace Team3Project.Stage_Stuff
         // Draw method override
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            spriteBatch.Draw(basicTexture, new Rectangle(dimensions.X, dimensions.Y - 8, dimensions.Width, dimensions.Height), Color.White);
+            spriteBatch.Draw(basicTexture, new Rectangle(dimensions.X, dimensions.Y - 20, dimensions.Width, dimensions.Height - 10), Color.White);
         }
 
         // Draws a lower layer
@@ -53,7 +53,7 @@ namespace Team3Project.Stage_Stuff
         // Draws a second layer
         public void DrawTop(SpriteBatch spriteBatch, SpriteEffects spriteEffects) 
         {
-            spriteBatch.Draw(topTexture, new Rectangle(dimensions.X, dimensions.Y - 10, dimensions.Width, 60), Color.White);
+            spriteBatch.Draw(basicTexture, new Rectangle(dimensions.X, dimensions.Y - 30, dimensions.Width, dimensions.Height - 10), Color.White);
         }
     }
 }

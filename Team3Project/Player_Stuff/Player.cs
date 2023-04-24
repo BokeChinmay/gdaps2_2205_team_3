@@ -76,13 +76,13 @@ namespace Team3Project.Player_Stuff
         /// <param name="moveSpeed"></param>
         /// <param name="collision"></param>
         /// <param name="playerTexture"></param>
-        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture, Texture2D meleeTexture, Texture2D bulletTexture) 
+        public Player(int health, int moveSpeed, int bulletDamage, Rectangle collision, Texture2D playerTexture, Texture2D meleeTexture, Texture2D bulletTexture) 
             : base(health, moveSpeed, collision)
         {
             this.playerTexture = playerTexture;
             this.meleeTexture = meleeTexture;
             this.bulletTexture = bulletTexture;
-            projectileDamage = 20;
+            projectileDamage = bulletDamage;
 
             lastKbState = LastKbState.W;
             currentIFrames = 0;
@@ -218,7 +218,7 @@ namespace Team3Project.Player_Stuff
             {
                 Item item = (Item)check;
 
-                item.CheckCollision(this);
+                //item.CheckCollision(this);
             }
             else if (check.Collision.Intersects(collision))
             {
