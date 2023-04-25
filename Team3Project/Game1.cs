@@ -14,6 +14,7 @@ namespace Team3Project
     {
         Menu,
         GamePlaying,
+        Restart,
         GameOver,
         Controls,
         Pause
@@ -65,6 +66,8 @@ namespace Team3Project
         private Texture2D gameOver;
         private int titleOption;
 
+        private int restarts; //Number of restarts remaining for the player
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -85,6 +88,8 @@ namespace Team3Project
 
             rng = new Random();
             LevelManager.Initialize();
+
+            restarts = 2;
 
             base.Initialize();
         }
@@ -242,6 +247,22 @@ namespace Team3Project
                 }
                 else
                 {
+                    _gameState = GameState.Restart;
+                }
+            }
+            // Updates when the character respawns. If respawns = 0, change state to GameOver
+            else if (_gameState == GameState.Restart)
+            {
+                if (restarts > 0)
+                {
+                    _gameState = GameState.GamePlaying;
+                    stageObjectManager.GenerateLevel();
+                    LoadData();
+                    LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
+                    restarts--;
+                }
+                else
+                {
                     _gameState = GameState.GameOver;
                 }
             }
@@ -255,6 +276,7 @@ namespace Team3Project
                     stageObjectManager.GenerateLevel();
                     LoadData();
                     LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
+                    restarts = 2;
                 }
 
                 // Allowing the controls display state to be started
@@ -344,6 +366,11 @@ namespace Team3Project
 
                 LevelManager.Draw(_spriteBatch, SpriteEffects.None, menuFont);
                 stageObjectManager.Draw2(_spriteBatch);
+            }
+            // Drawing the reset process
+            else if (_gameState == GameState.Restart)
+            {
+                GraphicsDevice.Clear(Color.Black);
             }
             // Drawing the main menu
             else if (_gameState == GameState.Menu)
