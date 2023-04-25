@@ -39,6 +39,8 @@ namespace Team3Project.Player_Stuff
         private int meleeDamage = 50;
         private int projectileDamage;
         private int currentIFrames;
+        private const int ATTACK_DELAY = 30;
+        private int attackTimer;
 
         private int currentLevel;
 
@@ -125,7 +127,7 @@ namespace Team3Project.Player_Stuff
             prevMouseState = mouseState;
             prevKbState = kbState;
 
-            if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
+            if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released && attackTimer <= 0)
             {
                 if(lastKbState == LastKbState.W)
                 {
@@ -151,6 +153,12 @@ namespace Team3Project.Player_Stuff
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
+                attackTimer = ATTACK_DELAY;
+            }
+
+            if (attackTimer > 0)
+            {
+                attackTimer--;
             }
 
             prevMouseState = mouseState;
@@ -160,7 +168,7 @@ namespace Team3Project.Player_Stuff
         public void RangedAttack(MouseState mouseState, MouseState prevMouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
 
-            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released) 
+            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released && attackTimer <= 0) 
             {
                 //Calculate unit vector
                 Vector2 displacement = new Vector2(mouseState.X, mouseState.Y) - new Vector2(collision.X, collision.Y);
@@ -169,8 +177,13 @@ namespace Team3Project.Player_Stuff
 
                 //Create a new bullet
                 LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X + playerTexture.Width/4, collision.Y + playerTexture.Height/4, 30, 30), projectileDamage, bulletTexture, true));
+                attackTimer = ATTACK_DELAY;
             }
-
+            
+            if (attackTimer > 0)
+            {
+                attackTimer--;
+            }
             /*
             if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
             {
