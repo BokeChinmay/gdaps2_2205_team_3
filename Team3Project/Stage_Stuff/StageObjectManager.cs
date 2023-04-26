@@ -149,8 +149,8 @@ namespace Team3Project.Stage_Stuff
 
             // Loading and initializing the UI
             font = content.Load<SpriteFont>("MenuFont");
-            fullHP = content.Load<Texture2D>("Full_HP");
-            emptyHP = content.Load<Texture2D>("Empty_HP");
+            fullHP = content.Load<Texture2D>("Full_HP_v2");
+            emptyHP = content.Load<Texture2D>("Empty_HP_v2");
             brokenHP = content.Load<Texture2D>("Broken_HP");
             fullLife = content.Load<Texture2D>("Full_Life");
             emptyLife = content.Load<Texture2D>("Empty_Life");

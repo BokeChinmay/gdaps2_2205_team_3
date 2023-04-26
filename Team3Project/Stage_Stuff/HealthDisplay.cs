@@ -57,21 +57,21 @@ namespace Team3Project.Stage_Stuff
             
             if (health == 3)
             {
-                spriteBatch.Draw(fullHP, new Rectangle(22, 75, 135, 240), Color.White);
-                spriteBatch.Draw(fullHP, new Rectangle(22, 325, 135, 240), Color.White);
-                spriteBatch.Draw(fullHP, new Rectangle(22, 575, 135, 240), Color.White);
+                spriteBatch.Draw(fullHP, new Rectangle(37, 75, 105, 210), Color.White);
+                spriteBatch.Draw(fullHP, new Rectangle(37, 295, 105, 210), Color.White);
+                spriteBatch.Draw(fullHP, new Rectangle(37, 515, 105, 210), Color.White);
             }
             else if (health == 2) 
             {
-                spriteBatch.Draw(emptyHP, new Rectangle(22, 75, 135, 240), Color.White);
-                spriteBatch.Draw(fullHP, new Rectangle(22, 325, 135, 240), Color.White);
-                spriteBatch.Draw(fullHP, new Rectangle(22, 575, 135, 240), Color.White);
+                spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
+                spriteBatch.Draw(fullHP, new Rectangle(37, 295, 105, 210), Color.White);
+                spriteBatch.Draw(fullHP, new Rectangle(37, 515, 105, 210), Color.White);
             }
             else if (health == 1) 
             {
-                spriteBatch.Draw(emptyHP, new Rectangle(22, 75, 135, 240), Color.White);
-                spriteBatch.Draw(emptyHP, new Rectangle(22, 325, 135, 240), Color.White);
-                spriteBatch.Draw(fullHP, new Rectangle(22, 575, 135, 240), Color.White);
+                spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
+                spriteBatch.Draw(emptyHP, new Rectangle(37, 295, 105, 210), Color.White);
+                spriteBatch.Draw(fullHP, new Rectangle(37, 515, 105, 210), Color.White);
             }
         }
     }
