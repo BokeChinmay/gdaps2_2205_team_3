@@ -15,16 +15,16 @@ using Team3Project.Player_Stuff;
 
 namespace Team3Project.Stage_Stuff
 {
+    // enum for use with assigning tile types on level generation
+    enum TileTypes
+    {
+        empty,
+        blocked,
+        blocked2
+    }
+
     internal class StageObjectManager
     {
-        // enum for use with assigning tile types on level generation
-        enum TileTypes
-        {
-            empty,
-            blocked,
-            blocked2
-        }
-
         // General field declarations
         private StreamReader reader;
         private Random rng;
@@ -64,7 +64,10 @@ namespace Team3Project.Stage_Stuff
         private Texture2D fullLife;
         private Texture2D emptyLife;
         private HealthDisplay healthDisplay;
+        private Texture2D levelLabel;
         private ScoreDisplay scoreDisplay;
+        private Texture2D numberSheet;
+        private Rectangle[] uiNumbers;
 
         // Get-only property for obstructive stage objects
         public List<StageObject> ObstructiveStageObjects
@@ -95,6 +98,20 @@ namespace Team3Project.Stage_Stuff
 
             bottomBounds = new HiddenStageObject(1500, 200, 0, 901);
             obstructiveStageObjects.Add(bottomBounds);
+
+            scoreDisplay = new ScoreDisplay();
+
+            uiNumbers = new Rectangle[10];
+            uiNumbers[0] = new Rectangle(4, 4, 20, 24);
+            uiNumbers[1] = new Rectangle(32, 4, 20, 24);
+            uiNumbers[2] = new Rectangle(60, 4, 20, 24);
+            uiNumbers[3] = new Rectangle(88, 4, 20, 24);
+            uiNumbers[4] = new Rectangle(116, 4, 20, 24);
+            uiNumbers[5] = new Rectangle(4, 36, 20, 24);
+            uiNumbers[6] = new Rectangle(32, 36, 20, 24);
+            uiNumbers[7] = new Rectangle(60, 36, 20, 24);
+            uiNumbers[8] = new Rectangle(88, 36, 20, 24);
+            uiNumbers[9] = new Rectangle(116, 36, 20, 24);
         }
 
         /// <summary>
@@ -139,7 +156,9 @@ namespace Team3Project.Stage_Stuff
             emptyLife = content.Load<Texture2D>("Empty_Life");
 
             healthDisplay = new HealthDisplay(font, fullHP, emptyHP, brokenHP, fullLife, emptyLife);
-            scoreDisplay = new ScoreDisplay(font);
+
+            levelLabel = content.Load<Texture2D>("UI_Level");
+            numberSheet = content.Load<Texture2D>("UI_Numbers");
 
             // Loading the blocked tile textures
             blockedTileTopTexture = content.Load<Texture2D>("Blocked_Tile_Top");
@@ -221,10 +240,13 @@ namespace Team3Project.Stage_Stuff
             elevator.Draw(_spriteBatch, SpriteEffects.None);
 
             healthDisplay.Draw(_spriteBatch, SpriteEffects.None);
-            scoreDisplay.Draw(_spriteBatch, SpriteEffects.None);
-
+            scoreDisplay.Draw(_spriteBatch, SpriteEffects.None, this, levelLabel);
         }
 
+        /// <summary>
+        /// Draws a top layer for blocked tiles over everything else
+        /// </summary>
+        /// <param name="_spriteBatch"></param>
         public void Draw2(SpriteBatch _spriteBatch)
         {
             foreach(StageObject s in obstructiveStageObjects)
@@ -232,6 +254,7 @@ namespace Team3Project.Stage_Stuff
                 if (s is BlockedTile)
                 {
                     BlockedTile currentTile = (BlockedTile)s;
+
                     if (!currentTile.Basic)
                     {
                         currentTile.DrawTop(_spriteBatch, SpriteEffects.None);
@@ -242,6 +265,17 @@ namespace Team3Project.Stage_Stuff
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Draws a number at a specified location
+        /// </summary>
+        /// <param name="number"> the number to be drawn </param>
+        /// <param name="location"> where to draw the number </param>
+        /// <param name="spriteBatch"></param>
+        public void DrawUINumber(int number, Vector2 location, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(numberSheet, location, uiNumbers[number], Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
         }
 
         /// <summary>
