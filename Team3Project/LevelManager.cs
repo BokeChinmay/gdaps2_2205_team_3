@@ -98,8 +98,8 @@ namespace Team3Project
 
             //Sets up the dictionary
             enemyDefaults = new Dictionary<EnemyTypes, Dictionary<Stats, int>>();
-            enemyDefaults.Add(EnemyTypes.Melee, new Dictionary<Stats, int>() { { Stats.Health, 100 }, { Stats.MoveSpeed, 5 }, { Stats.Height, 50 }, { Stats.Width, 50 }, { Stats.AttackDelay, 30 } });
-            enemyDefaults.Add(EnemyTypes.Ranged, new Dictionary<Stats, int>() { { Stats.Health, 100 }, { Stats.MoveSpeed, 3 }, { Stats.Height, 100 }, { Stats.Width, 50 }, { Stats.AttackDelay, 360 }, { Stats.ProjectileSpeed, 10 } });
+            enemyDefaults.Add(EnemyTypes.Melee, new Dictionary<Stats, int>() { { Stats.Health, 50 }, { Stats.MoveSpeed, 5 }, { Stats.Height, 50 }, { Stats.Width, 50 }, { Stats.AttackDelay, 30 } });
+            enemyDefaults.Add(EnemyTypes.Ranged, new Dictionary<Stats, int>() { { Stats.Health, 50 }, { Stats.MoveSpeed, 3 }, { Stats.Height, 100 }, { Stats.Width, 50 }, { Stats.AttackDelay, 360 }, { Stats.ProjectileSpeed, 10 } });
         }
 
         /// <summary>

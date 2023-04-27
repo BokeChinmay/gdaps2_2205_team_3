@@ -22,6 +22,11 @@ namespace Team3Project.Player_Stuff
     {
         W, A, S, D
     }
+    enum PlayerState
+    {
+        Moving,
+        MeleeAttack
+    }
 
     internal class Player : Entity, IDamageable
     {
@@ -33,6 +38,7 @@ namespace Team3Project.Player_Stuff
         private MouseState prevMouseState;
         private Random rng = new Random();
         private LastKbState lastKbState;
+        private PlayerState playerState;
 
         private VulnerabilityState vulnerabilityState = VulnerabilityState.Vulnerable;
         private double invinsibilityFrames = 5;
@@ -89,6 +95,7 @@ namespace Team3Project.Player_Stuff
             lastKbState = LastKbState.W;
             currentIFrames = 0;
             currentLevel = 1;
+            playerState = PlayerState.Moving;
         }
 
         /// <summary>
@@ -129,6 +136,26 @@ namespace Team3Project.Player_Stuff
 
             if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released && attackTimer <= 0)
             {
+                playerState = PlayerState.MeleeAttack;
+
+                //Calculate direction of attack
+                Vector2 displacement = new Vector2(mouseState.X, mouseState.Y) - new Vector2(collision.X, collision.Y);
+                float distance = (float)Math.Sqrt(Math.Pow(displacement.X, 2) + Math.Pow(displacement.Y, 2)); ;
+                Vector2 unitVector = displacement / distance;
+
+                //Calculate attack angle in radians
+                float rotation = (float)Math.Atan2(unitVector.X, unitVector.Y);
+
+                //Create new projectile and add it to the projectile list
+                MeleeProjectile slash = new MeleeProjectile(0, 
+                    50, 
+                    new Rectangle((int)(collision.X + (unitVector.X * 3)), (int)(collision.Y + (unitVector.Y * 3)), 50, 20),
+                    meleeTexture,
+                    true,
+                    rotation);
+                LevelManager.AddProjectile(slash);
+
+                /*
                 if(lastKbState == LastKbState.W)
                 {
                     Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture, true);
@@ -154,11 +181,13 @@ namespace Team3Project.Player_Stuff
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
                 attackTimer = ATTACK_DELAY;
+                */
             }
 
             if (attackTimer > 0)
             {
                 attackTimer--;
+                playerState = PlayerState.Moving;
             }
 
             prevMouseState = mouseState;
@@ -293,8 +322,11 @@ namespace Team3Project.Player_Stuff
                 currentIFrames -= 1;
             }
 
-            Move(kbState);
-
+            if (playerState == PlayerState.Moving)
+            {
+                Move(kbState);
+            }
+           
             // When adding attack capabilities to the player, make left click shoot and right click melee
         }
 

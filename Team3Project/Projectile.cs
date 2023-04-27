@@ -16,7 +16,7 @@ namespace Team3Project
     internal class Projectile : Entity
     {
         //Texture
-        Texture2D texture;
+        protected Texture2D texture;
 
         //Damage that the projectile deals
         protected int damage;
