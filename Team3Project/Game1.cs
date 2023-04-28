@@ -14,7 +14,7 @@ namespace Team3Project
     {
         Menu,
         GamePlaying,
-        Restart,
+        Demoted,
         GameOver,
         Controls,
         Pause
@@ -63,6 +63,7 @@ namespace Team3Project
         private Texture2D titleOption2;
         private Texture2D controls;
         private Texture2D pause;
+        private Texture2D demoted;
         private Texture2D gameOver;
         private int titleOption;
 
@@ -102,10 +103,11 @@ namespace Team3Project
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerMeleeTexture = this.Content.Load<Texture2D>("MeleeAttack");
             playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
-            playerEntity = new Player(3, 5, 20, new Rectangle(734, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
+            playerEntity = new Player(3, 3, 3, 5, 20, new Rectangle(734, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
             // Subscribing the central GameOver method to the player's relevant event
             playerEntity.gameOver += GameOver;
+            playerEntity.lostLife += Demotion;
 
             // Loading item textures
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
@@ -125,6 +127,7 @@ namespace Team3Project
             controls = this.Content.Load<Texture2D>("Controls_v2");
             pause = this.Content.Load<Texture2D>("Pause_Menu");
             gameOver = this.Content.Load<Texture2D>("Game_Over");
+            demoted = this.Content.Load<Texture2D>("Demoted");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -158,6 +161,7 @@ namespace Team3Project
                 streamWriter = new StreamWriter("../../../savedData.txt");
                 streamWriter.WriteLine("Data present");
                 streamWriter.WriteLine(playerEntity.Health);
+                streamWriter.WriteLine(playerEntity.Lives);
                 streamWriter.WriteLine(playerEntity.MoveSpeed);
                 streamWriter.WriteLine(playerEntity.Level);
                 streamWriter.WriteLine(playerEntity.ProjectileDamage);
@@ -178,11 +182,13 @@ namespace Team3Project
                 if (streamReader.ReadLine() != "empty")
                 {
                     int playerHealth = int.Parse(streamReader.ReadLine());
+                    int playerLives = int.Parse(streamReader.ReadLine());
                     int playerMoveSpeed = int.Parse(streamReader.ReadLine());
                     int playerLevel = int.Parse(streamReader.ReadLine());
                     int playerDamage = int.Parse(streamReader.ReadLine());
 
                     playerEntity.Health = playerHealth;
+                    playerEntity.Lives = playerLives;
                     playerEntity.MoveSpeed = playerMoveSpeed;
                     playerEntity.Level = playerLevel;
                     playerEntity.ProjectileDamage = playerDamage;
@@ -245,21 +251,9 @@ namespace Team3Project
                         _gameState = GameState.Pause;
                     }
                 }
-                else
+                else if (playerEntity.Lives >= 1)
                 {
-                    _gameState = GameState.Restart;
-                }
-            }
-            // Updates when the character respawns. If respawns = 0, change state to GameOver
-            else if (_gameState == GameState.Restart)
-            {
-                if (restarts > 0)
-                {
-                    _gameState = GameState.GamePlaying;
-                    stageObjectManager.GenerateLevel();
-                    LoadData();
-                    LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
-                    restarts--;
+                    _gameState = GameState.Demoted;
                 }
                 else
                 {
@@ -343,6 +337,21 @@ namespace Team3Project
                     _gameState = GameState.Menu;
                 }
             }
+            // Updating while in the demotion screen
+            else if (_gameState == GameState.Demoted)
+            {
+                if (playerEntity.Lives == 1)
+                {
+                    _gameState = GameState.GameOver;
+                }
+
+                // Returning to the menu
+                if (kbState.IsKeyUp(Keys.C) && prevKbState.IsKeyDown(Keys.C))
+                {
+                    Demotion();
+                    _gameState = GameState.GamePlaying;
+                }
+            }
 
             // Getting previous keyboard and mouse states
             prevMouseState = mouseState;
@@ -366,11 +375,6 @@ namespace Team3Project
 
                 LevelManager.Draw(_spriteBatch, SpriteEffects.None, menuFont);
                 stageObjectManager.Draw2(_spriteBatch);
-            }
-            // Drawing the reset process
-            else if (_gameState == GameState.Restart)
-            {
-                GraphicsDevice.Clear(Color.Black);
             }
             // Drawing the main menu
             else if (_gameState == GameState.Menu)
@@ -419,10 +423,25 @@ namespace Team3Project
 
                 _spriteBatch.Draw(gameOver, new Rectangle(150, 250, 1200, 400), Color.White);
             }
+            // Drawing the demotion screen
+            else if (_gameState == GameState.Demoted)
+            {
+                GraphicsDevice.Clear(Color.Black);
+
+                _spriteBatch.Begin();
+
+                _spriteBatch.Draw(demoted, new Rectangle(140, 230, 1220, 440), Color.White);
+            }
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        protected void Demotion()
+        {
+            playerEntity.Demoted();
+            LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
         }
 
         /// <summary>
@@ -432,7 +451,12 @@ namespace Team3Project
         {
             _gameState = GameState.GameOver;
             ClearData();
+
             playerEntity.Health = 3;
+            playerEntity.Lives = 3;
+            playerEntity.MoveSpeed = 5;
+            playerEntity.Level = 1;
+            playerEntity.ProjectileDamage = 20;
         }
 
         /// <summary>

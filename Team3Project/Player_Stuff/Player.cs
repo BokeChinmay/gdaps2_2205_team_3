@@ -46,6 +46,8 @@ namespace Team3Project.Player_Stuff
         private int meleeDamage = 50;
         private int projectileDamage;
         private int currentIFrames;
+        private int lives;
+        private int maxHealth;
         private const int ATTACK_DELAY = 30;
         private int attackTimer;
         private int deathFrameTimer;
@@ -54,6 +56,7 @@ namespace Team3Project.Player_Stuff
         private int currentLevel;
 
         public event Action gameOver;
+        public event Action lostLife;
 
         //Consts
         
@@ -80,6 +83,18 @@ namespace Team3Project.Player_Stuff
             set { currentLevel = value; }
         }
 
+        public int Lives
+        {
+            get { return lives; }
+            set { lives = value; }
+        }
+
+        public int MaxHealth
+        {
+            get { return maxHealth; }
+            set { maxHealth = value; }
+        }
+
         /// <summary>
         /// Parameterized Constructor
         /// </summary>
@@ -87,13 +102,15 @@ namespace Team3Project.Player_Stuff
         /// <param name="moveSpeed"></param>
         /// <param name="collision"></param>
         /// <param name="playerTexture"></param>
-        public Player(int health, int moveSpeed, int bulletDamage, Rectangle collision, Texture2D playerTexture, Texture2D meleeTexture, Texture2D bulletTexture) 
+        public Player(int health, int maxHealth, int lives, int moveSpeed, int bulletDamage, Rectangle collision, Texture2D playerTexture, Texture2D meleeTexture, Texture2D bulletTexture) 
             : base(health, moveSpeed, collision)
         {
             this.playerTexture = playerTexture;
             this.meleeTexture = meleeTexture;
             this.bulletTexture = bulletTexture;
             projectileDamage = bulletDamage;
+            this.lives = lives;
+            this.maxHealth = maxHealth;
 
             lastKbState = LastKbState.W;
             currentIFrames = 0;
@@ -102,6 +119,9 @@ namespace Team3Project.Player_Stuff
             attackTimer = 0;
             deathFrameTimer = 30;
             PlayerOffsetX = 4;
+
+            lostLife += Demoted;
+            gameOver += ResetStats;
         }
 
         /// <summary>
@@ -214,7 +234,7 @@ namespace Team3Project.Player_Stuff
                 Vector2 unitVector = displacement / distance;
 
                 //Create a new bullet
-                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X + playerTexture.Width/4, collision.Y + playerTexture.Height/4, 30, 30), projectileDamage, bulletTexture, true));
+                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y + playerTexture.Height/4, 30, 30), projectileDamage, bulletTexture, true));
                 attackTimer = ATTACK_DELAY;
             }
             
@@ -340,7 +360,15 @@ namespace Team3Project.Player_Stuff
                 {
                     PlayerOffsetX = 4;
                     deathFrameTimer = 30;
-                    gameOver();
+
+                    if (lives <= 1)
+                    {
+                        gameOver();
+                    }
+                    else
+                    {
+                        active = false;
+                    }
                 }
             }
 
@@ -353,8 +381,6 @@ namespace Team3Project.Player_Stuff
             {
                 Move(kbState);
             }
-           
-            // When adding attack capabilities to the player, make left click shoot and right click melee
         }
 
         /// <summary>
@@ -365,11 +391,31 @@ namespace Team3Project.Player_Stuff
             collision.X = 734;
             collision.Y = 864;
             currentLevel++;
-            
-            if (health < 3)
-            {
-                health += 1;
-            }
+        }
+
+        public void Demoted()
+        {
+            collision.X = 734;
+            collision.Y = 864;
+
+            lives--;
+            maxHealth--;
+
+            active = true;
+            health = maxHealth;
+        }
+
+        public void ResetStats()
+        {
+            lives = 3;
+            maxHealth = 3;
+            health = maxHealth;
+            moveSpeed = 5;
+            projectileDamage = 20;
+            Level = 1;
+            active = true;
+            collision.X = 734;
+            collision.Y = 864;
         }
     }
 }

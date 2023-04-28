@@ -65,6 +65,8 @@ namespace Team3Project.Stage_Stuff
         private Texture2D emptyLife;
         private HealthDisplay healthDisplay;
         private Texture2D levelLabel;
+        private Texture2D healthLabel;
+        private Texture2D livesLabel;
         private ScoreDisplay scoreDisplay;
         private Texture2D numberSheet;
         private Rectangle[] uiNumbers;
@@ -151,11 +153,14 @@ namespace Team3Project.Stage_Stuff
             font = content.Load<SpriteFont>("MenuFont");
             fullHP = content.Load<Texture2D>("Full_HP_v2");
             emptyHP = content.Load<Texture2D>("Empty_HP_v2");
-            brokenHP = content.Load<Texture2D>("Broken_HP");
-            fullLife = content.Load<Texture2D>("Full_Life");
-            emptyLife = content.Load<Texture2D>("Empty_Life");
+            brokenHP = content.Load<Texture2D>("Broken_HP_v2");
+            fullLife = content.Load<Texture2D>("Full_Life_v2");
+            emptyLife = content.Load<Texture2D>("Empty_Life_v2");
 
-            healthDisplay = new HealthDisplay(font, fullHP, emptyHP, brokenHP, fullLife, emptyLife);
+            healthLabel = content.Load<Texture2D>("UI_HP");
+            livesLabel = content.Load<Texture2D>("UI_Lives");
+            healthDisplay = new HealthDisplay(font, fullHP, emptyHP, brokenHP, fullLife, 
+                emptyLife, healthLabel, livesLabel);
 
             levelLabel = content.Load<Texture2D>("UI_Level");
             numberSheet = content.Load<Texture2D>("UI_Numbers");
@@ -395,6 +400,7 @@ namespace Team3Project.Stage_Stuff
             elevator.PlayerEnters(player);
 
             healthDisplay.Health = player.Health;
+            healthDisplay.Lives = player.Lives;
             scoreDisplay.Update(player);
         }
 

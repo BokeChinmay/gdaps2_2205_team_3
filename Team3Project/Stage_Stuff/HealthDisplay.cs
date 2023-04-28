@@ -20,6 +20,8 @@ namespace Team3Project.Stage_Stuff
         private int lives;
 
         private SpriteFont font;
+        private Texture2D healthLabel;
+        private Texture2D livesLabel;
 
         private Texture2D fullHP;
         private Texture2D emptyHP;
@@ -34,7 +36,9 @@ namespace Team3Project.Stage_Stuff
 
         // Parameterized constructor
         public HealthDisplay(SpriteFont font, Texture2D fullHP, Texture2D emptyHP, 
-            Texture2D brokenHP, Texture2D fullLife, Texture2D emptyLife) : base(45, 75, 135, 740)
+            Texture2D brokenHP, Texture2D fullLife, Texture2D emptyLife, Texture2D healthLabel,
+            Texture2D livesLabel) : 
+            base(45, 75, 135, 740)
         {
             health = 3;
             lives = 3;
@@ -44,6 +48,8 @@ namespace Team3Project.Stage_Stuff
             this.brokenHP = brokenHP;
             this.fullLife = fullLife;
             this.emptyLife = emptyLife;
+            this.healthLabel = healthLabel;
+            this.livesLabel = livesLabel;
         }
 
         /// <summary>
@@ -53,7 +59,7 @@ namespace Team3Project.Stage_Stuff
         /// <param name="spriteEffects"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            spriteBatch.DrawString(font, "HP", new Vector2(65, 35), Color.LightGreen);
+            spriteBatch.Draw(healthLabel, new Rectangle(68, 40, 44, 24), Color.White);
             
             if (health == 3)
             {
@@ -63,21 +69,91 @@ namespace Team3Project.Stage_Stuff
             }
             else if (health == 2) 
             {
-                spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
+                if (lives == 3)
+                {
+                    spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(brokenHP, new Rectangle(28, 75, 123, 210), Color.White);
+                }
+
                 spriteBatch.Draw(fullHP, new Rectangle(37, 295, 105, 210), Color.White);
+
                 spriteBatch.Draw(fullHP, new Rectangle(37, 515, 105, 210), Color.White);
             }
             else if (health == 1) 
             {
-                spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
-                spriteBatch.Draw(emptyHP, new Rectangle(37, 295, 105, 210), Color.White);
+                if (lives == 3)
+                {
+                    spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(brokenHP, new Rectangle(28, 75, 123, 210), Color.White);
+                }
+
+                if (lives >= 2)
+                {
+                    spriteBatch.Draw(emptyHP, new Rectangle(37, 295, 105, 210), Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(brokenHP, new Rectangle(28, 295, 123, 210), Color.White);
+                }
+
                 spriteBatch.Draw(fullHP, new Rectangle(37, 515, 105, 210), Color.White);
             }
-            else if (health == 0)
+            else
             {
-                spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
-                spriteBatch.Draw(emptyHP, new Rectangle(37, 295, 105, 210), Color.White);
-                spriteBatch.Draw(emptyHP, new Rectangle(37, 515, 105, 210), Color.White);
+                if (lives == 3)
+                {
+                    spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(brokenHP, new Rectangle(28, 75, 123, 210), Color.White);
+                }
+
+                if (lives >= 2)
+                {
+                    spriteBatch.Draw(emptyHP, new Rectangle(37, 295, 105, 210), Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(brokenHP, new Rectangle(28, 295, 123, 210), Color.White);
+                }
+
+                if (lives >= 2)
+                {
+
+                    spriteBatch.Draw(emptyHP, new Rectangle(37, 515, 105, 210), Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(brokenHP, new Rectangle(28, 515, 123, 210), Color.White);
+                }
+            }
+
+            spriteBatch.Draw(livesLabel, new Rectangle(32, 775, 116, 24), Color.White);
+
+            if (lives == 3)
+            {
+                spriteBatch.Draw(fullLife, new Rectangle(32, 810, 32, 32), Color.White);
+                spriteBatch.Draw(fullLife, new Rectangle(74, 810, 32, 32), Color.White);
+                spriteBatch.Draw(fullLife, new Rectangle(116, 810, 32, 32), Color.White);
+            }
+            else if (lives == 2)
+            {
+                spriteBatch.Draw(fullLife, new Rectangle(32, 810, 32, 32), Color.White);
+                spriteBatch.Draw(fullLife, new Rectangle(74, 810, 32, 32), Color.White);
+                spriteBatch.Draw(emptyLife, new Rectangle(116, 810, 32, 32), Color.White);
+            }
+            else if (lives == 1)
+            {
+                spriteBatch.Draw(fullLife, new Rectangle(32, 810, 32, 32), Color.White);
+                spriteBatch.Draw(emptyLife, new Rectangle(74, 810, 32, 32), Color.White);
+                spriteBatch.Draw(emptyLife, new Rectangle(116, 810, 32, 32), Color.White);
             }
         }
     }
