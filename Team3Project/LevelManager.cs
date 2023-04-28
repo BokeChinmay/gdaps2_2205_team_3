@@ -124,8 +124,8 @@ namespace Team3Project
             enemiesPresent = false;
 
             foreach (Enemy enemy in enemyList) 
-            { 
-                if (enemy.Collision.Intersects(player.Collision) && enemy.Active)
+            {
+                if (enemy.Collision.Intersects(player.Collision) && enemy.Health >= 0)
                 {
                     player.TakeDamage(1);
                 }
