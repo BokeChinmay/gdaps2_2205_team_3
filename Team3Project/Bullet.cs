@@ -37,22 +37,22 @@ namespace Team3Project
             //There's a method in StageObjectManager now that checks this based on collision boxes
 
             //Check if the direction the bullet is moving in is blocked. If so, set active to false
-            if (direction.X > 0 && rightBlocked)
-            {
-                active = false;
-            }
-            if (direction.X < 0 && leftBlocked)
-            {
-                active = false;
-            }
-            if (direction.Y > 0 && bottomBlocked)
-            {
-                active = false;
-            }
-            if (direction.Y < 0 && topBlocked)
-            {
-                active = false;
-            }
+            //if (direction.X > 0 && rightBlocked)
+            //{
+            //    active = false;
+            //}
+            //if (direction.X < 0 && leftBlocked)
+            //{
+            //    active = false;
+            //}
+            //if (direction.Y > 0 && bottomBlocked)
+            //{
+            //    active = false;
+            //}
+            //if (direction.Y < 0 && topBlocked)
+            //{
+            //    active = false;
+            //}
         }
 
         public override void Update()

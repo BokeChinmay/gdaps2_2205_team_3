@@ -15,15 +15,16 @@ using Team3Project.Player_Stuff;
 
 namespace Team3Project.Stage_Stuff
 {
+    // enum for use with assigning tile types on level generation
+    enum TileTypes
+    {
+        empty,
+        blocked,
+        blocked2
+    }
+
     internal class StageObjectManager
     {
-        // enum for use with assigning tile types on level generation
-        enum TileTypes
-        {
-            empty,
-            blocked
-        }
-
         // General field declarations
         private StreamReader reader;
         private Random rng;
@@ -40,7 +41,10 @@ namespace Team3Project.Stage_Stuff
         private VisualBarrier rightBuffer;
 
         // Tile fields
-        private Texture2D blockedTileTexture;
+        private Texture2D blockedTileTopTexture;
+        private Texture2D blockedTileBottomTexture;
+        private Texture2D blockedTileBasicTexture;
+        private Texture2D emptyTileTexture;
 
         // Fields for the other bounds of the play area
         private Texture2D backWallTexture;
@@ -60,7 +64,10 @@ namespace Team3Project.Stage_Stuff
         private Texture2D fullLife;
         private Texture2D emptyLife;
         private HealthDisplay healthDisplay;
+        private Texture2D levelLabel;
         private ScoreDisplay scoreDisplay;
+        private Texture2D numberSheet;
+        private Rectangle[] uiNumbers;
 
         // Get-only property for obstructive stage objects
         public List<StageObject> ObstructiveStageObjects
@@ -91,6 +98,20 @@ namespace Team3Project.Stage_Stuff
 
             bottomBounds = new HiddenStageObject(1500, 200, 0, 901);
             obstructiveStageObjects.Add(bottomBounds);
+
+            scoreDisplay = new ScoreDisplay();
+
+            uiNumbers = new Rectangle[10];
+            uiNumbers[0] = new Rectangle(4, 4, 20, 24);
+            uiNumbers[1] = new Rectangle(32, 4, 20, 24);
+            uiNumbers[2] = new Rectangle(60, 4, 20, 24);
+            uiNumbers[3] = new Rectangle(88, 4, 20, 24);
+            uiNumbers[4] = new Rectangle(116, 4, 20, 24);
+            uiNumbers[5] = new Rectangle(4, 36, 20, 24);
+            uiNumbers[6] = new Rectangle(32, 36, 20, 24);
+            uiNumbers[7] = new Rectangle(60, 36, 20, 24);
+            uiNumbers[8] = new Rectangle(88, 36, 20, 24);
+            uiNumbers[9] = new Rectangle(116, 36, 20, 24);
         }
 
         /// <summary>
@@ -128,17 +149,24 @@ namespace Team3Project.Stage_Stuff
 
             // Loading and initializing the UI
             font = content.Load<SpriteFont>("MenuFont");
-            fullHP = content.Load<Texture2D>("Full_HP");
-            emptyHP = content.Load<Texture2D>("Empty_HP");
+            fullHP = content.Load<Texture2D>("Full_HP_v2");
+            emptyHP = content.Load<Texture2D>("Empty_HP_v2");
             brokenHP = content.Load<Texture2D>("Broken_HP");
             fullLife = content.Load<Texture2D>("Full_Life");
             emptyLife = content.Load<Texture2D>("Empty_Life");
 
             healthDisplay = new HealthDisplay(font, fullHP, emptyHP, brokenHP, fullLife, emptyLife);
-            scoreDisplay = new ScoreDisplay(font);
 
-            // Loading the blocked tile texture
-            blockedTileTexture = content.Load<Texture2D>("BlockedTile");
+            levelLabel = content.Load<Texture2D>("UI_Level");
+            numberSheet = content.Load<Texture2D>("UI_Numbers");
+
+            // Loading the blocked tile textures
+            blockedTileTopTexture = content.Load<Texture2D>("Blocked_Tile_Top");
+            blockedTileBottomTexture = content.Load<Texture2D>("Blocked_Tile_Bottom(v2)");
+            blockedTileBasicTexture = content.Load<Texture2D>("BlockedTile");
+
+            // Loading the empty tile texture
+            emptyTileTexture = content.Load<Texture2D>("emptyTile");
 
             // The tiles in the tile map will be 114 pixels wide by 100 pixels tall,
             // for a grid that is 10 tiles wide and 8 tiles tall
@@ -165,6 +193,10 @@ namespace Team3Project.Stage_Stuff
                             {
                                 layoutTiles[j, i] = TileTypes.blocked;
                             }
+                            else if (currentLine[j] == "V")
+                            {
+                                layoutTiles[j, i] = TileTypes.blocked2;
+                            }
                         }
                     }
                     levelLayouts.Add(layoutName, layoutTiles);
@@ -184,17 +216,66 @@ namespace Team3Project.Stage_Stuff
         /// Drawing all of the stage objects
         /// </summary>
         /// <param name="_spriteBatch"></param>
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw1(SpriteBatch _spriteBatch)
         {
-            foreach(StageObject s in obstructiveStageObjects)
+            foreach (Rectangle emptyTile in emptyTiles)
             {
-                s.Draw(_spriteBatch, SpriteEffects.None);
+                _spriteBatch.Draw(emptyTileTexture, emptyTile, Color.White);
+            }
+
+            foreach (StageObject s in obstructiveStageObjects)
+            {
+                if (s is BlockedTile)
+                {
+                    BlockedTile currentTile = (BlockedTile)s;
+                    
+                    currentTile.DrawBottom(_spriteBatch, SpriteEffects.None);
+                }
+                else
+                {
+                    s.Draw(_spriteBatch, SpriteEffects.None);
+                }
             }
 
             elevator.Draw(_spriteBatch, SpriteEffects.None);
 
             healthDisplay.Draw(_spriteBatch, SpriteEffects.None);
-            scoreDisplay.Draw(_spriteBatch, SpriteEffects.None);
+            scoreDisplay.Draw(_spriteBatch, SpriteEffects.None, this, levelLabel);
+        }
+
+        /// <summary>
+        /// Draws a top layer for blocked tiles over everything else
+        /// </summary>
+        /// <param name="_spriteBatch"></param>
+        public void Draw2(SpriteBatch _spriteBatch)
+        {
+            foreach(StageObject s in obstructiveStageObjects)
+            {
+                if (s is BlockedTile)
+                {
+                    BlockedTile currentTile = (BlockedTile)s;
+
+                    if (!currentTile.Basic)
+                    {
+                        currentTile.DrawTop(_spriteBatch, SpriteEffects.None);
+                    }
+                    else
+                    {
+                        currentTile.Draw(_spriteBatch, SpriteEffects.None);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws a number at a specified location
+        /// </summary>
+        /// <param name="number"> the number to be drawn </param>
+        /// <param name="location"> where to draw the number </param>
+        /// <param name="spriteBatch"></param>
+        public void DrawUINumber(int number, Vector2 location, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(numberSheet, location, uiNumbers[number], Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
         }
 
         /// <summary>
@@ -335,7 +416,7 @@ namespace Team3Project.Stage_Stuff
             emptyTiles.Clear();
 
             // Choosing a new layout at random
-            int layoutChoice = rng.Next(1, 4);
+            int layoutChoice = rng.Next(1, 5);
 
             if (layoutChoice == 0) 
             {
@@ -353,6 +434,10 @@ namespace Team3Project.Stage_Stuff
             {
                 currentLayout = levelLayouts["Lanes"];
             }
+            else if (layoutChoice == 4)
+            {
+                currentLayout = levelLayouts["Scatter"];
+            }
 
             // Creating tiles and adding them to the list of stage objects
             for (int i = 0; i < 8; i++)
@@ -361,7 +446,13 @@ namespace Team3Project.Stage_Stuff
                 {
                     if (currentLayout[j, i] == TileTypes.blocked)
                     {
-                        obstructiveStageObjects.Add(new BlockedTile((180 + 114 * j), (100 + 100 * i), blockedTileTexture));
+                        obstructiveStageObjects.Add(new BlockedTile((180 + 114 * j), (100 + 100 * i),
+                            blockedTileTopTexture, blockedTileBottomTexture, blockedTileBasicTexture, false));
+                    }
+                    else if (currentLayout[j, i] == TileTypes.blocked2)
+                    {
+                        obstructiveStageObjects.Add(new BlockedTile((180 + 114 * j), (100 + 100 * i),
+                            blockedTileTopTexture, blockedTileBottomTexture, blockedTileBasicTexture, true));
                     }
                     else if ((currentLayout[j, i] == TileTypes.empty))
                     {

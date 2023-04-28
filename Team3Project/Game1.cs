@@ -14,6 +14,7 @@ namespace Team3Project
     {
         Menu,
         GamePlaying,
+        Restart,
         GameOver,
         Controls,
         Pause
@@ -65,6 +66,8 @@ namespace Team3Project
         private Texture2D gameOver;
         private int titleOption;
 
+        private int restarts; //Number of restarts remaining for the player
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -86,6 +89,8 @@ namespace Team3Project
             rng = new Random();
             LevelManager.Initialize();
 
+            restarts = 2;
+
             base.Initialize();
         }
 
@@ -97,7 +102,7 @@ namespace Team3Project
             mainCharacter = this.Content.Load<Texture2D>("Meo");
             playerMeleeTexture = this.Content.Load<Texture2D>("MeleeAttack");
             playerBulletTexture = this.Content.Load<Texture2D>("PlayerBullet");
-            playerEntity = new Player(3, 5, new Rectangle(734, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
+            playerEntity = new Player(3, 5, 20, new Rectangle(734, 864, 32, 32), mainCharacter, playerMeleeTexture, playerBulletTexture);
 
             // Subscribing the central GameOver method to the player's relevant event
             playerEntity.gameOver += GameOver;
@@ -155,6 +160,7 @@ namespace Team3Project
                 streamWriter.WriteLine(playerEntity.Health);
                 streamWriter.WriteLine(playerEntity.MoveSpeed);
                 streamWriter.WriteLine(playerEntity.Level);
+                streamWriter.WriteLine(playerEntity.ProjectileDamage);
                 streamWriter.Close();
             }
             catch(Exception ex) {}
@@ -174,11 +180,12 @@ namespace Team3Project
                     int playerHealth = int.Parse(streamReader.ReadLine());
                     int playerMoveSpeed = int.Parse(streamReader.ReadLine());
                     int playerLevel = int.Parse(streamReader.ReadLine());
-                    int playerScore = int.Parse(streamReader.ReadLine());
+                    int playerDamage = int.Parse(streamReader.ReadLine());
 
                     playerEntity.Health = playerHealth;
                     playerEntity.MoveSpeed = playerMoveSpeed;
                     playerEntity.Level = playerLevel;
+                    playerEntity.ProjectileDamage = playerDamage;
                 }
                 streamReader.Close();
             }
@@ -222,7 +229,7 @@ namespace Team3Project
                     playerEntity.Update(kbState);
 
                     _spriteBatch.Begin();
-                    //playerEntity.MeleeAttack(mouseState, kbddState, _spriteBatch);
+                    playerEntity.MeleeAttack(mouseState, prevMouseState, kbState, _spriteBatch);
                     playerEntity.RangedAttack(mouseState, prevMouseState, kbState, _spriteBatch);
                     _spriteBatch.End();
 
@@ -230,13 +237,29 @@ namespace Team3Project
 
                     stageObjectManager.Elevator.PlayerEnters(playerEntity);
 
-                    items.CheckCollision(playerEntity);
+                    //items.CheckCollision(playerEntity);
 
                     // Allowing the game to be paused
                     if (kbState.IsKeyUp(Keys.P) && prevKbState.IsKeyDown(Keys.P))
                     {
                         _gameState = GameState.Pause;
                     }
+                }
+                else
+                {
+                    _gameState = GameState.Restart;
+                }
+            }
+            // Updates when the character respawns. If respawns = 0, change state to GameOver
+            else if (_gameState == GameState.Restart)
+            {
+                if (restarts > 0)
+                {
+                    _gameState = GameState.GamePlaying;
+                    stageObjectManager.GenerateLevel();
+                    LoadData();
+                    LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
+                    restarts--;
                 }
                 else
                 {
@@ -253,6 +276,7 @@ namespace Team3Project
                     stageObjectManager.GenerateLevel();
                     LoadData();
                     LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
+                    restarts = 2;
                 }
 
                 // Allowing the controls display state to be started
@@ -336,11 +360,17 @@ namespace Team3Project
 
                 _spriteBatch.Begin();
 
-                stageObjectManager.Draw(_spriteBatch);
+                stageObjectManager.Draw1(_spriteBatch);
                 playerEntity.Draw(_spriteBatch, SpriteEffects.None);
                 //items.Draw(_spriteBatch, SpriteEffects.None);
 
-                LevelManager.Draw(_spriteBatch, SpriteEffects.None);
+                LevelManager.Draw(_spriteBatch, SpriteEffects.None, menuFont);
+                stageObjectManager.Draw2(_spriteBatch);
+            }
+            // Drawing the reset process
+            else if (_gameState == GameState.Restart)
+            {
+                GraphicsDevice.Clear(Color.Black);
             }
             // Drawing the main menu
             else if (_gameState == GameState.Menu)

@@ -51,29 +51,32 @@ namespace Team3Project.Player_Stuff
 
         public void CheckCollision(Entity check)
         {
-            if (check.Collision.Intersects(collision))
+            if (active == true)
             {
-                Active = false;
-            }
-
-            if(itemType == ItemType.SpeedBoost)
-            {
-                if(check is Player)
+                if (check.Collision.Intersects(collision))
                 {
-                    Player player = (Player)check;
-
-                    player.MoveSpeed = player.MoveSpeed + (player.MoveSpeed / 2);
+                    active = false;
                 }
-            }
 
-            if(itemType == ItemType.DamageBoost)
-            {
-                if(check is Player)
+                if (itemType == ItemType.SpeedBoost)
                 {
-                    Player player = (Player)check;
+                    if (check is Player)
+                    {
+                        Player player = (Player)check;
 
-                    player.MeleeDamage = player.MeleeDamage + (player.MeleeDamage / 2);
-                    player.ProjectileDamage = player.ProjectileDamage + (player.ProjectileDamage / 2);
+                        player.MoveSpeed = player.MoveSpeed + (player.MoveSpeed / 2);
+                    }
+                }
+
+                if (itemType == ItemType.DamageBoost)
+                {
+                    if (check is Player)
+                    {
+                        Player player = (Player)check;
+
+                        player.MeleeDamage = player.MeleeDamage + (player.MeleeDamage / 2);
+                        player.ProjectileDamage = player.ProjectileDamage + (player.ProjectileDamage / 2);
+                    }
                 }
             }
         }

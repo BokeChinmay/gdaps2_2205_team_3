@@ -98,8 +98,8 @@ namespace Team3Project
 
             //Sets up the dictionary
             enemyDefaults = new Dictionary<EnemyTypes, Dictionary<Stats, int>>();
-            enemyDefaults.Add(EnemyTypes.Melee, new Dictionary<Stats, int>() { { Stats.Health, 100 }, { Stats.MoveSpeed, 5 }, { Stats.Height, 50 }, { Stats.Width, 50 }, { Stats.AttackDelay, 30 } });
-            enemyDefaults.Add(EnemyTypes.Ranged, new Dictionary<Stats, int>() { { Stats.Health, 100 }, { Stats.MoveSpeed, 3 }, { Stats.Height, 100 }, { Stats.Width, 50 }, { Stats.AttackDelay, 360 }, { Stats.ProjectileSpeed, 10 } });
+            enemyDefaults.Add(EnemyTypes.Melee, new Dictionary<Stats, int>() { { Stats.Health, 50 }, { Stats.MoveSpeed, 5 }, { Stats.Height, 50 }, { Stats.Width, 50 }, { Stats.AttackDelay, 30 } });
+            enemyDefaults.Add(EnemyTypes.Ranged, new Dictionary<Stats, int>() { { Stats.Health, 50 }, { Stats.MoveSpeed, 3 }, { Stats.Height, 100 }, { Stats.Width, 50 }, { Stats.AttackDelay, 360 }, { Stats.ProjectileSpeed, 10 } });
         }
 
         /// <summary>
@@ -147,11 +147,20 @@ namespace Team3Project
                 //Deactivate projectile if it is in contact with the player
                 if (projectileList[i].Collision.Intersects(player.Collision) && !projectileList[i].Friendly)
                 {
-                    projectileList[i].Active = false;
                     player.TakeDamage(projectileList[i].Damage);
+                    projectileList[i].Active = false;
+                }
+
+                foreach (Enemy enemy in enemyList)
+                {
+                    if (projectileList[i].Collision.Intersects(enemy.Collision) && projectileList[i].Friendly)
+                    {
+                        enemy.TakeDamage(projectileList[i]);
+                        projectileList[i].Active = false;
+                    }
                 }
                 
-                //If a projectile is no longer active, remove it from the list
+                //If a projectile is no longer active, remove it from the listw
                 if (!projectileList[i].Active)
                 {
                     projectileList.Remove(projectileList[i]);
@@ -187,15 +196,17 @@ namespace Team3Project
         /// </summary>
         /// <param name="spriteBatch"></param>
         /// <param name="spriteEffects"></param>
-        public static void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        public static void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects, SpriteFont font)
         {
             foreach (Enemy enemy in enemyList)
             {
                 enemy.Draw(spriteBatch, spriteEffects);
+                spriteBatch.DrawString(font, String.Format("Health: " + enemy.Health), new Vector2(enemy.Collision.X, enemy.Collision.Y - 20), Color.White);
             }
             foreach (Projectile projectile in projectileList)
             {
                 projectile.Draw(spriteBatch, spriteEffects);
+                spriteBatch.DrawString(font, "!!!", new Vector2(projectile.Collision.X, projectile.Collision.Y), Color.White);
             }
         }
 
@@ -208,6 +219,7 @@ namespace Team3Project
         {
             enemyList.Clear();
             projectileList.Clear();
+            double healthMultiplier = 1 + (0.1 * level);
 
             //Load new enemies randomly using free spaces in the top 2/3 of the screen
             //This funtion will increase the number of enemies for later levels
@@ -253,7 +265,7 @@ namespace Team3Project
                     case EnemyTypes.Melee:
                         enemyList.Add(
                             new MeleeEnemy(
-                                enemyDefaults[enemyType][Stats.Health],
+                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
                                 enemyDefaults[enemyType][Stats.MoveSpeed],
                                 newCollision,
                                 enemyDefaults[enemyType][Stats.AttackDelay],
@@ -264,7 +276,7 @@ namespace Team3Project
                     case EnemyTypes.Ranged:
                         enemyList.Add(
                             new RangedEnemy(
-                                enemyDefaults[enemyType][Stats.Health],
+                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
                                 enemyDefaults[enemyType][Stats.MoveSpeed],
                                 newCollision,
                                 enemyDefaults[enemyType][Stats.AttackDelay],

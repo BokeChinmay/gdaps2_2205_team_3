@@ -22,6 +22,11 @@ namespace Team3Project.Player_Stuff
     {
         W, A, S, D
     }
+    enum PlayerState
+    {
+        Moving,
+        MeleeAttack
+    }
 
     internal class Player : Entity, IDamageable
     {
@@ -33,12 +38,15 @@ namespace Team3Project.Player_Stuff
         private MouseState prevMouseState;
         private Random rng = new Random();
         private LastKbState lastKbState;
+        private PlayerState playerState;
 
         private VulnerabilityState vulnerabilityState = VulnerabilityState.Vulnerable;
         private double invinsibilityFrames = 5;
         private int meleeDamage = 50;
-        private int projectileDamage = 20;
+        private int projectileDamage;
         private int currentIFrames;
+        private const int ATTACK_DELAY = 30;
+        private int attackTimer;
 
         private int currentLevel;
 
@@ -76,15 +84,19 @@ namespace Team3Project.Player_Stuff
         /// <param name="moveSpeed"></param>
         /// <param name="collision"></param>
         /// <param name="playerTexture"></param>
-        public Player(int health, int moveSpeed, Rectangle collision, Texture2D playerTexture, Texture2D meleeTexture, Texture2D bulletTexture) 
+        public Player(int health, int moveSpeed, int bulletDamage, Rectangle collision, Texture2D playerTexture, Texture2D meleeTexture, Texture2D bulletTexture) 
             : base(health, moveSpeed, collision)
         {
             this.playerTexture = playerTexture;
             this.meleeTexture = meleeTexture;
             this.bulletTexture = bulletTexture;
+            projectileDamage = bulletDamage;
+
             lastKbState = LastKbState.W;
             currentIFrames = 0;
             currentLevel = 1;
+            playerState = PlayerState.Moving;
+            attackTimer = 0;
         }
 
         /// <summary>
@@ -118,13 +130,34 @@ namespace Team3Project.Player_Stuff
             }
         }
 
-        public void MeleeAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
+        public void MeleeAttack(MouseState mouseState, MouseState prevMouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
-            prevMouseState = mouseState;
             prevKbState = kbState;
 
-            if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
+            if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released && attackTimer <= 0)
             {
+                playerState = PlayerState.MeleeAttack;
+
+                //Calculate direction of attack
+                Vector2 displacement = new Vector2(mouseState.X, mouseState.Y) - new Vector2(collision.X, collision.Y);
+                float distance = (float)Math.Sqrt(Math.Pow(displacement.X, 2) + Math.Pow(displacement.Y, 2)); ;
+                Vector2 unitVector = displacement / distance;
+
+                //Calculate attack angle in radians
+                float rotation = (float)Math.Atan2(unitVector.X, unitVector.Y);
+
+                //Create new projectile and add it to the projectile list
+                MeleeProjectile slash = new MeleeProjectile(
+                    0,
+                    50,
+                    new Rectangle((int)(collision.X + (unitVector.X * 40) + 6), (int)(collision.Y + (unitVector.Y * 40) + 3), 50, 20),
+                    meleeTexture,
+                    true,
+                    rotation);
+                LevelManager.AddProjectile(slash);
+                attackTimer = ATTACK_DELAY;
+
+                /*
                 if(lastKbState == LastKbState.W)
                 {
                     Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture, true);
@@ -149,16 +182,26 @@ namespace Team3Project.Player_Stuff
                     bullet.Update();
                     bullet.Draw(spriteBatch, SpriteEffects.None);
                 }
+                attackTimer = ATTACK_DELAY;
+                */
             }
 
-            prevMouseState = mouseState;
+            if (attackTimer > 0)
+            {
+                attackTimer--;
+            }
+            else
+            {
+                playerState = PlayerState.Moving;
+            }
+
             prevKbState = kbState;
         }
 
         public void RangedAttack(MouseState mouseState, MouseState prevMouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
 
-            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released) 
+            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released && attackTimer <= 0) 
             {
                 //Calculate unit vector
                 Vector2 displacement = new Vector2(mouseState.X, mouseState.Y) - new Vector2(collision.X, collision.Y);
@@ -166,9 +209,14 @@ namespace Team3Project.Player_Stuff
                 Vector2 unitVector = displacement / distance;
 
                 //Create a new bullet
-                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture, true));
+                LevelManager.ProjectileList.Add(new Bullet(10, unitVector.X, unitVector.Y, new Rectangle(collision.X + playerTexture.Width/4, collision.Y + playerTexture.Height/4, 30, 30), projectileDamage, bulletTexture, true));
+                attackTimer = ATTACK_DELAY;
             }
-
+            
+            if (attackTimer > 0)
+            {
+                attackTimer--;
+            }
             /*
             if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
             {
@@ -216,7 +264,7 @@ namespace Team3Project.Player_Stuff
             {
                 Item item = (Item)check;
 
-                item.CheckCollision(this);
+                //item.CheckCollision(this);
             }
             else if (check.Collision.Intersects(collision))
             {
@@ -278,8 +326,11 @@ namespace Team3Project.Player_Stuff
                 currentIFrames -= 1;
             }
 
-            Move(kbState);
-
+            if (playerState == PlayerState.Moving)
+            {
+                Move(kbState);
+            }
+           
             // When adding attack capabilities to the player, make left click shoot and right click melee
         }
 

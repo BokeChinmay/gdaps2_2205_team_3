@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 //Name: VisualBarrier
 //Purpose: StageObject that defines the barriers on the sides and top of the play area,
 //         where the UI and elevator are placed, respectively
-//Restrictions: Inherits from StageObject
+//Restrictions: Inherits from StageObjectdda
 
 namespace Team3Project.Stage_Stuff
 {
