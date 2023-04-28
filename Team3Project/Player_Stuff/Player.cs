@@ -169,46 +169,18 @@ namespace Team3Project.Player_Stuff
                 Vector2 unitVector = displacement / distance;
 
                 //Calculate attack angle in radians
-                float rotation = (float)Math.Atan2(unitVector.X, unitVector.Y);
+                float rotation = (float)(1 * Math.PI / 2) - (float)Math.Atan2(unitVector.X, unitVector.Y);
 
                 //Create new projectile and add it to the projectile list
                 MeleeProjectile slash = new MeleeProjectile(
                     0,
                     50,
-                    new Rectangle((int)(collision.X + (unitVector.X * 40) + 6), (int)(collision.Y + (unitVector.Y * 40) + 3), 50, 20),
+                    new Rectangle((int)(collision.X + (unitVector.X * 40) + 15), (int)(collision.Y + (unitVector.Y * 40) + 15), 50, 20),
                     meleeTexture,
                     true,
                     rotation);
                 LevelManager.AddProjectile(slash);
                 attackTimer = ATTACK_DELAY;
-
-                /*
-                if(lastKbState == LastKbState.W)
-                {
-                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y - 30, 30, 30), meleeDamage, bulletTexture, true);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.None);
-                }
-                else if (lastKbState == LastKbState.S)
-                {
-                    Bullet bullet = new Bullet(10, 0, 5, new Rectangle(collision.X, collision.Y + 30, 30, 30), meleeDamage, bulletTexture, true);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.FlipVertically);
-                }
-                else if (lastKbState == LastKbState.A)
-                {
-                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), meleeDamage, bulletTexture, true);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.FlipHorizontally);
-                }
-                else if (lastKbState == LastKbState.D)
-                {
-                    Bullet bullet = new Bullet(10, 5, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), meleeDamage, bulletTexture, true);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.None);
-                }
-                attackTimer = ATTACK_DELAY;
-                */
             }
 
             if (attackTimer > 0)
@@ -242,39 +214,6 @@ namespace Team3Project.Player_Stuff
             {
                 attackTimer--;
             }
-            /*
-            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
-            {
-                if (lastKbState == LastKbState.W)
-                {
-                    Bullet bullet = new Bullet(10, 0, 1, new Rectangle(collision.X, collision.Y - 30, 30, 30), projectileDamage, bulletTexture);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.None);
-                    LevelManager.ProjectileList.Add(bullet);
-                }
-                else if (lastKbState == LastKbState.S)
-                {
-                    Bullet bullet = new Bullet(10, 0, collision.Y, new Rectangle(collision.X, collision.Y + 30, 30, 30), projectileDamage, bulletTexture);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.None);
-                    LevelManager.ProjectileList.Add(bullet);
-                }
-                else if (lastKbState == LastKbState.A)
-                {
-                    Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X - 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.None);
-                    LevelManager.ProjectileList.Add(bullet);
-                }
-                else if (lastKbState == LastKbState.D)
-                {
-                    Bullet bullet = new Bullet(10, collision.X, 0, new Rectangle(collision.X + 30, collision.Y, 30, 30), projectileDamage, bulletTexture);
-                    bullet.Update();
-                    bullet.Draw(spriteBatch, SpriteEffects.None);
-                    LevelManager.ProjectileList.Add(bullet);
-                }   
-            }
-            */
         }
 
         /// <summary>

@@ -17,7 +17,6 @@ namespace Team3Project.Enemy_Stuff
         // Class-specific fields
         int attackDelay;
         int projectileSpeed;
-        EnemyState currentState;
 
         Texture2D rangedTexture;
         Texture2D pTexture;

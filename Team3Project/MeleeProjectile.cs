@@ -27,11 +27,11 @@ namespace Team3Project
             spriteBatch.Draw(
                 texture,
                 new Vector2(collision.X, collision.Y),
-                collision,
+                null,
                 Color.White,
                 rotation,
-                new Vector2(collision.X - (collision.Width/2), collision.Y - (collision.Y/2)),
-                1.0f,
+                new Vector2(20, 50),
+                0.5f,
                 spriteEffects,
                 0
                 );

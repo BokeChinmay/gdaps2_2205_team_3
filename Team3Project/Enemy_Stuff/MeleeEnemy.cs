@@ -18,7 +18,6 @@ namespace Team3Project.Enemy_Stuff
 
     internal class MeleeEnemy : Enemy
     {
-        EnemyState currentState;
         //Range at which the enemy begins the attack process
         const int AGGRO_RANGE = 600;
         //Range at which attack begins

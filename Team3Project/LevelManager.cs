@@ -206,7 +206,7 @@ namespace Team3Project
             foreach (Projectile projectile in projectileList)
             {
                 projectile.Draw(spriteBatch, spriteEffects);
-                spriteBatch.DrawString(font, "!!!", new Vector2(projectile.Collision.X, projectile.Collision.Y), Color.White);
+                //FOR TESTING: spriteBatch.DrawString(font, "!!!", new Vector2(projectile.Collision.X, projectile.Collision.Y), Color.White);
             }
         }
 

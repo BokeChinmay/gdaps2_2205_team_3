@@ -32,6 +32,9 @@ namespace Team3Project.Enemy_Stuff
 
     internal abstract class Enemy : Entity
     {
+        //Current enemy state
+        protected EnemyState currentState;
+        
         //Texture/Sprite sheet
         protected Texture2D texture;
 
@@ -254,6 +257,11 @@ namespace Team3Project.Enemy_Stuff
             else
             {
                 health -= 1;
+            }
+
+            if (health <= 0)
+            {
+                currentState = EnemyState.Death;
             }
         }
 
