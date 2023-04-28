@@ -96,6 +96,7 @@ namespace Team3Project.Player_Stuff
             currentIFrames = 0;
             currentLevel = 1;
             playerState = PlayerState.Moving;
+            attackTimer = 0;
         }
 
         /// <summary>
@@ -129,9 +130,8 @@ namespace Team3Project.Player_Stuff
             }
         }
 
-        public void MeleeAttack(MouseState mouseState, KeyboardState kbState, SpriteBatch spriteBatch)
+        public void MeleeAttack(MouseState mouseState, MouseState prevMouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
-            prevMouseState = mouseState;
             prevKbState = kbState;
 
             if(mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released && attackTimer <= 0)
@@ -147,13 +147,15 @@ namespace Team3Project.Player_Stuff
                 float rotation = (float)Math.Atan2(unitVector.X, unitVector.Y);
 
                 //Create new projectile and add it to the projectile list
-                MeleeProjectile slash = new MeleeProjectile(0, 
-                    50, 
-                    new Rectangle((int)(collision.X + (unitVector.X * 3)), (int)(collision.Y + (unitVector.Y * 3)), 50, 20),
+                MeleeProjectile slash = new MeleeProjectile(
+                    0,
+                    50,
+                    new Rectangle((int)(collision.X + (unitVector.X * 40) + 6), (int)(collision.Y + (unitVector.Y * 40) + 3), 50, 20),
                     meleeTexture,
                     true,
                     rotation);
                 LevelManager.AddProjectile(slash);
+                attackTimer = ATTACK_DELAY;
 
                 /*
                 if(lastKbState == LastKbState.W)
@@ -187,10 +189,12 @@ namespace Team3Project.Player_Stuff
             if (attackTimer > 0)
             {
                 attackTimer--;
+            }
+            else
+            {
                 playerState = PlayerState.Moving;
             }
 
-            prevMouseState = mouseState;
             prevKbState = kbState;
         }
 

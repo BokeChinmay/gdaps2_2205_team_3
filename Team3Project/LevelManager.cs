@@ -155,12 +155,12 @@ namespace Team3Project
                 {
                     if (projectileList[i].Collision.Intersects(enemy.Collision) && projectileList[i].Friendly)
                     {
-                        enemy.TakeDamage((Bullet)projectileList[i]);
+                        enemy.TakeDamage(projectileList[i]);
                         projectileList[i].Active = false;
                     }
                 }
                 
-                //If a projectile is no longer active, remove it from the list
+                //If a projectile is no longer active, remove it from the listw
                 if (!projectileList[i].Active)
                 {
                     projectileList.Remove(projectileList[i]);
@@ -206,6 +206,7 @@ namespace Team3Project
             foreach (Projectile projectile in projectileList)
             {
                 projectile.Draw(spriteBatch, spriteEffects);
+                spriteBatch.DrawString(font, "!!!", new Vector2(projectile.Collision.X, projectile.Collision.Y), Color.White);
             }
         }
 

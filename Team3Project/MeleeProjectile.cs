@@ -18,7 +18,7 @@ namespace Team3Project
         public MeleeProjectile(int speed, int damage, Rectangle collision, Texture2D texture, bool friendly, float rotation) : base(speed, damage, collision, texture, friendly)
         {
             this.rotation = rotation;
-            timer = 60;
+            timer = 15;
         }
 
         //Methods
@@ -30,7 +30,7 @@ namespace Team3Project
                 collision,
                 Color.White,
                 rotation,
-                Vector2.Zero,
+                new Vector2(collision.X - (collision.Width/2), collision.Y - (collision.Y/2)),
                 1.0f,
                 spriteEffects,
                 0
@@ -43,6 +43,7 @@ namespace Team3Project
             {
                 active = false;
             }
+            timer--;
         }
     }
 }
