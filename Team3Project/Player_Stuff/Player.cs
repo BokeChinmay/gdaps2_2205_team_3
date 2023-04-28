@@ -25,7 +25,8 @@ namespace Team3Project.Player_Stuff
     enum PlayerState
     {
         Moving,
-        MeleeAttack
+        MeleeAttack,
+        Death
     }
 
     internal class Player : Entity, IDamageable
@@ -47,13 +48,15 @@ namespace Team3Project.Player_Stuff
         private int currentIFrames;
         private const int ATTACK_DELAY = 30;
         private int attackTimer;
+        private int deathFrameTimer;
+        int PlayerOffsetX;
 
         private int currentLevel;
 
         public event Action gameOver;
 
         //Consts
-        const int PlayerOffsetX = 4;
+        
         const int PlayerOffsetY = 9;
         const int PlayerRectHeight = 26;
         const int PlayerRectWidth = 32;
@@ -97,6 +100,8 @@ namespace Team3Project.Player_Stuff
             currentLevel = 1;
             playerState = PlayerState.Moving;
             attackTimer = 0;
+            deathFrameTimer = 30;
+            PlayerOffsetX = 4;
         }
 
         /// <summary>
@@ -318,7 +323,25 @@ namespace Team3Project.Player_Stuff
         {
             if(Health <= 0)
             {
-                gameOver();
+                playerState = PlayerState.Death;
+                //Death animation
+                if (deathFrameTimer >= 0)
+                {
+                    PlayerOffsetX = 4 + (5 - ((deathFrameTimer / 6) % 5)) * 39;
+                    deathFrameTimer--;
+                }
+                //Buffer between player death / showing the end screen
+                else if (deathFrameTimer > -60)
+                {
+                    deathFrameTimer--;
+                }
+                //Reset death animation stuff, call gameOver() event
+                else
+                {
+                    PlayerOffsetX = 4;
+                    deathFrameTimer = 30;
+                    gameOver();
+                }
             }
 
             if (currentIFrames > -5)

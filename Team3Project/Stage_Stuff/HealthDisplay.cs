@@ -73,6 +73,12 @@ namespace Team3Project.Stage_Stuff
                 spriteBatch.Draw(emptyHP, new Rectangle(37, 295, 105, 210), Color.White);
                 spriteBatch.Draw(fullHP, new Rectangle(37, 515, 105, 210), Color.White);
             }
+            else if (health == 0)
+            {
+                spriteBatch.Draw(emptyHP, new Rectangle(37, 75, 105, 210), Color.White);
+                spriteBatch.Draw(emptyHP, new Rectangle(37, 295, 105, 210), Color.White);
+                spriteBatch.Draw(emptyHP, new Rectangle(37, 515, 105, 210), Color.White);
+            }
         }
     }
 }
