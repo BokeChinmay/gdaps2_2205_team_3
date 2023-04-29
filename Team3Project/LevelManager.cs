@@ -99,7 +99,7 @@ namespace Team3Project
             //Sets up the dictionary
             enemyDefaults = new Dictionary<EnemyTypes, Dictionary<Stats, int>>();
             enemyDefaults.Add(EnemyTypes.Melee, new Dictionary<Stats, int>() { { Stats.Health, 50 }, { Stats.MoveSpeed, 5 }, { Stats.Height, 50 }, { Stats.Width, 50 }, { Stats.AttackDelay, 30 } });
-            enemyDefaults.Add(EnemyTypes.Ranged, new Dictionary<Stats, int>() { { Stats.Health, 50 }, { Stats.MoveSpeed, 3 }, { Stats.Height, 100 }, { Stats.Width, 50 }, { Stats.AttackDelay, 360 }, { Stats.ProjectileSpeed, 10 } });
+            enemyDefaults.Add(EnemyTypes.Ranged, new Dictionary<Stats, int>() { { Stats.Health, 50 }, { Stats.MoveSpeed, 3 }, { Stats.Height, 75 }, { Stats.Width, 50 }, { Stats.AttackDelay, 360 }, { Stats.ProjectileSpeed, 10 } });
         }
 
         /// <summary>
@@ -217,77 +217,99 @@ namespace Team3Project
         /// <param name="level">Current level</param>
         public static void LoadNewLevel(List<StageObject> obstructiveObjects, int level)
         {
-            enemyList.Clear();
-            projectileList.Clear();
-            double healthMultiplier = 1 + (0.1 * level);
-
-            //Load new enemies randomly using free spaces in the top 2/3 of the screen
-            //This funtion will increase the number of enemies for later levels
-            int numEnemies = (int) Math.Ceiling(Math.Sqrt(level));
-
-            Random rand = new Random();
-
-            for (int i = 0; i < numEnemies; i++)
+            if (level % 10 == 0)
             {
-                EnemyTypes enemyType = (EnemyTypes)rand.Next(2);
-                Rectangle newCollision = new Rectangle(0, 0, enemyDefaults[enemyType][Stats.Width], enemyDefaults[enemyType][Stats.Height]);
-                bool pass = false;
-                do
-                {
-                    //Randomize a new possible spawning location in the top 1/3 of the room
-                    newCollision.X = rand.Next(200, 1300);
-                    newCollision.Y = rand.Next(200, 400);
+                LoadBossLevel(obstructiveObjects, level);
+            }
+            else
+            {
+                enemyList.Clear();
+                projectileList.Clear();
+                double healthMultiplier = 1 + (0.1 * level);
 
-                    //Loop through the obstructive object list to see if the new location is valid
-                    int count = 0;
-                    foreach (StageObject stageObject in obstructiveObjects)
+                //Load new enemies randomly using free spaces in the top 2/3 of the screen
+                //This funtion will increase the number of enemies for later levels
+                int numEnemies = (int)Math.Ceiling(Math.Sqrt(level));
+
+                Random rand = new Random();
+
+                for (int i = 0; i < numEnemies; i++)
+                {
+                    EnemyTypes enemyType = (EnemyTypes)rand.Next(2);
+                    Rectangle newCollision = new Rectangle(0, 0, enemyDefaults[enemyType][Stats.Width], enemyDefaults[enemyType][Stats.Height]);
+                    bool pass = false;
+                    do
                     {
-                        if (newCollision.Intersects(stageObject.Dimensions))
+                        //Randomize a new possible spawning location in the top 1/3 of the room
+                        newCollision.X = rand.Next(200, 1300);
+                        newCollision.Y = rand.Next(200, 400);
+
+                        //Loop through the obstructive object list to see if the new location is valid
+                        int count = 0;
+                        foreach (StageObject stageObject in obstructiveObjects)
                         {
-                            count++;
+                            if (newCollision.Intersects(stageObject.Dimensions))
+                            {
+                                count++;
+                            }
                         }
-                    }
 
-                    //If no intersection is found, break the loop
-                    if (count == 0)
-                    {
-                        pass = true;
-                    }
-                    //Else, restart the loop
-                    else
-                    {
-                        count = 0;
-                    }
-                } while (pass == false);
+                        //If no intersection is found, break the loop
+                        if (count == 0)
+                        {
+                            pass = true;
+                        }
+                        //Else, restart the loop
+                        else
+                        {
+                            count = 0;
+                        }
+                    } while (pass == false);
 
-                switch (enemyType)
-                {
-                    case EnemyTypes.Melee:
-                        enemyList.Add(
-                            new MeleeEnemy(
-                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
-                                enemyDefaults[enemyType][Stats.MoveSpeed],
-                                newCollision,
-                                enemyDefaults[enemyType][Stats.AttackDelay],
-                                meleeTexture
-                                )
-                            );
-                        break;
-                    case EnemyTypes.Ranged:
-                        enemyList.Add(
-                            new RangedEnemy(
-                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
-                                enemyDefaults[enemyType][Stats.MoveSpeed],
-                                newCollision,
-                                enemyDefaults[enemyType][Stats.AttackDelay],
-                                enemyDefaults[enemyType][Stats.ProjectileSpeed],
-                                rangedTexture,
-                                projectileTexture
-                                )
-                            );
-                        break;
+                    switch (enemyType)
+                    {
+                        case EnemyTypes.Melee:
+                            enemyList.Add(
+                                new MeleeEnemy(
+                                    (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
+                                    enemyDefaults[enemyType][Stats.MoveSpeed],
+                                    newCollision,
+                                    enemyDefaults[enemyType][Stats.AttackDelay],
+                                    meleeTexture
+                                    )
+                                );
+                            break;
+                        case EnemyTypes.Ranged:
+                            enemyList.Add(
+                                new RangedEnemy(
+                                    (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
+                                    enemyDefaults[enemyType][Stats.MoveSpeed],
+                                    newCollision,
+                                    enemyDefaults[enemyType][Stats.AttackDelay],
+                                    enemyDefaults[enemyType][Stats.ProjectileSpeed],
+                                    rangedTexture,
+                                    projectileTexture
+                                    )
+                                );
+                            break;
+                    }
                 }
             }
+        }
+
+        public static void LoadBossLevel(List<StageObject> obstructiveObjects, int level)
+        {
+            //Spawn boss enemy
+            MeleeEnemy bossEnemy = new MeleeEnemy(
+                300,
+                enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed] / 2,
+                new Rectangle(300, 600, enemyDefaults[EnemyTypes.Melee][Stats.Width] * 3, enemyDefaults[EnemyTypes.Melee][Stats.Height] * 3),
+                enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay],
+                meleeTexture
+                );
+            enemyList.Add(bossEnemy);
+
+            //Spawn minions - starts at 2 and then increases by 1 each consecutive time
         }
     }
 }
