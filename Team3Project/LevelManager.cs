@@ -60,6 +60,10 @@ namespace Team3Project
             get { return enemiesPresent; }
         }
 
+        static List<Item> itemList;
+        static bool itemDropped;
+        static Random rng;
+
         //Static manager objects that are updated and re-initialized for each new level
         static StageObjectManager stageObjectManager;
 
@@ -68,15 +72,27 @@ namespace Team3Project
         static Texture2D meleeTexture;
         static Texture2D rangedTexture;
 
+        //Item textures
+        static Texture2D damageUp;
+        static Texture2D speedUp;
+        static Texture2D extraLife;
+        static Texture2D healthPickup;
+
         /// <summary>
         /// Purpose: Sets up level and creates the stage object manager for the level
         /// Testing use: Can call specific methods for testing things out of the traditional way the game would be played
         /// </summary>
-        public static void SetUpTextures(Texture2D meleeTexture, Texture2D rangedTexture, Texture2D pTexture)
+        public static void SetUpTextures(Texture2D meleeTexture, Texture2D rangedTexture, Texture2D pTexture,
+            Texture2D damageUp, Texture2D speedUp, Texture2D extraLife, Texture2D healthPickup)
         {
             projectileTexture = pTexture;
             LevelManager.meleeTexture = meleeTexture;
             LevelManager.rangedTexture = rangedTexture;
+
+            LevelManager.damageUp = damageUp;
+            LevelManager.speedUp = speedUp;
+            LevelManager.extraLife = extraLife;
+            LevelManager.healthPickup = healthPickup;
         }
 
         /// <summary>
@@ -95,6 +111,9 @@ namespace Team3Project
         {
             enemyList = new List<Enemy>();
             projectileList = new List<Projectile>();
+            itemList = new List<Item>();
+            itemDropped = false;
+            rng = new Random();
 
             //Sets up the dictionary
             enemyDefaults = new Dictionary<EnemyTypes, Dictionary<Stats, int>>();
@@ -121,6 +140,11 @@ namespace Team3Project
             UpdateEnemies(player.Collision, gameTime);
             UpdateProjectiles(player);
 
+            foreach(Item item in itemList)
+            {
+                item.Update(player);
+            }
+
             enemiesPresent = false;
 
             foreach (Enemy enemy in enemyList) 
@@ -134,6 +158,25 @@ namespace Team3Project
                 {
                     enemiesPresent = true;
                 }
+            }
+
+            if (!enemiesPresent && !itemDropped)
+            {
+                bool lifeCanDrop = false;
+                bool healthCanDrop = false;
+
+                if (player.Lives < 3)
+                {
+                    lifeCanDrop = true;
+                }
+
+                if (player.Health < player.MaxHealth)
+                {
+                    healthCanDrop = true;
+                }
+
+                DropItem(new Vector2(740, 450), lifeCanDrop, healthCanDrop, player.MoveSpeed);
+                itemDropped = true;
             }
         }
 
@@ -208,6 +251,10 @@ namespace Team3Project
                 projectile.Draw(spriteBatch, spriteEffects);
                 //FOR TESTING: spriteBatch.DrawString(font, "!!!", new Vector2(projectile.Collision.X, projectile.Collision.Y), Color.White);
             }
+            foreach (Item item in itemList)
+            {
+                item.Draw(spriteBatch, spriteEffects);
+            }
         }
 
         /// <summary>
@@ -223,9 +270,11 @@ namespace Team3Project
             }
             else
             {
-                enemyList.Clear();
-                projectileList.Clear();
-                double healthMultiplier = 1 + (0.1 * level);
+            enemyList.Clear();
+            projectileList.Clear();
+            double healthMultiplier = 1 + (0.1 * level);
+            itemList.Clear();
+            itemDropped = false;
 
                 //Load new enemies randomly using free spaces in the top 2/3 of the screen
                 //This funtion will increase the number of enemies for later levels
@@ -266,50 +315,78 @@ namespace Team3Project
                         }
                     } while (pass == false);
 
-                    switch (enemyType)
-                    {
-                        case EnemyTypes.Melee:
-                            enemyList.Add(
-                                new MeleeEnemy(
-                                    (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
-                                    enemyDefaults[enemyType][Stats.MoveSpeed],
-                                    newCollision,
-                                    enemyDefaults[enemyType][Stats.AttackDelay],
-                                    meleeTexture
-                                    )
-                                );
-                            break;
-                        case EnemyTypes.Ranged:
-                            enemyList.Add(
-                                new RangedEnemy(
-                                    (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
-                                    enemyDefaults[enemyType][Stats.MoveSpeed],
-                                    newCollision,
-                                    enemyDefaults[enemyType][Stats.AttackDelay],
-                                    enemyDefaults[enemyType][Stats.ProjectileSpeed],
-                                    rangedTexture,
-                                    projectileTexture
-                                    )
-                                );
-                            break;
-                    }
+                switch (enemyType)
+                {
+                    case EnemyTypes.Melee:
+                        enemyList.Add(
+                            new MeleeEnemy(
+                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
+                                enemyDefaults[enemyType][Stats.MoveSpeed],
+                                newCollision,
+                                enemyDefaults[enemyType][Stats.AttackDelay],
+                                meleeTexture
+                                )
+                            );
+                        break;
+                    case EnemyTypes.Ranged:
+                        enemyList.Add(
+                            new RangedEnemy(
+                                (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
+                                enemyDefaults[enemyType][Stats.MoveSpeed],
+                                newCollision,
+                                enemyDefaults[enemyType][Stats.AttackDelay],
+                                enemyDefaults[enemyType][Stats.ProjectileSpeed],
+                                rangedTexture,
+                                projectileTexture
+                                )
+                            );
+                        break;
                 }
             }
         }
 
-        public static void LoadBossLevel(List<StageObject> obstructiveObjects, int level)
+        public static void DropItem(Vector2 location, bool missingLives, bool missingHealth, int playerSpeed)
         {
-            //Spawn boss enemy
-            MeleeEnemy bossEnemy = new MeleeEnemy(
-                300,
-                enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed] / 2,
-                new Rectangle(300, 600, enemyDefaults[EnemyTypes.Melee][Stats.Width] * 3, enemyDefaults[EnemyTypes.Melee][Stats.Height] * 3),
-                enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay],
-                meleeTexture
-                );
-            enemyList.Add(bossEnemy);
+            Item newItem;
+            int itemChoice;
 
-            //Spawn minions - starts at 2 and then increases by 1 each consecutive time
+            if (missingLives)
+            {
+                itemChoice = rng.Next(0, 100);
+            }
+            else
+            {
+                itemChoice = rng.Next(0, 90);
+            }
+
+            if (itemChoice < 40 || (itemChoice < 70 && !missingHealth))
+            {
+                newItem = new Item(1, 0,
+                                new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                damageUp, ItemType.DamageBoost);
+            }
+            else if (itemChoice < 70 || (itemChoice < 90 && playerSpeed > 9 && missingHealth))
+            {
+                newItem = new Item(1, 0,
+                                new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                healthPickup, ItemType.HealthPickup);
+            }
+            else if (itemChoice < 90)
+            {
+                newItem = new Item(1, 0,
+                                new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                speedUp, ItemType.SpeedBoost);
+            }
+            else
+            {
+                newItem = new Item(1, 0,
+                                 new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                 extraLife, ItemType.LifePickup);
+            }
+
+            newItem.Active = true;
+
+            itemList.Add(newItem);
         }
     }
 }
