@@ -34,6 +34,7 @@ namespace Team3Project.Stage_Stuff
         private List<Rectangle> emptyTiles;
         private Dictionary<string, TileTypes[,]> levelLayouts;
         private TileTypes[,] currentLayout;
+        private int currentLevel;
         
         // Buffer fields
         private Texture2D bufferTexture;
@@ -89,6 +90,13 @@ namespace Team3Project.Stage_Stuff
             get { return elevator; }
         }
 
+        // Property for the current level
+        public int CurrentLevel
+        {
+            get { return currentLevel; }
+            set { currentLevel = value; }
+        }
+
         // Default constructor
         public StageObjectManager()
         {
@@ -97,6 +105,7 @@ namespace Team3Project.Stage_Stuff
             obstructiveStageObjects = new List<StageObject>();
             emptyTiles = new List<Rectangle>();
             levelLayouts = new Dictionary<string, TileTypes[,]>();
+            currentLevel = 1;
 
             bottomBounds = new HiddenStageObject(1500, 200, 0, 901);
             obstructiveStageObjects.Add(bottomBounds);
@@ -147,7 +156,7 @@ namespace Team3Project.Stage_Stuff
             elevatorOpen = content.Load<Texture2D>("Elevator_Open");
             elevatorClosed = content.Load<Texture2D>("Elevator_Closed");
 
-            elevator = new Elevator(elevatorOpen, elevatorClosed);
+            elevator = new Elevator(elevatorOpen, elevatorClosed, this);
 
             // Loading and initializing the UI
             font = content.Load<SpriteFont>("MenuFont");
@@ -407,8 +416,10 @@ namespace Team3Project.Stage_Stuff
         /// <summary>
         /// Generates a new level, selecting a layout from those pulled from the file
         /// </summary>
-        public void GenerateLevel()
+        public void GenerateLevel(int level)
         {
+            currentLevel = level;
+
             // Clearing all of the current tiles to make way for new ones
             for(int i = 0; i < obstructiveStageObjects.Count; i++)
             {
@@ -421,9 +432,19 @@ namespace Team3Project.Stage_Stuff
 
             emptyTiles.Clear();
 
-            // Choosing a new layout at random
-            int layoutChoice = rng.Next(1, 5);
+            // Choosing a new layout
+            int layoutChoice;
 
+            if (currentLevel % 10 != 0)
+            {
+                layoutChoice = rng.Next(1, 5);
+            }
+            else
+            {
+                layoutChoice = 0;
+            }
+
+            // Selecting the layout corresponding to the choice made
             if (layoutChoice == 0) 
             {
                 currentLayout = levelLayouts["Empty Layout"];

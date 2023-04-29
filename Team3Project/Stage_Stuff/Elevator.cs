@@ -16,11 +16,12 @@ namespace Team3Project.Stage_Stuff
     internal class Elevator : StageObject
     {
         // Field declarations
+        private StageObjectManager _stageObjectManager;
         private Texture2D open;
         private Texture2D closed;
         private bool isOpen;
 
-        public event Action NewLevel;
+        public event newLevelDelegate NewLevel;
 
         // Read-and-write propety for whether the elevator is open
         public bool IsOpen
@@ -30,8 +31,9 @@ namespace Team3Project.Stage_Stuff
         }
         
         // Parameterized constructor
-        public Elevator(Texture2D open, Texture2D closed) : base(114, 100, 693, 0)
+        public Elevator(Texture2D open, Texture2D closed, StageObjectManager stageObjectManager) : base(114, 100, 693, 0)
         {
+            _stageObjectManager = stageObjectManager;
             this.open = open;
             this.closed = closed;
             isObstruction = false;
@@ -63,7 +65,7 @@ namespace Team3Project.Stage_Stuff
         {
             if (isOpen && player.Collision.Intersects(dimensions))
             {
-                NewLevel();
+                NewLevel(player.Level + 1);
             }
         }
     }

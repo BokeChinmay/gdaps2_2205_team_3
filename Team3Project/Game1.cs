@@ -20,6 +20,8 @@ namespace Team3Project
         Pause
     }
 
+    public delegate void newLevelDelegate(int level);
+
     public class Game1 : Game
     {
         // Graphics fields
@@ -267,10 +269,9 @@ namespace Team3Project
                 if ((kbState.IsKeyUp(Keys.Space) && prevKbState.IsKeyDown(Keys.Space)) && titleOption == 1)
                 {
                     _gameState = GameState.GamePlaying;
-                    stageObjectManager.GenerateLevel();
+                    stageObjectManager.GenerateLevel(playerEntity.Level);
                     LoadData();
                     LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
-                    restarts = 2;
                 }
 
                 // Allowing the controls display state to be started
@@ -292,10 +293,17 @@ namespace Team3Project
                     titleOption = 1;
                 }
 
-                // Testing command for checking if game over is functional
+                // Testing command for checking data clearing
                 if (kbState.IsKeyUp(Keys.NumPad1) && prevKbState.IsKeyDown(Keys.NumPad1))
                 {
                     ClearData();
+                }
+
+                // Testing command for checking the boss stage
+                if (kbState.IsKeyUp(Keys.NumPad2) && prevKbState.IsKeyDown(Keys.NumPad2))
+                {
+                    playerEntity.Level = 10;
+                    stageObjectManager.CurrentLevel = 10;
                 }
             }
             // Updating while in the controls display
@@ -462,7 +470,7 @@ namespace Team3Project
         /// <summary>
         /// A group of actions to occur when a new level is generated
         /// </summary>
-        protected void LoadNewLevel()
+        protected void LoadNewLevel(int level)
         {
             playerEntity.nextLevel();
             LevelManager.LoadNewLevel(stageObjectManager.ObstructiveStageObjects, playerEntity.Level);
