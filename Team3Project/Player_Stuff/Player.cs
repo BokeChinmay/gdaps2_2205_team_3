@@ -35,6 +35,7 @@ namespace Team3Project.Player_Stuff
         private Texture2D playerTexture;
         private Texture2D meleeTexture;
         private Texture2D bulletTexture;
+        private SpriteEffects flipsprite;
         private KeyboardState prevKbState;
         private MouseState prevMouseState;
         private Random rng = new Random();
@@ -134,24 +135,30 @@ namespace Team3Project.Player_Stuff
             {
                 collision.X-= moveSpeed;
                 lastKbState = LastKbState.A;
+                flipsprite = SpriteEffects.None;
+                PlayerOffsetX = 4;
             }
 
             if (kbState.IsKeyDown(Keys.D) && !rightBlocked)
             {
                 collision.X+= moveSpeed;
                 lastKbState = LastKbState.D;
+                flipsprite = SpriteEffects.FlipHorizontally;
+                PlayerOffsetX = 4;
             }
 
             if (kbState.IsKeyDown(Keys.S) && !bottomBlocked)
             {
                 collision.Y+= moveSpeed;
                 lastKbState = LastKbState.S;
+                PlayerOffsetX = 43;
             }
 
             if (kbState.IsKeyDown(Keys.W) && !topBlocked)
             {
                 collision.Y-= moveSpeed;
                 lastKbState = LastKbState.W;
+                PlayerOffsetX = 43;
             }
         }
 
@@ -256,8 +263,9 @@ namespace Team3Project.Player_Stuff
         /// <param name="spriteBatch"></param>
         /// <param name="flipSprite"></param>
         /// <returns></returns>
-        public override void Draw(SpriteBatch spriteBatch, SpriteEffects flipSprite)
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
+            
             spriteBatch.Draw(playerTexture,
                              collision,
                              new Rectangle(
@@ -268,7 +276,7 @@ namespace Team3Project.Player_Stuff
                              Color.White,
                              0,
                              Vector2.Zero,
-                             flipSprite,
+                             flipsprite,
                              0
                              );
         }
@@ -286,7 +294,7 @@ namespace Team3Project.Player_Stuff
                 //Death animation
                 if (deathFrameTimer >= 0)
                 {
-                    PlayerOffsetX = 4 + (5 - ((deathFrameTimer / 6) % 5)) * 39;
+                    PlayerOffsetX = 4 + (6 - ((deathFrameTimer / 6) % 5)) * 39;
                     deathFrameTimer--;
                 }
                 //Buffer between player death / showing the end screen
