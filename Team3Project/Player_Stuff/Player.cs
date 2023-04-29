@@ -328,6 +328,11 @@ namespace Team3Project.Player_Stuff
             {
                 Move(kbState);
             }
+
+            if (health > maxHealth)
+            {
+                health = maxHealth;
+            }
         }
 
         /// <summary>

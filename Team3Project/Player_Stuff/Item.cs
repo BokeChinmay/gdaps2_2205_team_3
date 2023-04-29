@@ -16,7 +16,9 @@ namespace Team3Project.Player_Stuff
     public enum ItemType
     {
         DamageBoost,
-        SpeedBoost
+        SpeedBoost,
+        HealthPickup,
+        LifePickup
     }
     internal class Item : Entity
     {
@@ -24,10 +26,9 @@ namespace Team3Project.Player_Stuff
         private Texture2D itemTexture;
 
         private ItemType itemType;
-        
 
-        //for now we will make the item's location be the center of the room hopefully we can introduce enemy drops at a later date
-        private Vector2 itemLoc = new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
+        private int playerHealth;
+        private int playerLives;
 
         private Random rng = new Random();
 
@@ -46,17 +47,15 @@ namespace Team3Project.Player_Stuff
         {
             this.itemTexture = itemTexture;
             this.itemType = itemType;
+            active = false;
         }
 
 
         public void CheckCollision(Entity check)
         {
-            if (active == true)
+            if (active == true && check.Collision.Intersects(collision))
             {
-                if (check.Collision.Intersects(collision))
-                {
-                    active = false;
-                }
+                Active = false;
 
                 if (itemType == ItemType.SpeedBoost)
                 {
@@ -64,7 +63,7 @@ namespace Team3Project.Player_Stuff
                     {
                         Player player = (Player)check;
 
-                        player.MoveSpeed = player.MoveSpeed + (player.MoveSpeed / 2);
+                        player.MoveSpeed = player.MoveSpeed + 1;
                     }
                 }
 
@@ -74,43 +73,64 @@ namespace Team3Project.Player_Stuff
                     {
                         Player player = (Player)check;
 
-                        player.MeleeDamage = player.MeleeDamage + (player.MeleeDamage / 2);
-                        player.ProjectileDamage = player.ProjectileDamage + (player.ProjectileDamage / 2);
+                        player.MeleeDamage = player.MeleeDamage + (player.MeleeDamage / 10);
+                        player.ProjectileDamage = player.ProjectileDamage + (player.ProjectileDamage / 10);
+                    }
+                }
+
+                if (itemType == ItemType.LifePickup)
+                {
+                    if (check is Player)
+                    {
+                        Player player = (Player)check;
+
+                        if (player.Lives < 3)
+                        {
+
+                            player.Lives += 1;
+                        }
+                    }
+                }
+
+                if (itemType == ItemType.HealthPickup)
+                {
+                    if (check is Player)
+                    {
+                        Player player = (Player)check;
+
+                        player.TakeDamage(-1);
                     }
                 }
             }
         }
 
-        public Item GetItem()
-        {
-            Item newItem;
-            if (rng.Next(0, 1) == 0)
-            {
-                 newItem = new Item(1, 0,
-                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
-                                 itemTexture, ItemType.DamageBoost);
-            }
-            else
-            {
-                 newItem = new Item(1, 0,
-                                 new Rectangle(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight, 20, 20),
-                                 itemTexture, ItemType.SpeedBoost);
-            }
-
-            return newItem;
-        }
-
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
-            while (Active)
+            if (Active)
             {
-                spriteBatch.Draw(itemTexture, Collision, Color.White);  
+                if (itemType == ItemType.LifePickup)
+                {
+                    spriteBatch.Draw(itemTexture, new Rectangle(collision.X - 6, collision.Y - 6, 32, 32), Color.White);
+                }
+                else if (itemType == ItemType.HealthPickup)
+                {
+                    spriteBatch.Draw(itemTexture, new Rectangle(collision.X - 1, collision.Y - 1, 22, 22), Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(itemTexture, Collision, Color.White);
+                }
             }
         }
 
         public override void Update()
         {
-            GetItem();
+            throw new NotImplementedException();
+        }
+
+        public void Update(Player player)
+        {
+            CheckCollision(player);
         }
     }
 }

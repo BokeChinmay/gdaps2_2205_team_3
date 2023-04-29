@@ -21,6 +21,7 @@ namespace Team3Project
     }
 
     public delegate void newLevelDelegate(int level);
+    public delegate void itemDropDelegate(Vector2 pos, bool stageClear);
 
     public class Game1 : Game
     {
@@ -47,6 +48,8 @@ namespace Team3Project
         // Fields for items
         private Texture2D damageBoost;
         private Texture2D speedBoost;
+        private Texture2D extraLife;
+        private Texture2D healthPickup;
         private Item items;
 
         // Field for the stage object manager
@@ -114,12 +117,14 @@ namespace Team3Project
             // Loading item textures
             damageBoost = this.Content.Load<Texture2D>("DamageUp");
             speedBoost = this.Content.Load<Texture2D>("SpeedBoost");
+            extraLife = this.Content.Load<Texture2D>("Full_Life_v2");
+            healthPickup = this.Content.Load<Texture2D>("Health_Pickup");
 
             // Loading enemy textures, and passing them into the level manager
             meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySpritesheet");
             rangedEnemy = this.Content.Load<Texture2D>("RangedEnemySpritesheet");
             enemyBullet = this.Content.Load<Texture2D>("EnemyBullet");
-            LevelManager.SetUpTextures(meleeEnemy, rangedEnemy, enemyBullet);
+            LevelManager.SetUpTextures(meleeEnemy, rangedEnemy, enemyBullet, damageBoost, speedBoost, extraLife, healthPickup);
 
             // Loading UI and menu elements
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
