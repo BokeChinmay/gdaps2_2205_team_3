@@ -55,6 +55,7 @@ namespace Team3Project.Player_Stuff
         int PlayerOffsetX;
 
         private int currentLevel;
+        private int currentCheckpoint;
 
         public event Action gameOver;
         public event Action lostLife;
@@ -82,6 +83,12 @@ namespace Team3Project.Player_Stuff
         {
             get { return currentLevel; }
             set { currentLevel = value; }
+        }
+
+        public int Checkpoint
+        {
+            get { return currentCheckpoint; }
+            set { currentCheckpoint = value; }
         }
 
         public int Lives
@@ -116,6 +123,7 @@ namespace Team3Project.Player_Stuff
             lastKbState = LastKbState.W;
             currentIFrames = 0;
             currentLevel = 1;
+            currentCheckpoint = 1;
             playerState = PlayerState.Moving;
             attackTimer = 0;
             deathFrameTimer = 30;
@@ -343,6 +351,11 @@ namespace Team3Project.Player_Stuff
             collision.X = 734;
             collision.Y = 864;
             currentLevel++;
+
+            if (currentLevel % 10 == 1)
+            {
+                currentCheckpoint = currentLevel;
+            }
         }
 
         public void Demoted()
@@ -352,6 +365,7 @@ namespace Team3Project.Player_Stuff
 
             lives--;
             maxHealth--;
+            currentLevel = currentCheckpoint;
 
             active = true;
             health = maxHealth;

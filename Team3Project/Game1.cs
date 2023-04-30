@@ -198,6 +198,7 @@ namespace Team3Project
                     playerEntity.Lives = playerLives;
                     playerEntity.MoveSpeed = playerMoveSpeed;
                     playerEntity.Level = playerLevel;
+                    playerEntity.Checkpoint = (10 * (playerLevel / 10)) + 1;
                     playerEntity.ProjectileDamage = playerDamage;
                 }
                 streamReader.Close();
