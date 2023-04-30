@@ -68,16 +68,22 @@ namespace Team3Project.Stage_Stuff
         /// <param name="spriteEffects"></param>
         public void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects, StageObjectManager stageObjectManager, Texture2D label)
         {
+            // Drawing the display's label
             spriteBatch.Draw(label, new Vector2(dimensions.X, dimensions.Y), Color.White);
 
+            // If the display is showing the level, use a 3-digit number
             if (level)
             {
                 if (value <= 999)
                 {
+                    // Draw the 100's place
                     stageObjectManager.DrawUINumber(value / 100, new Vector2(dimensions.X + 4, dimensions.Y + dimensions.Height + 8), spriteBatch);
+                    // Draw the 10's place
                     stageObjectManager.DrawUINumber((value % 100) / 10, new Vector2(dimensions.X + 28, dimensions.Y + dimensions.Height + 8), spriteBatch);
+                    // Draw the 1's place
                     stageObjectManager.DrawUINumber(value % 10, new Vector2(dimensions.X + 52, dimensions.Y + dimensions.Height + 8), spriteBatch);
                 }
+                // If the value exceeds 999, just draw 999
                 else
                 {
                     stageObjectManager.DrawUINumber(9, new Vector2(dimensions.X + 4, dimensions.Y + dimensions.Height + 8), spriteBatch);
@@ -85,10 +91,12 @@ namespace Team3Project.Stage_Stuff
                     stageObjectManager.DrawUINumber(9, new Vector2(dimensions.X + 52, dimensions.Y + dimensions.Height + 8), spriteBatch);
                 }
             }
+            // If the display is showing the score, use a 5-digit number
             else
             {
                 if (value <= 99999)
                 {
+                    // Draw the 10000's place
                     if (value >= 10000)
                     {
                         stageObjectManager.DrawUINumber(value / 10000, new Vector2(dimensions.X, dimensions.Y + dimensions.Height + 8), spriteBatch);
@@ -98,6 +106,7 @@ namespace Team3Project.Stage_Stuff
                         stageObjectManager.DrawUINumber(0, new Vector2(dimensions.X, dimensions.Y + dimensions.Height + 8), spriteBatch);
                     }
 
+                    // Draw the 1000's place
                     if (value >= 1000)
                     {
                         stageObjectManager.DrawUINumber((value % 10000) / 1000, new Vector2(dimensions.X + 24, dimensions.Y + dimensions.Height + 8), spriteBatch);
@@ -107,6 +116,7 @@ namespace Team3Project.Stage_Stuff
                         stageObjectManager.DrawUINumber(0, new Vector2(dimensions.X + 24, dimensions.Y + dimensions.Height + 8), spriteBatch);
                     }
 
+                    // Draw the 100's place
                     if (value >= 100)
                     {
                         stageObjectManager.DrawUINumber((value % 1000) / 100, new Vector2(dimensions.X + 48, dimensions.Y + dimensions.Height + 8), spriteBatch);
@@ -116,6 +126,7 @@ namespace Team3Project.Stage_Stuff
                         stageObjectManager.DrawUINumber(0, new Vector2(dimensions.X + 48, dimensions.Y + dimensions.Height + 8), spriteBatch);
                     }
 
+                    // Draw the 10's place
                     if (value >= 10)
                     {
                         stageObjectManager.DrawUINumber((value % 100) / 10, new Vector2(dimensions.X + 72, dimensions.Y + dimensions.Height + 8), spriteBatch);
@@ -125,8 +136,10 @@ namespace Team3Project.Stage_Stuff
                         stageObjectManager.DrawUINumber(0, new Vector2(dimensions.X + 72, dimensions.Y + dimensions.Height + 8), spriteBatch);
                     }
 
+                    // Draw the 1's place
                     stageObjectManager.DrawUINumber(value % 10, new Vector2(dimensions.X + 96, dimensions.Y + dimensions.Height + 8), spriteBatch);
                 }
+                // If the value exceeds 99999, just draw 99999
                 else
                 {
                     stageObjectManager.DrawUINumber(9, new Vector2(dimensions.X, dimensions.Y + dimensions.Height + 8), spriteBatch);

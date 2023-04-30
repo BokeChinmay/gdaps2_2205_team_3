@@ -21,11 +21,5 @@ namespace Team3Project.Stage_Stuff
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects){}
-
-        // This method will set an entity's position to be within bounds if they somehow clip out
-        public void ShoveEntity(Entity entity)
-        {
-            
-        }
     }
 }

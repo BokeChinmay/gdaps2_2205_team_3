@@ -196,6 +196,7 @@ namespace Team3Project
                 }
             }
 
+            // Adding to the player's score when enemies die
             if (enemyList.Count < prevEnemyCount)
             {
                 player.Score += (50 + (5 * player.Level)) * (prevEnemyCount - enemyList.Count);
@@ -225,6 +226,7 @@ namespace Team3Project
 
                 DropItem(new Vector2(740, 450), lifeCanDrop, healthCanDrop, player.MoveSpeed);
 
+                // Increasing the player's score (because a level was just completed)
                 if (player.Level % 10 == 0)
                 {
                     player.Score += 2500;
@@ -237,6 +239,7 @@ namespace Team3Project
                 itemDropped = true;
             }
 
+            // Storing the enemy count for comparison in the next frame
             prevEnemyCount = enemyList.Count;
         }
 
@@ -254,6 +257,7 @@ namespace Team3Project
                     projectileList[i].Active = false;
                 }
 
+                //Deactivate projectile if it is in contact with an enemy
                 foreach (Enemy enemy in enemyList)
                 {
                     if (projectileList[i].Collision.Intersects(enemy.Collision) && projectileList[i].Friendly && enemy.Health > 0)
@@ -263,7 +267,7 @@ namespace Team3Project
                     }
                 }
                 
-                //If a projectile is no longer active, remove it from the listw
+                //If a projectile is no longer active, remove it from the list
                 if (!projectileList[i].Active)
                 {
                     projectileList.Remove(projectileList[i]);
@@ -296,7 +300,7 @@ namespace Team3Project
         }
 
         /// <summary>
-        /// Calls draw method for enemies and projectiles
+        /// Calls draw method for enemies, projectiles, items and health bars
         /// </summary>
         /// <param name="spriteBatch"></param>
         /// <param name="spriteEffects"></param>
@@ -327,12 +331,14 @@ namespace Team3Project
         /// <param name="level">Current level</param>
         public static void LoadNewLevel(List<StageObject> obstructiveObjects, int level)
         {
+            // Checking if a boss level should be loaded instead
             if (level % 10 == 0)
             {
                 LoadBossLevel(obstructiveObjects, level);
             }
             else
             {
+                // Establishing fields and clearing lists
                 enemyList.Clear();
                 healthbarList.Clear();
                 projectileList.Clear();

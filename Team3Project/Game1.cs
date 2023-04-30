@@ -462,6 +462,9 @@ namespace Team3Project
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// A group of actions to occur when the player loses a life
+        /// </summary>
         protected void Demotion()
         {
             playerEntity.Demoted();
