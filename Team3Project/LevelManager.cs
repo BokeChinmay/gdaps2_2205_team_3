@@ -62,6 +62,14 @@ namespace Team3Project
 
         static List<Item> itemList;
         static bool itemDropped;
+        //Item dictionary - for displaying the items that have been picked up throughout the run
+        static Dictionary<ItemType, int> itemDictionary;
+        static public Dictionary<ItemType, int> ItemDictionary
+        {
+            get { return itemDictionary; }
+        }
+
+        //Random number generator
         static Random rng;
 
         //Static manager objects that are updated and re-initialized for each new level
@@ -114,6 +122,7 @@ namespace Team3Project
             itemList = new List<Item>();
             itemDropped = false;
             rng = new Random();
+            itemDictionary = new Dictionary<ItemType, int>();
 
             //Sets up the dictionary
             enemyDefaults = new Dictionary<EnemyTypes, Dictionary<Stats, int>>();
@@ -456,6 +465,43 @@ namespace Team3Project
             newItem.Active = true;
 
             itemList.Add(newItem);
+        }
+
+        /// <summary>
+        /// Adds an item of a given type to the dictionary
+        /// </summary>
+        /// <param name="type">Type of item added to list</param>
+        public static void AddItem(ItemType type)
+        {
+            if (itemDictionary.ContainsKey(type))
+            {
+                itemDictionary[type] += 1;
+            }
+            else
+            {
+                itemDictionary.Add(type, 1);
+            }
+        }
+
+        public static void DrawItemDictionary(SpriteBatch spriteBatch, SpriteEffects spriteEffects, Texture2D damageUpTexture, Texture2D speedUpTexture, SpriteFont font)
+        {
+            int drawY = 130;
+            int drawX = 1350;
+            foreach (ItemType type in itemDictionary.Keys)
+            {
+                if (type == ItemType.SpeedBoost)
+                {
+                    spriteBatch.Draw(speedUpTexture, new Rectangle(drawX, drawY + 50, 100, 50), Color.White);
+                    spriteBatch.DrawString(font, String.Format("x" + itemDictionary[type]), new Vector2(drawX + 110, drawY + 50), Color.White);
+                    drawY += 150;
+                }
+                else if (type == ItemType.DamageBoost)
+                {
+                    spriteBatch.Draw(damageUpTexture, new Rectangle(drawX, drawY, 100, 120), Color.White);
+                    spriteBatch.DrawString(font, String.Format("x" + itemDictionary[type]), new Vector2(drawX + 110, drawY + 50), Color.White);
+                    drawY += 150;
+                }
+            }
         }
     }
 }

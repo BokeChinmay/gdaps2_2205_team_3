@@ -388,6 +388,7 @@ namespace Team3Project
 
                 LevelManager.Draw(_spriteBatch, SpriteEffects.None, menuFont);
                 stageObjectManager.Draw2(_spriteBatch);
+                LevelManager.DrawItemDictionary(_spriteBatch, SpriteEffects.None, damageBoost, speedBoost, menuFont);
             }
             // Drawing the main menu
             else if (_gameState == GameState.Menu)

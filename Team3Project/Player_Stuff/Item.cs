@@ -101,6 +101,8 @@ namespace Team3Project.Player_Stuff
                         player.TakeDamage(-1);
                     }
                 }
+
+                LevelManager.AddItem(itemType);
             }
         }
 
