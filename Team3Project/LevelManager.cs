@@ -49,6 +49,8 @@ namespace Team3Project
             get { return enemyList; }
         }
 
+        static List<Healthbar> healthbarList;
+
         //Dictionary for enemy default stats
         static Dictionary<EnemyTypes, Dictionary<Stats, int>> enemyDefaults;
 
@@ -86,12 +88,19 @@ namespace Team3Project
         static Texture2D extraLife;
         static Texture2D healthPickup;
 
+        //Health bar textures
+        static Texture2D smallHBBack;
+        static Texture2D smallHBFront;
+        static Texture2D largeHBBack;
+        static Texture2D largeHBFront;
+
         /// <summary>
         /// Purpose: Sets up level and creates the stage object manager for the level
         /// Testing use: Can call specific methods for testing things out of the traditional way the game would be played
         /// </summary>
         public static void SetUpTextures(Texture2D meleeTexture, Texture2D rangedTexture, Texture2D pTexture,
-            Texture2D damageUp, Texture2D speedUp, Texture2D extraLife, Texture2D healthPickup)
+            Texture2D damageUp, Texture2D speedUp, Texture2D extraLife, Texture2D healthPickup,
+            Texture2D smallHBBack, Texture2D smallHBFront, Texture2D largeHBBack, Texture2D largeHBFront)
         {
             projectileTexture = pTexture;
             LevelManager.meleeTexture = meleeTexture;
@@ -101,6 +110,11 @@ namespace Team3Project
             LevelManager.speedUp = speedUp;
             LevelManager.extraLife = extraLife;
             LevelManager.healthPickup = healthPickup;
+
+            LevelManager.smallHBBack = smallHBBack;
+            LevelManager.smallHBFront = smallHBFront;
+            LevelManager.largeHBBack = largeHBBack;
+            LevelManager.largeHBFront = largeHBFront;
         }
 
         /// <summary>
@@ -119,6 +133,7 @@ namespace Team3Project
         {
             enemyList = new List<Enemy>();
             projectileList = new List<Projectile>();
+            healthbarList = new List<Healthbar>();
             itemList = new List<Item>();
             itemDropped = false;
             rng = new Random();
@@ -137,6 +152,7 @@ namespace Team3Project
         public static void AddEnemy(Enemy enemy)
         {
             enemyList.Add(enemy);
+            healthbarList.Add(new Healthbar(enemy, smallHBBack, smallHBFront, largeHBBack, largeHBFront));
             enemiesPresent = true;
         }
 
@@ -167,6 +183,11 @@ namespace Team3Project
                 {
                     enemiesPresent = true;
                 }
+            }
+
+            foreach (Healthbar healthbar in healthbarList)
+            {
+                healthbar.Update();
             }
 
             if (!enemiesPresent && !itemDropped)
@@ -234,6 +255,7 @@ namespace Team3Project
                 if (!enemyList[i].Active)
                 {
                     enemyList.Remove(enemyList[i]);
+                    healthbarList.Remove(healthbarList[i]);
                     i--;
                 }
                 else
@@ -253,7 +275,6 @@ namespace Team3Project
             foreach (Enemy enemy in enemyList)
             {
                 enemy.Draw(spriteBatch, spriteEffects);
-                spriteBatch.DrawString(font, String.Format("Health: " + enemy.Health), new Vector2(enemy.Collision.X, enemy.Collision.Y - 20), Color.White);
             }
             foreach (Projectile projectile in projectileList)
             {
@@ -263,6 +284,10 @@ namespace Team3Project
             foreach (Item item in itemList)
             {
                 item.Draw(spriteBatch, spriteEffects);
+            }
+            foreach (Healthbar healthbar in healthbarList)
+            {
+                healthbar.Draw(spriteBatch, spriteEffects);
             }
         }
 
@@ -280,6 +305,7 @@ namespace Team3Project
             else
             {
                 enemyList.Clear();
+                healthbarList.Clear();
                 projectileList.Clear();
                 double healthMultiplier = 1 + (0.1 * level);
                 itemList.Clear();
@@ -327,28 +353,27 @@ namespace Team3Project
                     switch (enemyType)
                     {
                         case EnemyTypes.Melee:
-                            enemyList.Add(
-                                new MeleeEnemy(
+                            Enemy newMeleeEnemy = new MeleeEnemy(
                                     (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
                                     enemyDefaults[enemyType][Stats.MoveSpeed],
                                     newCollision,
                                     enemyDefaults[enemyType][Stats.AttackDelay],
-                                    meleeTexture
-                                    )
-                                );
+                                    meleeTexture);
+                            enemyList.Add(newMeleeEnemy);
+                            healthbarList.Add(new Healthbar(newMeleeEnemy, smallHBBack, smallHBFront, largeHBBack, largeHBFront));
+                            
                             break;
                         case EnemyTypes.Ranged:
-                            enemyList.Add(
-                                new RangedEnemy(
+                            Enemy newRangedEnemy = new RangedEnemy(
                                     (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
                                     enemyDefaults[enemyType][Stats.MoveSpeed],
                                     newCollision,
                                     enemyDefaults[enemyType][Stats.AttackDelay],
                                     enemyDefaults[enemyType][Stats.ProjectileSpeed],
                                     rangedTexture,
-                                    projectileTexture
-                                    )
-                                );
+                                    projectileTexture);
+                            enemyList.Add(newRangedEnemy);
+                            healthbarList.Add(new Healthbar(newRangedEnemy, smallHBBack, smallHBFront, largeHBBack, largeHBFront));
                             break;
                     }
                 }
@@ -363,6 +388,8 @@ namespace Team3Project
         /// <param name="level">Player's current level</param>
         public static void LoadBossLevel(List<StageObject> obstructiveObjects, int level)
         {
+            healthbarList.Clear();
+
             //Create boss enemy
             BossEnemy bossEnemy = new BossEnemy(
                 300 + (100 * ((level / 10) - 1)),
@@ -372,6 +399,7 @@ namespace Team3Project
                 meleeTexture
                 );
             enemyList.Add(bossEnemy);
+            healthbarList.Add(new Healthbar(bossEnemy, smallHBBack, smallHBFront, largeHBBack, largeHBFront));
 
             //Create minions - start with 2 and add 1 each consecutive time
             int numEnemies = 2 + ((level / 10) - 1);
@@ -411,15 +439,16 @@ namespace Team3Project
 
                 double healthMultiplier = 1 + (0.1 * level);
                 //Add enemy to list
-                enemyList.Add(
-                                new MeleeEnemy(
+                Enemy newMeleeEnemy = new MeleeEnemy(
                                     (int)(enemyDefaults[enemyType][Stats.Health] * healthMultiplier),
                                     enemyDefaults[enemyType][Stats.MoveSpeed],
                                     newCollision,
                                     enemyDefaults[enemyType][Stats.AttackDelay],
                                     meleeTexture
-                                    )
-                                );
+                                    );
+
+                enemyList.Add(newMeleeEnemy);
+                healthbarList.Add(new Healthbar(newMeleeEnemy, smallHBBack, smallHBFront, largeHBBack, largeHBFront));
             }
         }
 

@@ -62,6 +62,11 @@ namespace Team3Project
         private Texture2D rangedEnemy;
         private Texture2D enemyBullet;
 
+        private Texture2D smallHBBack;
+        private Texture2D smallHBFront;
+        private Texture2D largeHBBack;
+        private Texture2D largeHBFront;
+
         // Fields for the UI
         private Texture2D gameTitle;
         private Texture2D titleOption1;
@@ -71,8 +76,6 @@ namespace Team3Project
         private Texture2D demoted;
         private Texture2D gameOver;
         private int titleOption;
-
-        private int restarts; //Number of restarts remaining for the player
 
         public Game1()
         {
@@ -94,8 +97,6 @@ namespace Team3Project
 
             rng = new Random();
             LevelManager.Initialize();
-
-            restarts = 2;
 
             base.Initialize();
         }
@@ -124,7 +125,15 @@ namespace Team3Project
             meleeEnemy = this.Content.Load<Texture2D>("MeleeEnemySpritesheet");
             rangedEnemy = this.Content.Load<Texture2D>("RangedEnemySpritesheet");
             enemyBullet = this.Content.Load<Texture2D>("EnemyBullet");
-            LevelManager.SetUpTextures(meleeEnemy, rangedEnemy, enemyBullet, damageBoost, speedBoost, extraLife, healthPickup);
+
+            smallHBBack = this.Content.Load<Texture2D>("Small_Healthbar_Back");
+            smallHBFront = this.Content.Load<Texture2D>("Small_Healthbar_Front");
+            largeHBBack = this.Content.Load<Texture2D>("Big_Healthbar_Back");
+            largeHBFront = this.Content.Load<Texture2D>("Big_Healthbar_Front");
+            LevelManager.SetUpTextures(
+                meleeEnemy, rangedEnemy, enemyBullet, 
+                damageBoost, speedBoost, extraLife, healthPickup, 
+                smallHBBack, smallHBFront, largeHBBack, largeHBFront);
 
             // Loading UI and menu elements
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
