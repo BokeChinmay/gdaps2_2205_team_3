@@ -110,11 +110,11 @@ namespace Team3Project.Player_Stuff
             {
                 if (itemType == ItemType.LifePickup)
                 {
-                    spriteBatch.Draw(itemTexture, new Rectangle(collision.X - 6, collision.Y - 6, 32, 32), Color.White);
+                    spriteBatch.Draw(itemTexture, new Rectangle(collision.X - 6, collision.Y - 6, 64, 64), Color.White);
                 }
                 else if (itemType == ItemType.HealthPickup)
                 {
-                    spriteBatch.Draw(itemTexture, new Rectangle(collision.X - 1, collision.Y - 1, 22, 22), Color.White);
+                    spriteBatch.Draw(itemTexture, new Rectangle(collision.X - 1, collision.Y - 1, 66, 66), Color.White);
                 }
                 else
                 {

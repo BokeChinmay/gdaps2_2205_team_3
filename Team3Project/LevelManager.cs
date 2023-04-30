@@ -196,7 +196,7 @@ namespace Team3Project
 
                 foreach (Enemy enemy in enemyList)
                 {
-                    if (projectileList[i].Collision.Intersects(enemy.Collision) && projectileList[i].Friendly)
+                    if (projectileList[i].Collision.Intersects(enemy.Collision) && projectileList[i].Friendly && enemy.Health > 0)
                     {
                         enemy.TakeDamage(projectileList[i]);
                         projectileList[i].Active = false;
@@ -346,6 +346,12 @@ namespace Team3Project
             }
         }
 
+        /// <summary>
+        /// Every 10 levels, a boss room appears. This room contains a large version of the melee enemy as a boss with a few more melee enemies
+        /// as minions.
+        /// </summary>
+        /// <param name="obstructiveObjects">List of obstructive stage objects</param>
+        /// <param name="level">Player's current level</param>
         public static void LoadBossLevel(List<StageObject> obstructiveObjects, int level)
         {
             //Create boss enemy
@@ -425,25 +431,25 @@ namespace Team3Project
             if (itemChoice < 40 || (itemChoice < 70 && !missingHealth))
             {
                 newItem = new Item(1, 0,
-                                new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                new Rectangle((int)location.X, (int)location.Y, 60, 76),
                                 damageUp, ItemType.DamageBoost);
             }
             else if (itemChoice < 70 || (itemChoice < 90 && playerSpeed > 9 && missingHealth))
             {
                 newItem = new Item(1, 0,
-                                new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                new Rectangle((int)location.X, (int)location.Y, 66, 66),
                                 healthPickup, ItemType.HealthPickup);
             }
             else if (itemChoice < 90)
             {
                 newItem = new Item(1, 0,
-                                new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                new Rectangle((int)location.X, (int)location.Y, 64, 28),
                                 speedUp, ItemType.SpeedBoost);
             }
             else
             {
                 newItem = new Item(1, 0,
-                                 new Rectangle((int)location.X, (int)location.Y, 20, 20),
+                                 new Rectangle((int)location.X, (int)location.Y, 64, 64),
                                  extraLife, ItemType.LifePickup);
             }
 
