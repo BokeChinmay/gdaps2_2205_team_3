@@ -115,7 +115,7 @@ namespace Team3Project.Player_Stuff
 
             lastKbState = LastKbState.W;
             currentIFrames = 0;
-            currentLevel = 10;
+            currentLevel = 1;
             playerState = PlayerState.Moving;
             attackTimer = 0;
             deathFrameTimer = 30;
