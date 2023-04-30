@@ -115,7 +115,7 @@ namespace Team3Project.Player_Stuff
 
             lastKbState = LastKbState.W;
             currentIFrames = 0;
-            currentLevel = 1;
+            currentLevel = 10;
             playerState = PlayerState.Moving;
             attackTimer = 0;
             deathFrameTimer = 30;
@@ -181,7 +181,7 @@ namespace Team3Project.Player_Stuff
                 //Create new projectile and add it to the projectile list
                 MeleeProjectile slash = new MeleeProjectile(
                     0,
-                    50,
+                    meleeDamage,
                     new Rectangle((int)(collision.X + (unitVector.X * 40) + 15), (int)(collision.Y + (unitVector.Y * 40) + 15), 50, 20),
                     meleeTexture,
                     true,
@@ -364,6 +364,7 @@ namespace Team3Project.Player_Stuff
             health = maxHealth;
             moveSpeed = 5;
             projectileDamage = 20;
+            meleeDamage = 50;
             Level = 1;
             active = true;
             collision.X = 734;

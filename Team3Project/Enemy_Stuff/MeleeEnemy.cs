@@ -35,17 +35,17 @@ namespace Team3Project.Enemy_Stuff
         Vector2 attackDirection;
 
         //Animation
-        int frame;
+        protected int frame;
         double timeCounter;
         double fps;
         double timePerFrame;
-        SpriteEffects flipsprite;
+        protected SpriteEffects flipsprite;
 
         // Constants for source rectangle
-        const int RectHeight = 22;
-        const int RectWidth = 24;
-        const int HORIZONTAL_BUFFER = 24;
-        const int VERTICAL_BUFFER = 0;
+        protected const int RectHeight = 22;
+        protected const int RectWidth = 24;
+        protected const int HORIZONTAL_BUFFER = 24;
+        protected const int VERTICAL_BUFFER = 0;
 
         //Constructor
         public MeleeEnemy(int health, int moveSpeed, Rectangle collision, int attackDelay, Texture2D texture) : base(health, moveSpeed, collision, texture)
