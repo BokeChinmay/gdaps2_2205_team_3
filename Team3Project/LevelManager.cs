@@ -49,6 +49,8 @@ namespace Team3Project
             get { return enemyList; }
         }
 
+        static int prevEnemyCount;
+
         static List<Healthbar> healthbarList;
 
         //Dictionary for enemy default stats
@@ -178,13 +180,25 @@ namespace Team3Project
             {
                 if (enemy.Collision.Intersects(player.Collision) && enemy.Health >= 0)
                 {
-                    player.TakeDamage(1);
+                    if (enemy is BossEnemy)
+                    {
+                        player.TakeDamage(2);
+                    }
+                    else
+                    {
+                        player.TakeDamage(1);
+                    }
                 }
 
                 if (enemy.Active)
                 {
                     enemiesPresent = true;
                 }
+            }
+
+            if (enemyList.Count < prevEnemyCount)
+            {
+                player.Score += (50 + (5 * player.Level)) * (prevEnemyCount - enemyList.Count);
             }
 
             //Update health bars
@@ -210,8 +224,20 @@ namespace Team3Project
                 }
 
                 DropItem(new Vector2(740, 450), lifeCanDrop, healthCanDrop, player.MoveSpeed);
+
+                if (player.Level % 10 == 0)
+                {
+                    player.Score += 2500;
+                }
+                else
+                {
+                    player.Score += 500;
+                }
+
                 itemDropped = true;
             }
+
+            prevEnemyCount = enemyList.Count;
         }
 
         /// <summary>
@@ -393,11 +419,12 @@ namespace Team3Project
         public static void LoadBossLevel(List<StageObject> obstructiveObjects, int level)
         {
             healthbarList.Clear();
+            itemDropped = false;
 
             //Create boss enemy
             BossEnemy bossEnemy = new BossEnemy(
-                300 + (100 * ((level / 10) - 1)),
-                enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed] / 2,
+                300 + (100 * (level / 2)),
+                (int)(enemyDefaults[EnemyTypes.Melee][Stats.MoveSpeed] * 0.8),
                 new Rectangle(500, 400, enemyDefaults[EnemyTypes.Melee][Stats.Width] * 3, enemyDefaults[EnemyTypes.Melee][Stats.Height] * 3),
                 enemyDefaults[EnemyTypes.Melee][Stats.AttackDelay],
                 meleeTexture
@@ -479,7 +506,8 @@ namespace Team3Project
             }
 
             //Condition for dropping a damage boost
-            if (itemChoice < 40 || (itemChoice < 70 && !missingHealth))
+            if (itemChoice < 40 || (itemChoice < 70 && !missingHealth) || 
+                (itemChoice < 90 && playerSpeed > 9 && !missingHealth))
             {
                 newItem = new Item(1, 0,
                                 new Rectangle((int)location.X, (int)location.Y, 60, 76),
@@ -541,7 +569,7 @@ namespace Team3Project
         {
             //Initial draw locations where everything else is drawn relative to
             //These two numbers represent the top left corner of the inventory
-            int drawY = 130;
+            int drawY = 260;
             int drawX = 1350;
             foreach (ItemType type in itemDictionary.Keys)
             {

@@ -71,15 +71,15 @@ namespace Team3Project.Player_Stuff
                     }
                 }
 
-                //If the item is a damage boost, increase ranged and melee damage by 10%
+                //If the item is a damage boost, increase ranged and melee damage by 2 and 5, respectively
                 if (itemType == ItemType.DamageBoost)
                 {
                     if (check is Player)
                     {
                         Player player = (Player)check;
 
-                        player.MeleeDamage = player.MeleeDamage + (player.MeleeDamage / 10);
-                        player.ProjectileDamage = player.ProjectileDamage + (player.ProjectileDamage / 10);
+                        player.MeleeDamage = player.MeleeDamage + 5;
+                        player.ProjectileDamage = player.ProjectileDamage + 2;
                     }
                 }
 

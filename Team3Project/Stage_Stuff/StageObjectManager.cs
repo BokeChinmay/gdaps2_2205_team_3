@@ -66,8 +66,10 @@ namespace Team3Project.Stage_Stuff
         private Texture2D emptyLife;
         private HealthDisplay healthDisplay;
         private Texture2D levelLabel;
+        private Texture2D scoreLabel;
         private Texture2D healthLabel;
         private Texture2D livesLabel;
+        private ScoreDisplay levelDisplay;
         private ScoreDisplay scoreDisplay;
         private Texture2D numberSheet;
         private Rectangle[] uiNumbers;
@@ -110,7 +112,8 @@ namespace Team3Project.Stage_Stuff
             bottomBounds = new HiddenStageObject(1500, 200, 0, 901);
             obstructiveStageObjects.Add(bottomBounds);
 
-            scoreDisplay = new ScoreDisplay();
+            levelDisplay = new ScoreDisplay(true);
+            scoreDisplay = new ScoreDisplay(false);
 
             uiNumbers = new Rectangle[10];
             uiNumbers[0] = new Rectangle(4, 4, 20, 24);
@@ -172,6 +175,7 @@ namespace Team3Project.Stage_Stuff
                 emptyLife, healthLabel, livesLabel);
 
             levelLabel = content.Load<Texture2D>("UI_Level");
+            scoreLabel = content.Load<Texture2D>("UI_Score");
             numberSheet = content.Load<Texture2D>("UI_Numbers");
 
             // Loading the blocked tile textures
@@ -254,7 +258,8 @@ namespace Team3Project.Stage_Stuff
             elevator.Draw(_spriteBatch, SpriteEffects.None);
 
             healthDisplay.Draw(_spriteBatch, SpriteEffects.None);
-            scoreDisplay.Draw(_spriteBatch, SpriteEffects.None, this, levelLabel);
+            levelDisplay.Draw(_spriteBatch, SpriteEffects.None, this, levelLabel);
+            scoreDisplay.Draw(_spriteBatch, SpriteEffects.None, this, scoreLabel);
         }
 
         /// <summary>
@@ -416,6 +421,7 @@ namespace Team3Project.Stage_Stuff
             //Update health and score displays
             healthDisplay.Health = player.Health;
             healthDisplay.Lives = player.Lives;
+            levelDisplay.Update(player);
             scoreDisplay.Update(player);
         }
 

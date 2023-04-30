@@ -167,7 +167,10 @@ namespace Team3Project.Enemy_Stuff
                             }
                             else
                             {
-                                currentState = EnemyState.Hurt;
+                                if (!(this is BossEnemy))
+                                {
+                                    currentState = EnemyState.Hurt;
+                                }
                             }                          
                         }
                     }

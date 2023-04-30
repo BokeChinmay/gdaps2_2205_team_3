@@ -56,6 +56,7 @@ namespace Team3Project.Player_Stuff
 
         private int currentLevel;
         private int currentCheckpoint;
+        private int currentScore;
 
         public event Action gameOver;
         public event Action lostLife;
@@ -89,6 +90,12 @@ namespace Team3Project.Player_Stuff
         {
             get { return currentCheckpoint; }
             set { currentCheckpoint = value; }
+        }
+
+        public int Score
+        {
+            get { return currentScore; }
+            set { currentScore = value; }
         }
 
         public int Lives
