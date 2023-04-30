@@ -170,6 +170,13 @@ namespace Team3Project.Player_Stuff
             }
         }
 
+        /// <summary>
+        /// Specific update for applying the melee attack whenever the player clicks the right mous button
+        /// </summary>
+        /// <param name="mouseState">Current mouse state</param>
+        /// <param name="prevMouseState">Previous mouse state</param>
+        /// <param name="kbState">Current keyboard state</param>
+        /// <param name="spriteBatch"></param>
         public void MeleeAttack(MouseState mouseState, MouseState prevMouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
             prevKbState = kbState;
@@ -210,6 +217,13 @@ namespace Team3Project.Player_Stuff
             prevKbState = kbState;
         }
 
+        /// <summary>
+        /// Specific update for applying the ranged attack whenever the player clicks the left mouse button
+        /// </summary>
+        /// <param name="mouseState">Current mouse state</param>
+        /// <param name="prevMouseState">Previous mouse state</param>
+        /// <param name="kbState">Current keyboard state</param>
+        /// <param name="spriteBatch"></param>
         public void RangedAttack(MouseState mouseState, MouseState prevMouseState, KeyboardState kbState, SpriteBatch spriteBatch)
         {
 
@@ -255,7 +269,6 @@ namespace Team3Project.Player_Stuff
         /// Method that simulates taking damage and sets the entity to inactive if the health reaches zero
         /// </summary>
         /// <param name="damage"></param>
-        /// <param name="entity"></param>
         public void TakeDamage(int damage)
         {
             if (currentIFrames <= 0)
@@ -294,6 +307,10 @@ namespace Team3Project.Player_Stuff
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Update overload
+        /// </summary>
+        /// <param name="kbState">Current keyboard state</param>
         public void Update(KeyboardState kbState)
         {
             if(Health <= 0)
@@ -358,6 +375,9 @@ namespace Team3Project.Player_Stuff
             }
         }
 
+        /// <summary>
+        /// Runs whenever the player is demoted, removes a life and reduces max health. Restarts player at checkpoint
+        /// </summary>
         public void Demoted()
         {
             collision.X = 734;
@@ -371,6 +391,9 @@ namespace Team3Project.Player_Stuff
             health = maxHealth;
         }
 
+        /// <summary>
+        /// Resets stats to defaults
+        /// </summary>
         public void ResetStats()
         {
             lives = 3;

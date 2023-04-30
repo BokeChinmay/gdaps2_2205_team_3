@@ -6,6 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: Melee Projectile
+//Purpose: A projectile for the player's melee attack. Does not move in a straight line like a bullet
+//Restrictions: Inherits from Projectile
+
 namespace Team3Project
 {
     internal class MeleeProjectile : Projectile
@@ -22,6 +26,11 @@ namespace Team3Project
         }
 
         //Methods
+        /// <summary>
+        /// Overriden draw method
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             spriteBatch.Draw(
@@ -37,6 +46,9 @@ namespace Team3Project
                 );
         }
 
+        /// <summary>
+        /// Overriden update method
+        /// </summary>
         public override void Update()
         {
             if (timer < 0)

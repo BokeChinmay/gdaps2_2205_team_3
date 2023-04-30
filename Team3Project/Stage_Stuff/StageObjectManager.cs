@@ -380,10 +380,12 @@ namespace Team3Project.Stage_Stuff
         /// </summary>
         public void Update(List<Enemy> enemies, Player player)
         {
+            //Update blocked sides for all enemies
             foreach (Enemy e in enemies) 
             { 
                 CheckBlockedSides(e);
             }
+            //Check if projectiles intersect obstructive stage objects
             foreach (Projectile p in LevelManager.ProjectileList)
             {
                 foreach(StageObject so in ObstructiveStageObjects)
@@ -395,6 +397,7 @@ namespace Team3Project.Stage_Stuff
                 }
             }
 
+            //Update elevator based on whether or not there are still enemies on screen
             if (!LevelManager.EnemiesPresent)
             {
                 elevator.IsOpen = true;
@@ -404,10 +407,13 @@ namespace Team3Project.Stage_Stuff
                 elevator.IsOpen = false;
             }
 
+            //Update player's blocked sides
             CheckBlockedSides(player);
 
+            //Update elevator's collision with the player
             elevator.PlayerEnters(player);
 
+            //Update health and score displays
             healthDisplay.Health = player.Health;
             healthDisplay.Lives = player.Lives;
             scoreDisplay.Update(player);

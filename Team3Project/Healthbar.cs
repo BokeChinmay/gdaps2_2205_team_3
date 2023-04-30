@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 using Team3Project.Stage_Stuff;
 using Team3Project.Enemy_Stuff;
 
+//Name: Healthbar
+//Purpose: Healthbar objects are paired with an enemy and displays that enemy's health
+//Restrictions: Inherits from UI Object
+
 namespace Team3Project
 {
     internal class Healthbar : UIObject
@@ -43,6 +47,7 @@ namespace Team3Project
             get { return enemy; } 
         }
 
+        //Constructor
         public Healthbar(Enemy enemy, Texture2D back1, Texture2D front1, 
             Texture2D back2, Texture2D front2) : base (enemy.Collision.X, enemy.Collision.Y, 0, 0)
         {
@@ -54,6 +59,7 @@ namespace Team3Project
             this.backTextureBoss = back2;
             this.frontTextureBoss = front2;
 
+            //If the enemy paired with this healthbar is a boss, place the healthbar at the bottom of the screen
             if (enemy is BossEnemy)
             {
                 dimensions = new System.Drawing.Rectangle(375, 790, 750, 90);
@@ -66,12 +72,17 @@ namespace Team3Project
             }
         }
 
+        /// <summary>
+        /// Overriden update method
+        /// </summary>
         public void Update()
         {
+            //If the enemy is a boss, keep it static at the bottom of the screen
             if (enemy is BossEnemy)
             {
                 healthRemaining = (int)((float)((float)enemy.Health / (float)maxHealth) * 726f);
             }
+            //Else, move the health bar with the enemy
             else
             {
                 healthRemaining = (int)((float)((float)enemy.Health / (float)maxHealth) * 46f);
@@ -80,8 +91,14 @@ namespace Team3Project
             }
         }
 
+        /// <summary>
+        /// Overriden draw method
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
+            //Healthbars are drawn by drawing a portion of the full healthbar over the entirety of the empty healthbar
             if (enemy is BossEnemy)
             {
                 spriteBatch.Draw(

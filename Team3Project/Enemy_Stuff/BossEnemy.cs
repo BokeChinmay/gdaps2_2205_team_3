@@ -6,6 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Name: Boss Enemy
+//Purpose: Special class for the boss enemy. The distinction between this and MeleeEnemy is in the way they are drawn
+//Restrictions: Inherits from Melee Enemy
+
 namespace Team3Project.Enemy_Stuff
 {
     internal class BossEnemy : MeleeEnemy

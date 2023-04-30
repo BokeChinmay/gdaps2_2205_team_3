@@ -14,12 +14,15 @@ namespace Team3Project
 {
     internal class EnemyBullet : Bullet
     {
-
+        //Constructor
         public EnemyBullet(int speed, float xDirection, float yDirection, Rectangle collision, int damage, Texture2D texture) : base(speed, xDirection, yDirection, collision, damage, texture, false)
         {
             
         }
 
+        /// <summary>
+        /// Overriden update method
+        /// </summary>
         public override void Update()
         {
             base.Update();

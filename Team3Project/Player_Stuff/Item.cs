@@ -50,13 +50,17 @@ namespace Team3Project.Player_Stuff
             active = false;
         }
 
-
+        /// <summary>
+        /// This check collision applies the effects of the items to the player
+        /// </summary>
+        /// <param name="check"></param>
         public void CheckCollision(Entity check)
         {
             if (active == true && check.Collision.Intersects(collision))
             {
                 Active = false;
 
+                //If the item is a speed boost, increase player move speed by 1
                 if (itemType == ItemType.SpeedBoost)
                 {
                     if (check is Player)
@@ -67,6 +71,7 @@ namespace Team3Project.Player_Stuff
                     }
                 }
 
+                //If the item is a damage boost, increase ranged and melee damage by 10%
                 if (itemType == ItemType.DamageBoost)
                 {
                     if (check is Player)
@@ -78,6 +83,7 @@ namespace Team3Project.Player_Stuff
                     }
                 }
 
+                //If the item is a life pickup, increase lives by 1
                 if (itemType == ItemType.LifePickup)
                 {
                     if (check is Player)
@@ -92,6 +98,7 @@ namespace Team3Project.Player_Stuff
                     }
                 }
 
+                //If the item is a health pickup, increase health by 1
                 if (itemType == ItemType.HealthPickup)
                 {
                     if (check is Player)
@@ -106,6 +113,11 @@ namespace Team3Project.Player_Stuff
             }
         }
 
+        /// <summary>
+        /// Overriden draw method to draw the pickup
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spriteEffects"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (Active)
@@ -125,11 +137,19 @@ namespace Team3Project.Player_Stuff
             }
         }
 
+        /// <summary>
+        /// Not implemented without overloads
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public override void Update()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Update: checks collision with the player object
+        /// </summary>
+        /// <param name="player"></param>
         public void Update(Player player)
         {
             CheckCollision(player);

@@ -165,11 +165,13 @@ namespace Team3Project
             UpdateEnemies(player.Collision, gameTime);
             UpdateProjectiles(player);
 
+            //Update items
             foreach(Item item in itemList)
             {
                 item.Update(player);
             }
 
+            //Update enemies
             enemiesPresent = false;
 
             foreach (Enemy enemy in enemyList) 
@@ -185,11 +187,13 @@ namespace Team3Project
                 }
             }
 
+            //Update health bars
             foreach (Healthbar healthbar in healthbarList)
             {
                 healthbar.Update();
             }
 
+            //Drop item if possible
             if (!enemiesPresent && !itemDropped)
             {
                 bool lifeCanDrop = false;
@@ -279,7 +283,6 @@ namespace Team3Project
             foreach (Projectile projectile in projectileList)
             {
                 projectile.Draw(spriteBatch, spriteEffects);
-                //FOR TESTING: spriteBatch.DrawString(font, "!!!", new Vector2(projectile.Collision.X, projectile.Collision.Y), Color.White);
             }
             foreach (Item item in itemList)
             {
@@ -350,6 +353,7 @@ namespace Team3Project
                         }
                     } while (pass == false);
 
+                    //Add enemy to the list
                     switch (enemyType)
                     {
                         case EnemyTypes.Melee:
@@ -452,11 +456,19 @@ namespace Team3Project
             }
         }
 
+        /// <summary>
+        /// Drops an item in the center of the screen after a room is cleared
+        /// </summary>
+        /// <param name="location">Location to drop the item</param>
+        /// <param name="missingLives">Whether or not the player is missing any lives</param>
+        /// <param name="missingHealth">Whether or not the player is missing any health</param>
+        /// <param name="playerSpeed">Player's move speed property</param>
         public static void DropItem(Vector2 location, bool missingLives, bool missingHealth, int playerSpeed)
         {
             Item newItem;
             int itemChoice;
 
+            //If the player is missing any lives, the life up option is added as a possibility
             if (missingLives)
             {
                 itemChoice = rng.Next(0, 100);
@@ -466,24 +478,28 @@ namespace Team3Project
                 itemChoice = rng.Next(0, 90);
             }
 
+            //Condition for dropping a damage boost
             if (itemChoice < 40 || (itemChoice < 70 && !missingHealth))
             {
                 newItem = new Item(1, 0,
                                 new Rectangle((int)location.X, (int)location.Y, 60, 76),
                                 damageUp, ItemType.DamageBoost);
             }
+            //Condition for dropping a health pickup
             else if (itemChoice < 70 || (itemChoice < 90 && playerSpeed > 9 && missingHealth))
             {
                 newItem = new Item(1, 0,
                                 new Rectangle((int)location.X, (int)location.Y, 66, 66),
                                 healthPickup, ItemType.HealthPickup);
             }
+            //Condition for dropping a speed boost
             else if (itemChoice < 90)
             {
                 newItem = new Item(1, 0,
                                 new Rectangle((int)location.X, (int)location.Y, 64, 28),
                                 speedUp, ItemType.SpeedBoost);
             }
+            //Condition for dropping a life pickup
             else
             {
                 newItem = new Item(1, 0,
@@ -493,6 +509,7 @@ namespace Team3Project
 
             newItem.Active = true;
 
+            //Add the new item to the item list
             itemList.Add(newItem);
         }
 
@@ -512,18 +529,30 @@ namespace Team3Project
             }
         }
 
+        /// <summary>
+        /// Draws the item inventory on the right side of the screen
+        /// </summary>
+        /// <param name="spriteBatch">MonoGame spriteBatch</param>
+        /// <param name="spriteEffects"></param>
+        /// <param name="damageUpTexture">Texture for the damage up item</param>
+        /// <param name="speedUpTexture">Texture for the speed up item</param>
+        /// <param name="font">Font for drawing strings</param>
         public static void DrawItemDictionary(SpriteBatch spriteBatch, SpriteEffects spriteEffects, Texture2D damageUpTexture, Texture2D speedUpTexture, SpriteFont font)
         {
+            //Initial draw locations where everything else is drawn relative to
+            //These two numbers represent the top left corner of the inventory
             int drawY = 130;
             int drawX = 1350;
             foreach (ItemType type in itemDictionary.Keys)
             {
+                //Draw speed boosts
                 if (type == ItemType.SpeedBoost)
                 {
                     spriteBatch.Draw(speedUpTexture, new Rectangle(drawX, drawY + 50, 100, 50), Color.White);
                     spriteBatch.DrawString(font, String.Format("x" + itemDictionary[type]), new Vector2(drawX + 110, drawY + 50), Color.White);
                     drawY += 150;
                 }
+                //Draw damage boosts
                 else if (type == ItemType.DamageBoost)
                 {
                     spriteBatch.Draw(damageUpTexture, new Rectangle(drawX, drawY, 100, 120), Color.White);
